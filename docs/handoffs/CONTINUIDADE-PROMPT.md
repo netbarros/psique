@@ -29,6 +29,7 @@ Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS c
 | Fase 9 — Booking Público + Stripe          | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE9.md`                               |
 | Fase 10 — Segurança (2FA + CPF)            | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE10.md`                              |
 | Fase 11-12 — Produto + Polish              | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE11-12.md`                           |
+| Fase 12 — Playwright + Sentry + Deploy     | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE12.md`                              |
 
 **Leia todos os handoffs antes de começar.** Eles contêm os detalhes exatos de cada arquivo criado.
 
@@ -113,11 +114,13 @@ app/loading.tsx                 ← root loading spinner
 
 ---
 
-## O que falta implementar (próxima sessão)
+## 🎯 PSIQUE PLATFORM — TODAS AS FASES CONCLUÍDAS
 
-- Testes E2E Playwright
-- Sentry monitoring
-- Deploy Vercel + DNS
+### Para futura evolução:
+
+- Emissão de NF (Nuvemfiscal)
+- PWA modo offline
+- Novos idiomas (i18n)
 
 ---
 
@@ -292,3 +295,17 @@ npx supabase db reset && npx supabase db push
 - `lib/pdf/session-report.tsx` — React-PDF A4 (header, stats, sessões, financeiro, LGPD footer)
 - `app/api/reports/sessions/route.ts` — GET → renderToBuffer → PDF download
 - `@react-pdf/renderer` instalado
+
+**Fase 12 — Playwright + Sentry + Vercel (FINAL):**
+
+- `playwright.config.ts` — chromium + Mobile Chrome, HTML report
+- `e2e/auth.spec.ts` — login form, role toggle, redirects
+- `e2e/booking.spec.ts` — 404 slug inválido, booking elements
+- `e2e/navigation.spec.ts` — root redirect, 404, security headers, auth guards
+- `sentry.server.config.ts` — 10% tracing, scrub CPF/password/token
+- `sentry.client.config.ts` — session replay 1%/100% errors, maskAllInputs
+- `sentry.edge.config.ts` — edge runtime minimal
+- `instrumentation.ts` — Next.js hook para inicialização Sentry
+- `next.config.ts` — withSentryConfig + qrserver em CSP/remotePatterns
+- `vercel.json` — region gru1 (São Paulo), 25 env vars, cron hourly
+- `@sentry/nextjs` + `@playwright/test` instalados

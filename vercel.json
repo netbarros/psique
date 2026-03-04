@@ -1,8 +1,38 @@
 {
+  "version": 2,
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "installCommand": "npm install",
+  "regions": ["gru1"],
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "@supabase_url",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@supabase_anon_key",
+    "SUPABASE_SERVICE_ROLE_KEY": "@supabase_service_role_key",
+    "SUPABASE_JWT_SECRET": "@supabase_jwt_secret",
+    "OPENROUTER_API_KEY": "@openrouter_api_key",
+    "TELEGRAM_BOT_TOKEN": "@telegram_bot_token",
+    "TELEGRAM_BOT_USERNAME": "@telegram_bot_username",
+    "TELEGRAM_WEBHOOK_SECRET": "@telegram_webhook_secret",
+    "DAILY_API_KEY": "@daily_api_key",
+    "DAILY_API_URL": "@daily_api_url",
+    "STRIPE_SECRET_KEY": "@stripe_secret_key",
+    "NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
+    "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret",
+    "RESEND_API_KEY": "@resend_api_key",
+    "RESEND_FROM_EMAIL": "@resend_from_email",
+    "RESEND_FROM_NAME": "@resend_from_name",
+    "NEXT_PUBLIC_APP_URL": "@app_url",
+    "CRON_SECRET": "@cron_secret",
+    "UPSTASH_REDIS_REST_URL": "@upstash_redis_url",
+    "UPSTASH_REDIS_REST_TOKEN": "@upstash_redis_token",
+    "SENTRY_DSN": "@sentry_dsn",
+    "NEXT_PUBLIC_SENTRY_DSN": "@sentry_dsn"
+  },
   "crons": [
     {
       "path": "/api/cron/reminders",
-      "schedule": "*/30 * * * *"
+      "schedule": "0 * * * *"
     }
   ]
 }
