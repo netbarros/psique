@@ -55,19 +55,15 @@ const nextConfig: NextConfig = {
 
 export default withSentryConfig(nextConfig, {
   // Sentry org and project from env (set these in Vercel)
-  org: process.env.SENTRY_ORG,
-  project: process.env.SENTRY_PROJECT,
+  org: process.env.SENTRY_ORG || "software-lotus",
+  project: process.env.SENTRY_PROJECT || "javascript-nextjs",
+  authToken: process.env.SENTRY_AUTH_TOKEN,
 
   // Only upload source maps in CI/production builds
   silent: !process.env.CI,
 
   // Upload source maps on build
   widenClientFileUpload: true,
-
-  // Tree-shake Sentry debug code in development
-  disableLogger: true,
-
-  // Automatically instrument Next.js data fetching methods
-  automaticVercelMonitors: true,
+  hideSourceMaps: true,
 });
 
