@@ -9,7 +9,7 @@ CREATE EXTENSION IF NOT EXISTS "pg_trgm";
 
 -- ── TERAPEUTA ─────────────────────────────────────────────────
 CREATE TABLE therapists (
-  id                    UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id               UUID REFERENCES auth.users(id) ON DELETE CASCADE,
   name                  TEXT NOT NULL,
   crp                   TEXT UNIQUE NOT NULL,
@@ -34,7 +34,7 @@ CREATE TABLE therapists (
 
 -- ── DISPONIBILIDADE ───────────────────────────────────────────
 CREATE TABLE availability (
-  id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   therapist_id UUID REFERENCES therapists(id) ON DELETE CASCADE,
   day_of_week  INT NOT NULL CHECK (day_of_week BETWEEN 0 AND 6),
   start_time   TIME NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE availability (
 );
 
 CREATE TABLE availability_blocks (
-  id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   therapist_id UUID REFERENCES therapists(id) ON DELETE CASCADE,
   blocked_at   TIMESTAMPTZ NOT NULL,
   reason       TEXT,
@@ -52,7 +52,7 @@ CREATE TABLE availability_blocks (
 
 -- ── PACIENTES ─────────────────────────────────────────────────
 CREATE TABLE patients (
-  id                   UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   therapist_id         UUID REFERENCES therapists(id) ON DELETE CASCADE,
   user_id              UUID REFERENCES auth.users(id),
   name                 TEXT NOT NULL,
@@ -85,7 +85,7 @@ CREATE INDEX idx_patients_name_trgm ON patients USING gin(name gin_trgm_ops);
 
 -- ── AGENDAMENTOS ──────────────────────────────────────────────
 CREATE TABLE appointments (
-  id                    UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   therapist_id          UUID REFERENCES therapists(id) ON DELETE CASCADE,
   patient_id            UUID REFERENCES patients(id) ON DELETE CASCADE,
   scheduled_at          TIMESTAMPTZ NOT NULL,
@@ -96,7 +96,7 @@ CREATE TABLE appointments (
                         CHECK (status IN ('pending','confirmed','in_progress','completed','cancelled','no_show')),
   video_room_id         TEXT,
   video_room_url        TEXT,
-  patient_access_token  TEXT UNIQUE DEFAULT encode(gen_random_bytes(32), 'hex'),
+  patient_access_token  TEXT UNIQUE DEFAULT encode(extensions.gen_random_bytes(32), 'hex'),
   payment_status        TEXT DEFAULT 'pending'
                         CHECK (payment_status IN ('pending','paid','refunded','exempt','free')),
   stripe_session_id     TEXT,
@@ -118,7 +118,7 @@ CREATE INDEX idx_appointments_status         ON appointments(status, scheduled_a
 
 -- ── SESSÕES (pós-consulta) ────────────────────────────────────
 CREATE TABLE sessions (
-  id                UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   appointment_id    UUID UNIQUE REFERENCES appointments(id) ON DELETE CASCADE,
   therapist_id      UUID REFERENCES therapists(id),
   patient_id        UUID REFERENCES patients(id),
@@ -141,12 +141,12 @@ CREATE TABLE sessions (
   created_at        TIMESTAMPTZ DEFAULT NOW()
 );
 
-CreateIndex idx_sessions_therapist ON sessions(therapist_id, created_at DESC);
+CREATE INDEX idx_sessions_therapist ON sessions(therapist_id, created_at DESC);
 CREATE INDEX idx_sessions_patient   ON sessions(patient_id, created_at DESC);
 
 -- ── PRONTUÁRIO ────────────────────────────────────────────────
 CREATE TABLE medical_records (
-  id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   patient_id   UUID REFERENCES patients(id) ON DELETE CASCADE,
   therapist_id UUID REFERENCES therapists(id),
   session_id   UUID REFERENCES sessions(id),
@@ -160,7 +160,7 @@ CREATE TABLE medical_records (
 
 -- ── PAGAMENTOS ────────────────────────────────────────────────
 CREATE TABLE payments (
-  id                 UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id                 UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   appointment_id     UUID REFERENCES appointments(id),
   therapist_id       UUID REFERENCES therapists(id),
   patient_id         UUID REFERENCES patients(id),
@@ -179,7 +179,7 @@ CREATE TABLE payments (
 
 -- ── AUDIT LOG (prontuários) ───────────────────────────────────
 CREATE TABLE audit_logs (
-  id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   therapist_id UUID REFERENCES therapists(id),
   user_id      UUID REFERENCES auth.users(id),
   action       TEXT NOT NULL CHECK (action IN ('view','create','update','delete','export','sign')),
@@ -202,7 +202,7 @@ CREATE TABLE telegram_updates (
 
 -- ── CONFIGS DO BOT ────────────────────────────────────────────
 CREATE TABLE telegram_configs (
-  id           UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  id           UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   therapist_id UUID UNIQUE REFERENCES therapists(id) ON DELETE CASCADE,
   welcome_msg  TEXT,
   automations  JSONB DEFAULT '{

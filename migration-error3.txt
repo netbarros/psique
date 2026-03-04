@@ -1,0 +1,19 @@
+Initialising login role...
+Connecting to remote database...
+Do you want to push these migrations to the remote database?
+ • 20240301000001_initial.sql
+ • 20240301000001_rollback.sql
+
+ [Y/n] y
+Applying migration 20240301000001_initial.sql...
+NOTICE (42710): extension "uuid-ossp" already exists, skipping
+NOTICE (42710): extension "pgcrypto" already exists, skipping
+Applying migration 20240301000001_rollback.sql...
+ERROR: duplicate key value violates unique constraint "schema_migrations_pkey" (SQLSTATE 23505)
+Key (version)=(20240301000001) already exists.                                                 
+At statement: 17                                                                               
+-- Drop extensions (only if not used by other projects)                                        
+-- DROP EXTENSION IF EXISTS "pg_trgm";                                                         
+-- DROP EXTENSION IF EXISTS "pgcrypto";                                                        
+-- DROP EXTENSION IF EXISTS "uuid-ossp";                                                       
+Try rerunning the command with --debug to troubleshoot the error.

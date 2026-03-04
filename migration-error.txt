@@ -1,0 +1,26 @@
+Initialising login role...
+Connecting to remote database...
+Do you want to push these migrations to the remote database?
+ • 20240301000001_initial.sql
+ • 20240301000001_rollback.sql
+
+ [Y/n] 
+Applying migration 20240301000001_initial.sql...
+NOTICE (42710): extension "uuid-ossp" already exists, skipping
+NOTICE (42710): extension "pgcrypto" already exists, skipping
+ERROR: function gen_random_bytes(integer) does not exist (SQLSTATE 42883)                                         
+At statement: 12                                                                                                  
+-- ── AGENDAMENTOS ──────────────────────────────────────────────                                                 
+CREATE TABLE appointments (                                                                                       
+  id                    UUID PRIMARY KEY DEFAULT gen_random_uuid(),                                               
+  therapist_id          UUID REFERENCES therapists(id) ON DELETE CASCADE,                                         
+  patient_id            UUID REFERENCES patients(id) ON DELETE CASCADE,                                           
+  scheduled_at          TIMESTAMPTZ NOT NULL,                                                                     
+  duration_minutes      INT NOT NULL DEFAULT 50,                                                                  
+  type                  TEXT NOT NULL DEFAULT 'online'                                                            
+                        CHECK (type IN ('online','presencial','hybrid')),                                         
+  status                TEXT NOT NULL DEFAULT 'pending'                                                           
+                        CHECK (status IN ('pending','confirmed','in_progress','completed','cancelled','no_show')),
+  video_room_id         TEXT,                                                                                     
+                 ^                                                                                                
+Try rerunning the command with --debug to troubleshoot the error.

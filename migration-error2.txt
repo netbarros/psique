@@ -1,0 +1,15 @@
+Initialising login role...
+Connecting to remote database...
+Do you want to push these migrations to the remote database?
+ • 20240301000001_initial.sql
+ • 20240301000001_rollback.sql
+
+ [Y/n] y
+Applying migration 20240301000001_initial.sql...
+NOTICE (42710): extension "uuid-ossp" already exists, skipping
+NOTICE (42710): extension "pgcrypto" already exists, skipping
+ERROR: syntax error at or near "CreateIndex" (SQLSTATE 42601)                
+At statement: 17                                                             
+CreateIndex idx_sessions_therapist ON sessions(therapist_id, created_at DESC)
+^                                                                            
+Try rerunning the command with --debug to troubleshoot the error.
