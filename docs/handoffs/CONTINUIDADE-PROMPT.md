@@ -257,7 +257,7 @@ npx supabase db reset && npx supabase db push
 | 4      | 2026-02-XX | Fases 5-6           | TSC_PASSED | (ver handoff)                          |
 | 5      | 2026-02-XX | Fase 7 (parcial)    | TSC_PASSED | (ver handoff)                          |
 | 6      | 2026-03-03 | Fase 7 completa     | TSC_PASSED | `1eb08240-d43c-4638-9cce-bba035725d3e` |
-| 7      | 2026-03-03 | Fases 8 + 9         | TSC_PASSED | `1c85a903-5286-4afe-aed1-4c5d520c4e0d` |
+| 7      | 2026-03-03 | Fases 8 + 9 + 10    | TSC_PASSED | `1c85a903-5286-4afe-aed1-4c5d520c4e0d` |
 
 ### Detalhamento da Sessão 7 (Atual)
 
@@ -279,3 +279,13 @@ npx supabase db reset && npx supabase db push
 - `app/booking/[slug]/sucesso/page.tsx` — confirmação pós-pagamento
 - `app/api/booking/checkout/route.ts` — anti-double-booking, find/create patient, Stripe checkout
 - Fluxo E2E: visitante → horário → dados → Stripe → webhook → Daily + email + Telegram → sucesso
+
+**Fase 10 — Segurança:**
+
+- `components/dashboard/TwoFactorSetup.tsx` — 3-state TOTP (idle/enrolling/enabled) com QR code
+- `app/api/auth/mfa/enroll/route.ts` — enroll TOTP via Supabase MFA
+- `app/api/auth/mfa/verify/route.ts` — challenge + verify TOTP code
+- `app/api/auth/mfa/unenroll/route.ts` — remove TOTP factor
+- `app/dashboard/configuracoes/page.tsx` — integrado com TwoFactorSetup real (substituiu placeholder)
+- `app/booking/[slug]/BookingClient.tsx` — campo CPF com máscara + validateCPF
+- `app/api/booking/checkout/route.ts` — validação CPF server-side + store no patient
