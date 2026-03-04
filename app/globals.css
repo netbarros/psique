@@ -1,0 +1,176 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,200;0,300;0,400;0,600;1,200;1,300;1,400&family=Instrument+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap');
+
+@import "tailwindcss";
+
+/* ── PSIQUE Design Tokens ──────────────────────────────── */
+:root {
+  /* Backgrounds */
+  --bg:     #080F0B;
+  --bg2:    #0C1510;
+  --bg3:    #101C13;
+
+  /* Cards & Surfaces */
+  --card:   #121A14;
+  --card2:  #162019;
+
+  /* Borders */
+  --border:  #1C2E20;
+  --border2: #243828;
+
+  /* Greens */
+  --g1:    #2A6044;
+  --g2:    #3D7A5C;
+  --mint:  #52B788;
+  --mintl: #74C9A0;
+
+  /* Gold */
+  --gold:  #C4A35A;
+  --goldl: #DEC07A;
+  --goldd: #A8873A;
+
+  /* Neutrals */
+  --ivory:   #EDE7D9;
+  --ivoryD:  #C8BFA8;
+  --ivoryDD: #8A8070;
+  --text:    #DDD7C8;
+
+  /* Semantic */
+  --red:    #B85450;
+  --blue:   #4A8FA8;
+  --purple: #7B5EA7;
+
+  /* Typography */
+  --ff: 'Cormorant Garant', serif;
+  --fs: 'Instrument Sans', sans-serif;
+
+  /* Easing */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* ── Base Resets ────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--fs);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────── */
+::-webkit-scrollbar        { width: 3px; height: 3px; }
+::-webkit-scrollbar-track  { background: var(--bg); }
+::-webkit-scrollbar-thumb  { background: var(--border2); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--g2); }
+
+/* ── Form Elements ──────────────────────────────────────── */
+input, textarea, select {
+  background: var(--card2);
+  border: 1px solid var(--border2);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-family: var(--fs);
+  font-size: 14px;
+  outline: none;
+  width: 100%;
+  transition: all 0.25s var(--ease-out);
+  -webkit-appearance: none;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--mint);
+  background: var(--bg3);
+  box-shadow: 0 0 0 3px rgba(82, 183, 136, 0.12);
+}
+
+input::placeholder, textarea::placeholder { color: var(--ivoryDD); }
+
+input:disabled, textarea:disabled, select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+textarea  { resize: vertical; line-height: 1.65; }
+button    { cursor: pointer; font-family: var(--fs); transition: all 0.2s var(--ease-out); }
+select option { background: var(--bg2); }
+
+/* ── Keyframes ──────────────────────────────────────────── */
+@keyframes fadeUp    { from { opacity:0; transform:translateY(22px) } to { opacity:1; transform:translateY(0) } }
+@keyframes fadeIn    { from { opacity:0 } to { opacity:1 } }
+@keyframes slideL    { from { opacity:0; transform:translateX(-30px) } to { opacity:1; transform:translateX(0) } }
+@keyframes slideR    { from { opacity:0; transform:translateX(30px)  } to { opacity:1; transform:translateX(0) } }
+@keyframes scaleIn   { from { opacity:0; transform:scale(0.88) } to { opacity:1; transform:scale(1) } }
+@keyframes floatY    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-14px)} }
+@keyframes floatX    { 0%,100%{transform:translateX(0)} 50%{transform:translateX(10px)} }
+@keyframes spin      { to { transform:rotate(360deg) } }
+@keyframes pulse     { 0%,100%{opacity:1} 50%{opacity:0.3} }
+@keyframes glow      { 0%,100%{box-shadow:0 0 20px rgba(82,183,136,.15)} 50%{box-shadow:0 0 40px rgba(82,183,136,.4)} }
+@keyframes orbMove   { 0%{transform:translate(0,0) scale(1)} 33%{transform:translate(40px,-30px) scale(1.1)} 66%{transform:translate(-20px,20px) scale(.95)} 100%{transform:translate(0,0) scale(1)} }
+@keyframes gradFlow  { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+@keyframes shimmer   { 0%{background-position:-400% 0} 100%{background-position:400% 0} }
+@keyframes blink     { 0%,100%{opacity:1} 50%{opacity:0} }
+@keyframes particleFly { 0%{opacity:0;transform:translate(0,0) scale(0)} 50%{opacity:1} 100%{opacity:0;transform:translate(var(--tx),var(--ty)) scale(1.5)} }
+@keyframes borderGlow  { 0%,100%{border-color:var(--border2)} 50%{border-color:rgba(82,183,136,0.4)} }
+
+/* ── Reveal on Scroll ───────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
+}
+.reveal.visible     { opacity: 1; transform: translateY(0); }
+.reveal-l           { opacity: 0; transform: translateX(-30px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+.reveal-l.visible   { opacity: 1; transform: translateX(0); }
+.reveal-r           { opacity: 0; transform: translateX(30px); transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out); }
+.reveal-r.visible   { opacity: 1; transform: translateX(0); }
+.reveal-scale       { opacity: 0; transform: scale(0.9); transition: opacity 0.65s var(--ease-out), transform 0.65s var(--ease-out); }
+.reveal-scale.visible { opacity: 1; transform: scale(1); }
+
+/* ── Magnetic Button ────────────────────────────────────── */
+.mag-btn              { position: relative; overflow: hidden; }
+.mag-btn::after       { content:''; position:absolute; inset:0; background:rgba(255,255,255,.06); opacity:0; transition:opacity .2s; }
+.mag-btn:hover::after { opacity: 1; }
+.mag-btn:active       { transform: scale(0.97) !important; }
+
+/* ── Glassmorphism Utility ──────────────────────────────── */
+.glass {
+  background: rgba(18, 26, 20, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border);
+}
+
+/* ── Gradient Text ──────────────────────────────────────── */
+.gradient-text {
+  background: linear-gradient(135deg, var(--mint), var(--gold));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Focus Ring (Accessibility) ─────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Link Defaults ──────────────────────────────────────── */
+a {
+  color: var(--mint);
+  text-decoration: none;
+  transition: color 0.2s var(--ease-out);
+}
+a:hover { color: var(--mintl); }

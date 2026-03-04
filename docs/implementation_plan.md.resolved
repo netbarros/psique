@@ -1,0 +1,304 @@
+# PSIQUE — Plano de Implementação E2E
+
+## Contexto & Diagnóstico
+
+O repositório `c:\psique\psique` contém atualmente:
+- **`psique-final.jsx`** (2106 linhas) — protótipo single-file React com landing page AIDA, auth mock, onboarding wizard, dashboard terapeuta (KPIs, agenda, pacientes, IA, Telegram, financeiro) e portal paciente. Dados todos mockados. Nenhuma integração real.
+- **`docs/PSIQUE_CURSOR_MASTER_PROMPT.md`** — master prompt com toda a arquitetura, schema SQL completo, code samples, gaps e sequência de execução.
+
+**Gap crítico:** Não existe projeto Next.js real. O arquivo JSX é um protótipo visual de alta fidelidade que deve ser transformado em uma aplicação production-ready com Next.js 15, TypeScript strict, Supabase, e todas as integrações descritas.
+
+> [!IMPORTANT]
+> O protótipo `psique-final.jsx` é a **referência de design/UX**. Todos os componentes reais devem replicar sua estética: tokens CSS exatos, animações, Cormorant Garant + Instrument Sans, paleta mint/gold/ivory.
+
+> [!WARNING]
+> **Zero tolerância a gaps.** Cada fase tem uma lista de entregáveis obrigatórios. Nenhum `TODO`, nenhum `any`, nenhum endpoint sem auth.
+
+---
+
+## Proposed Changes
+
+### FASE 1 — Fundação Next.js 15
+
+#### [NEW] Projeto Next.js 15
+```bash
+npx create-next-app@latest . --typescript --tailwind --app --import-alias "@/*" --yes
+```
+- TypeScript `strict: true` em `tsconfig.json`
+- Import alias `@/*` para `./`
+
+#### [MODIFY] `next.config.ts`
+- Security headers: `Content-Security-Policy`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Strict-Transport-Security`
+- Configurar domínios de imagem (Supabase Storage)
+
+#### [NEW] `middleware.ts`
+- Auth guard via Supabase SSR
+- Refresh de sessão automático
+- Rate limiting via Upstash Redis
+
+#### [NEW] `app/globals.css`
+- Tokens de design exatos (conforme PARTE 6 do master prompt)
+- Google Fonts: Cormorant Garant + Instrument Sans
+- Keyframes e utilidades
+
+#### [NEW] `.env.local.example`
+- Todas as 16+ variáveis de ambiente documentadas
+
+---
+
+### FASE 2 — Supabase Schema
+
+#### [NEW] `supabase/migrations/20240301000001_initial.sql`
+- 10 tabelas: `therapists`, `availability`, `availability_blocks`, `patients`, `appointments`, `sessions`, `medical_records`, `payments`, `telegram_updates`, `telegram_configs`
+- Extensões: `uuid-ossp`, `pgcrypto`, `pg_trgm`
+- Todos os índices de performance
+- RLS habilitado em todas as tabelas sensíveis
+- 8 políticas RLS
+
+#### [NEW] `supabase/migrations/20240301000001_rollback.sql`
+- Rollback completo (DROP TABLE em ordem reversa)
+
+#### [NEW] `lib/supabase/client.ts`, `server.ts`, `admin.ts`
+- Três clientes distintos conforme o contexto
+
+#### [NEW] `types/database.ts`
+- Gerado via `supabase gen types typescript`
+
+---
+
+### FASE 3 — Auth
+
+#### [NEW] `app/(auth)/login/page.tsx`
+- Email/senha, magic link, Google OAuth
+- Design replicando `AuthScreen` do protótipo JSX
+
+#### [NEW] `app/(auth)/register/page.tsx`
+- CRP validation (formato `XX/XXXXX`)
+- CPF validation (Fase 10)
+
+#### [NEW] `app/(auth)/register/patient/page.tsx`
+#### [NEW] `app/(auth)/forgot-password/page.tsx`
+#### [NEW] `app/(auth)/callback/route.ts`
+
+---
+
+### FASE 4 — Design System
+
+#### [NEW] `components/ui/` (12 componentes)
+| Arquivo | Descrição |
+|---------|-----------|
+| `Button.tsx` | Magnetic button, 5 variantes, 4 tamanhos |
+| `Card.tsx` | Hover elevation, glow opcional |
+| `Input.tsx` | ARIA completo, estados focus/error/disabled |
+| `Select.tsx` | Dropdown customizado |
+| `Modal.tsx` | Dialog acessível, focus trap, overlay |
+| `Toast.tsx` | Sonner + tema PSIQUE |
+| `Avatar.tsx` | Fallback iniciais, tamanhos |
+| `Badge.tsx` | Tag colorida com variantes |
+| `Spinner.tsx` | Animação spin, tamanhos |
+| `LineChart.tsx` | SVG puro, área gradiente |
+| `BarChart.tsx` | SVG puro, animação entrada |
+| `Counter.tsx` | IntersectionObserver, ease cubic |
+
+---
+
+### FASE 5 — Libs de Integração
+
+#### [NEW] `lib/openrouter.ts`
+- `openrouter` client (baseURL OpenRouter, headers HTTP-Referer)
+- `CLINICAL_SYSTEM_PROMPT` com diretrizes éticas
+- `generateSessionSummary()` com JSON structured output
+- `generatePatientInsights()` para análise de carteira
+- `transcribeAudio()` via Gemini multimodal
+
+#### [NEW] `lib/telegram.ts`
+- `sendMessage()`, `editMessage()`, `answerCallbackQuery()`
+- `inlineKeyboard()`, `replyKeyboard()`
+- `setWebhook()` para setup inicial
+
+#### [NEW] `lib/daily.ts`
+- `createRoom()` — sala por sessão
+- `createMeetingToken()` — token de acesso com expiração
+- `deleteRoom()` — limpeza pós-sessão
+
+#### [NEW] `lib/stripe.ts`
+- `createCheckoutSession()` — booking público
+- `createRecurringSubscription()` — pacotes
+- `constructWebhookEvent()` — validação de assinatura
+
+#### [NEW] `lib/resend.ts`
+- Templates: confirmação de agendamento, lembrete, link de acesso à sessão
+
+#### [NEW] `lib/logger.ts`
+- Structured logger (prefixo `[PSIQUE]`, níveis info/warn/error)
+- Sem `console.log` em produção
+
+#### [NEW] `lib/ratelimit.ts`
+- Upstash Redis ratelimiter (10 req/min por terapeuta para IA)
+
+---
+
+### FASE 6 — API Routes
+
+#### [NEW] `app/api/ai/summarize/route.ts`
+- Auth check → buscar sessão do banco → buscar histórico → chamar OpenRouter → salvar resultado
+
+#### [NEW] `app/api/ai/insights/route.ts`
+- Análise de carteira completa do terapeuta
+
+#### [NEW] `app/api/ai/transcribe/route.ts`
+- Gemini multimodal para transcrição de áudio
+
+#### [NEW] `app/api/video/room/route.ts`
+- Criar sala Daily.co + salvar IDs no banco
+
+#### [NEW] `app/api/telegram/webhook/route.ts`
+- Validação `X-Telegram-Bot-Api-Secret-Token`
+- Idempotência via `telegram_updates`
+- Handlers: `/start`, `/agendar`, `/sessoes`, `/cancelar`, `/pagar`, `/falar`, `/ajuda`, mensagem livre via IA
+
+#### [NEW] `app/api/webhooks/stripe/route.ts`
+- `checkout.session.completed` → confirmar agendamento, criar sala Daily, enviar email + Telegram
+- `payment_intent.payment_failed` → notificar paciente
+
+#### [NEW] `app/api/cron/reminders/route.ts`
+- Auth via `CRON_SECRET`
+- Lembretes 24h, lembretes 1h, NPS pós-sessão (2h após)
+
+---
+
+### FASE 7 — Dashboard Terapeuta
+
+#### [NEW] `app/(dashboard)/layout.tsx`
+- Sidebar animada (replicar design do protótipo)
+- Auth guard (redirecionar se !user)
+- Onboarding redirect se `!onboarding_completed`
+
+#### [NEW] `app/(dashboard)/page.tsx`
+- KPIs reais: MRR, sessões, pacientes, NPS, presença, leads, conversão, cancelamentos
+- Gráficos (componentes LineChart/BarChart)
+- Agenda do dia
+
+#### [NEW] `app/(dashboard)/onboarding/page.tsx`
+- 6 steps: Perfil Clínico, IA OpenRouter, Telegram Bot, Disponibilidade, Integrações, Tudo Pronto
+
+#### [NEW] `app/(dashboard)/agenda/page.tsx`
+- Calendário semanal com slots
+- Criar/cancelar/reagendar agendamentos
+
+#### [NEW] `app/(dashboard)/pacientes/page.tsx`
+- Busca full-text (pg_trgm), filtros por status/tag
+
+#### [NEW] `app/(dashboard)/pacientes/[id]/page.tsx`
+- Abas: Prontuário, Sessões, IA, Financeiro, Telegram
+
+#### [NEW] `app/(dashboard)/consulta/[roomId]/page.tsx`
+- Daily.co embedded, timer, notas ao vivo, botão "Encerrar + Resumo IA"
+
+#### [NEW] `app/(dashboard)/ia/page.tsx`
+- Chat IA + análise de carteira + selector de modelo
+
+#### [NEW] `app/(dashboard)/telegram/page.tsx`
+- Status do bot, preview de conversas, configuração de automações
+
+#### [NEW] `app/(dashboard)/financeiro/page.tsx`
+- MRR, pagamentos, exportação CSV
+
+#### [NEW] `app/(dashboard)/configuracoes/page.tsx`
+- Perfil, integrações, segurança (2FA), notificações
+
+---
+
+### FASE 8 — Portal do Paciente
+
+#### [NEW] `app/(patient)/layout.tsx`, `page.tsx`, `agendar/page.tsx`, `sessoes/page.tsx`, `chat/page.tsx`, `apoio/page.tsx`
+
+---
+
+### FASE 9 — Booking Público
+
+#### [NEW] `app/booking/[slug]/page.tsx`
+- Server component que lê `therapists.slug`
+- Disponibilidade em tempo real
+- Formulário → Stripe Checkout
+
+---
+
+### FASE 10 — Gaps de Segurança
+
+- CPF/CNPJ: biblioteca `cpf-cnpj-validator` (validar no cliente + servidor/Zod)
+- 2FA TOTP: Supabase Auth MFA (`enrollFactor`, `challengeAndVerify`)
+- Audit log: nova tabela `audit_logs` com trigger PostgreSQL em `medical_records`
+- Criptografia: `pgcrypto` encrypt/decrypt em `sessions.therapist_notes` e `medical_records.content`
+
+---
+
+### FASE 11 — Gaps de Produto
+
+- **Cancelamento configurável:** campo `cancellation_policy_hours` em `therapists`, lógica no webhook Stripe
+- **Reagendamento:** endpoint `PUT /api/appointments/[id]/reschedule`
+- **Pacotes recorrentes:** Stripe Subscriptions + tabela `packages`
+- **NF:** integração Nuvemfiscal API
+- **PDF:** `@react-pdf/renderer` para relatório de sessões
+- **PWA offline:** `next-pwa` + service worker + IndexedDB sync
+
+---
+
+### FASE 12 — Polish & Deploy
+
+- SEO: `generateMetadata()` em cada page
+- Error pages: `app/not-found.tsx`, `app/error.tsx` com design system
+- Loading states: `loading.tsx` em cada segmento
+- `vercel.json`: cron `"*/30 * * * *"` para reminders
+- Playwright: `tests/e2e/booking.spec.ts`, `tests/e2e/dashboard.spec.ts`
+- Sentry: `instrumentation.ts` + `sentry.client.config.ts`
+
+---
+
+## Handoffs por Fase
+
+Cada fase produz um documento `docs/handoffs/HANDOFF-FASEXX.md` com:
+- ✅ O que foi entregue
+- 🔑 Variáveis de ambiente necessárias
+- 🔗 Dependências externas configuradas
+- ⚠️ Gaps conhecidos restantes
+- 🚀 Como executar localmente
+
+---
+
+## Verification Plan
+
+### Automated Tests
+
+```bash
+# TypeScript (zero erros)
+npx tsc --noEmit
+
+# ESLint (zero warnings)
+pnpm lint
+
+# Supabase migrations (local)
+npx supabase db reset
+npx supabase db push
+
+# Build de produção (sem erros)
+pnpm build
+
+# Playwright E2E
+pnpm test:e2e
+# Cobre: booking público → Stripe → confirmação, login → dashboard → agenda, telegram webhook mock
+```
+
+### Manual Verification (por fase)
+
+**Fase 1:** `pnpm dev` → abre `localhost:3000` → ver página inicial sem erros no console  
+**Fase 2:** Supabase Studio → verificar todas as tabelas criadas + RLS ativo  
+**Fase 3:** Cadastrar terapeuta → login → verificar redirecionamento para onboarding  
+**Fase 4:** Navegar pelo design system → testar todos os componentes no storybook  
+**Fase 5:** `curl -X POST /api/ai/summarize` com token válido → ver JSON de resposta  
+**Fase 6:** Usar `stripe listen --forward-to localhost:3000/api/webhooks/stripe` → fazer pagamento de teste  
+**Fase 7:** Login como terapeuta → navegar por todas as 9 telas do dashboard  
+**Fase 8:** Login como paciente → agendar sessão → ver confirmação  
+**Fase 9:** Acessar `/booking/dra-teste` sem login → completar booking  
+**Fase 10:** Tentar acessar prontuário de outro terapeuta → deve retornar 403  
+**Fase 12:** Verificar Sentry recebendo eventos → verificar cron via Vercel dashboard  

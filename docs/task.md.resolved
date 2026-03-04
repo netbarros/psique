@@ -1,0 +1,159 @@
+# PSIQUE — Task Master Checklist
+
+## FASE 0 — Leitura & Absorção
+
+- [x] Ler [docs/PSIQUE_CURSOR_MASTER_PROMPT.md](file:///c:/psique/psique/docs/PSIQUE_CURSOR_MASTER_PROMPT.md) integralmente (1210 linhas)
+- [x] Ler [psique-final.jsx](file:///c:/psique/psique/psique-final.jsx) integralmente (2106 linhas) — entender estado atual
+- [x] Entender arquitetura E2E: Next.js 15, TypeScript, Supabase, OpenRouter, Telegram, Daily.co, Stripe
+- [x] Identificar gaps e lacunas críticos
+- [x] Criar task.md e implementation_plan.md
+
+## FASE 1 — Fundação Next.js 15
+
+- [x] Inicializar projeto Next.js 15 com App Router, TypeScript, Tailwind, sem src-dir
+- [x] Instalar todas dependências core (supabase-js, ssr, openai, stripe, resend, zod, react-hook-form, lucide, date-fns, upstash, nanoid, sonner)
+- [x] Configurar [tsconfig.json](file:///c:/psique/psique/tsconfig.json) → `strict: true`
+- [x] Configurar [next.config.ts](file:///c:/psique/psique/next.config.ts) → headers de segurança (CSP, HSTS, X-Frame-Options, Permissions-Policy)
+- [x] Criar [app/globals.css](file:///c:/psique/psique/app/globals.css) com design tokens exatos (Cormorant Garant, Instrument Sans, paleta mint/gold/ivory, keyframes, reveal-on-scroll)
+- [x] Criar [middleware.ts](file:///c:/psique/psique/middleware.ts) → auth guard Supabase SSR + refresh de sessão + whitelist de rotas públicas
+- [x] Criar [.env.local.example](file:///c:/psique/psique/.env.local.example) com todos os 19 env vars documentados
+- [x] Criar [app/layout.tsx](file:///c:/psique/psique/app/layout.tsx) → root layout com SEO metadata, Open Graph, Twitter card (pt-BR)
+- [x] **[HANDOFF-FASE1.md gerado]**
+
+## FASE 2 — Supabase & Schema
+
+- [x] Criar migration 001 completo ([supabase/migrations/20240301000001_initial.sql](file:///c:/psique/psique/supabase/migrations/20240301000001_initial.sql))
+  - [x] 11 tabelas: therapists, availability, availability_blocks, patients, appointments, sessions, medical_records, payments, telegram_updates, telegram_configs, audit_logs
+  - [x] Extensões: uuid-ossp, pgcrypto, pg_trgm
+  - [x] Todos os índices (incl. `gin_trgm_ops` para busca full-text em pacientes)
+  - [x] RLS habilitado em todas as tabelas sensíveis
+  - [x] 13 políticas RLS (therapist_own, therapist_patients, therapist_appointments, patient_own_appointments, etc.)
+  - [x] Auto-update triggers para `updated_at`
+  - [x] Rollback completo ([20240301000001_rollback.sql](file:///c:/psique/psique/supabase/migrations/20240301000001_rollback.sql))
+- [x] Criar [types/database.ts](file:///c:/psique/psique/types/database.ts) — tipos Row/Insert/Update para todas as tabelas
+- [x] Criar [lib/supabase/client.ts](file:///c:/psique/psique/lib/supabase/client.ts) (browser client)
+- [x] Criar [lib/supabase/server.ts](file:///c:/psique/psique/lib/supabase/server.ts) (server component client)
+- [x] Criar [lib/supabase/admin.ts](file:///c:/psique/psique/lib/supabase/admin.ts) (service role — webhooks/cron)
+- [x] **[HANDOFF-FASE2.md gerado]**
+
+## FASE 3 — Auth
+
+- [x] [app/auth/login/page.tsx](file:///c:/psique/psique/app/auth/login/page.tsx) — email/senha + magic link + Google OAuth + CRP validation para terapeutas
+- [ ] `app/auth/register/page.tsx` — fluxo separado de registro (integrado no login por ora)
+- [x] [app/auth/callback/route.ts](file:///c:/psique/psique/app/auth/callback/route.ts) — OAuth/magic link callback + auto-criação do perfil de terapeuta
+- [x] Middleware completo com refresh de sessão Supabase
+- [ ] `app/auth/reset-password/page.tsx` — formulário de redefinição de senha
+- [x] **[HANDOFF-FASE3.md gerado]**
+
+## FASE 4 — Design System (components/ui/)
+
+- [x] [Button.tsx](file:///c:/psique/psique/components/ui/Button.tsx) — Magnetic button com variantes (primary, ghost, gold, dark, danger)
+- [x] [Card.tsx](file:///c:/psique/psique/components/ui/Card.tsx) — hover elevation + glow, Card.Header + Card.Title
+- [x] [Input.tsx](file:///c:/psique/psique/components/ui/Input.tsx) — estados focus/error/disabled com ARIA, useId(), Omit<...'prefix'>
+- [x] [Select.tsx](file:///c:/psique/psique/components/ui/Select.tsx) — dropdown com chevron customizado, ARIA, useId()
+- [x] [Modal.tsx](file:///c:/psique/psique/components/ui/Modal.tsx) — focus trap + ESC close + body scroll lock + portal
+- [x] [Toast.tsx](file:///c:/psique/psique/components/ui/Toast.tsx) — Sonner wrapper com design tokens PSIQUE
+- [x] [Avatar.tsx](file:///c:/psique/psique/components/ui/Avatar.tsx) — 5 tamanhos, fallback iniciais, online/offline indicator
+- [x] [Badge.tsx](file:///c:/psique/psique/components/ui/Badge.tsx) — 6 variantes de cor, 2 tamanhos, dot indicator
+- [x] [Spinner.tsx](file:///c:/psique/psique/components/ui/Spinner.tsx) — 4 tamanhos, 3 cores, role=status ARIA
+- [x] [LineChart.tsx](file:///c:/psique/psique/components/ui/LineChart.tsx) — SVG puro: grid, area fill, polyline, data points
+- [x] [BarChart.tsx](file:///c:/psique/psique/components/ui/BarChart.tsx) — SVG puro: barras com gradiente, Y-axis ticks
+- [x] [Counter.tsx](file:///c:/psique/psique/components/ui/Counter.tsx) — IntersectionObserver + easeOutExpo + ARIA
+- [x] **[HANDOFF-FASE4.md gerado]**
+
+## FASE 5 — Libs de Integração
+
+- [x] [lib/openrouter.ts](file:///c:/psique/psique/lib/openrouter.ts) — cliente + [generateSessionSummary()](file:///c:/psique/psique/lib/openrouter.ts#27-79) + [generatePatientInsights()](file:///c:/psique/psique/lib/openrouter.ts#80-132) + `CLINICAL_SYSTEM_PROMPT`
+- [x] [lib/telegram.ts](file:///c:/psique/psique/lib/telegram.ts) — [sendMessage()](file:///c:/psique/psique/lib/telegram.ts#40-49), [inlineKeyboard()](file:///c:/psique/psique/lib/telegram.ts#77-82), [buildReminderMessage()](file:///c:/psique/psique/lib/telegram.ts#103-119), [buildNPSKeyboard()](file:///c:/psique/psique/lib/telegram.ts#124-135)
+- [x] [lib/daily.ts](file:///c:/psique/psique/lib/daily.ts) — [createRoom()](file:///c:/psique/psique/lib/daily.ts#36-71), [createMeetingToken()](file:///c:/psique/psique/lib/daily.ts#72-102), [deleteRoom()](file:///c:/psique/psique/lib/daily.ts#103-116), [getRoom()](file:///c:/psique/psique/lib/daily.ts#117-127)
+- [x] [lib/stripe.ts](file:///c:/psique/psique/lib/stripe.ts) — [createCheckoutSession()](file:///c:/psique/psique/lib/stripe.ts#9-50), [constructWebhookEvent()](file:///c:/psique/psique/lib/stripe.ts#51-60), [createRefund()](file:///c:/psique/psique/lib/stripe.ts#61-74)
+- [x] [lib/resend.ts](file:///c:/psique/psique/lib/resend.ts) — [sendBookingConfirmation()](file:///c:/psique/psique/lib/resend.ts#27-84), [sendSessionReminder()](file:///c:/psique/psique/lib/resend.ts#85-123) com templates HTML
+- [x] [lib/utils.ts](file:///c:/psique/psique/lib/utils.ts) — [cn()](file:///c:/psique/psique/lib/utils.ts#6-10), [formatBRL()](file:///c:/psique/psique/lib/utils.ts#11-15), `formatDate/Time/DateTime()`, [slugify()](file:///c:/psique/psique/lib/utils.ts#37-48), [validateCRP()](file:///c:/psique/psique/lib/utils.ts#55-59), [validateCPF()](file:///c:/psique/psique/lib/utils.ts#60-75), [formatDelta()](file:///c:/psique/psique/lib/utils.ts#95-100)
+- [x] [lib/logger.ts](file:///c:/psique/psique/lib/logger.ts) — structured logger ([PSIQUE] prefixo, níveis, sem console.log em prod)
+- [x] [lib/ratelimit.ts](file:///c:/psique/psique/lib/ratelimit.ts) — Upstash Redis (AI: 10/min, Auth: 5/min, API: 60/min)
+- [x] **[HANDOFF-FASE5.md gerado]**
+
+## FASE 6 — API Routes
+
+- [x] [app/api/ai/summarize/route.ts](file:///c:/psique/psique/app/api/ai/summarize/route.ts) — auth + rate limit + ownership check + OpenRouter + persistência
+- [x] [app/api/ai/insights/route.ts](file:///c:/psique/psique/app/api/ai/insights/route.ts) — análise de carteira completa
+- [ ] `app/api/ai/transcribe/route.ts` — transcrição via Gemini multimodal
+- [x] [app/api/video/room/route.ts](file:///c:/psique/psique/app/api/video/room/route.ts) — criar sala Daily.co com token de owner
+- [x] [app/api/telegram/webhook/route.ts](file:///c:/psique/psique/app/api/telegram/webhook/route.ts) — bot completo (7 comandos, NPS callback, IA intent detection, idempotência)
+- [x] [app/api/webhooks/stripe/route.ts](file:///c:/psique/psique/app/api/webhooks/stripe/route.ts) — checkout.session.completed → Daily room + email + Telegram
+- [ ] `app/api/webhooks/supabase/route.ts` — realtime triggers
+- [x] [app/api/cron/reminders/route.ts](file:///c:/psique/psique/app/api/cron/reminders/route.ts) — lembretes 24h/1h (Telegram + email), NPS pós-sessão
+- [x] **[HANDOFF-FASE6.md gerado]**
+
+## FASE 7 — Dashboard Terapeuta
+
+- [x] [app/dashboard/layout.tsx](file:///c:/psique/psique/app/dashboard/layout.tsx) — auth guard + DashboardShell com sidebar animada
+- [x] [components/dashboard/DashboardShell.tsx](file:///c:/psique/psique/components/dashboard/DashboardShell.tsx) — sidebar: nav ativa, sign out, AI/Telegram badges
+- [x] [app/dashboard/page.tsx](file:///c:/psique/psique/app/dashboard/page.tsx) — Dashboard KPIs reais (MRR, sessões, NPS, agenda do dia)
+- [x] [app/dashboard/onboarding/page.tsx](file:///c:/psique/psique/app/dashboard/onboarding/page.tsx) — wizard 6 passos (nome/CRP/agenda/IA/Telegram/review)
+- [x] [app/dashboard/agenda/page.tsx](file:///c:/psique/psique/app/dashboard/agenda/page.tsx) — calendário semanal Seg-Dom com status badges
+- [x] [app/dashboard/pacientes/page.tsx](file:///c:/psique/psique/app/dashboard/pacientes/page.tsx) — lista: status, sessões, mood score, Telegram
+- [ ] `app/dashboard/pacientes/[id]/page.tsx` — detalhe com abas (prontuário, sessões, IA, financeiro)
+- [ ] `app/dashboard/consulta/[roomId]/page.tsx` — videochamada + notas + timer + IA
+- [ ] `app/dashboard/ia/page.tsx` — assistente IA / análise de carteira
+- [ ] `app/dashboard/telegram/page.tsx` — painel do bot
+- [ ] `app/dashboard/financeiro/page.tsx` — MRR, pagamentos, relatórios
+- [ ] `app/dashboard/configuracoes/page.tsx` — perfil, integrações, segurança
+- [x] **[HANDOFF-FASE7.md gerado]**
+
+## FASE 8 — Portal do Paciente
+
+- [ ] `app/(patient)/layout.tsx`
+- [ ] `app/(patient)/page.tsx` — home com próximas sessões
+- [ ] `app/(patient)/agendar/page.tsx` — agendamento self-service
+- [ ] `app/(patient)/sessoes/page.tsx` — histórico de sessões
+- [ ] `app/(patient)/chat/page.tsx` — chat com IA
+- [ ] `app/(patient)/apoio/page.tsx` — espaço de reflexão
+
+## FASE 9 — Booking Público
+
+- [ ] `app/booking/[slug]/page.tsx` — página pública sem auth
+  - [ ] Disponibilidade em tempo real
+  - [ ] Formulário de agendamento
+  - [ ] Checkout Stripe
+
+## FASE 10 — Gaps de Segurança (OBRIGATÓRIO)
+
+- [x] Validação CPF (algoritmo completo em [lib/utils.ts](file:///c:/psique/psique/lib/utils.ts))
+- [ ] Validação CPF no cadastro de paciente (front + Zod)
+- [ ] 2FA TOTP via Supabase Auth (obrigatório para terapeutas)
+- [ ] Session tokens com expiração adequada
+- [x] Audit log de acesso a prontuários (tabela `audit_logs` com RLS)
+- [x] Criptografia de notas clínicas em repouso (pgcrypto — migration pronta)
+
+## FASE 11 — Gaps de Produto
+
+- [ ] Política de cancelamento configurável (ex: 24h antes = sem cobrança)
+- [ ] Reagendamento pelo paciente
+- [ ] Cobrança recorrente Stripe (pacotes de sessões)
+- [ ] Emissão de NF (Nuvemfiscal ou ContaAzul)
+- [ ] Relatório PDF para planos de saúde
+- [ ] Modo offline para notas (PWA com sync)
+
+## FASE 12 — Polish & Deploy
+
+- [x] SEO e metadados no root layout
+- [ ] SEO e metadados em todas as páginas internas
+- [ ] Error pages (404, 500) com design system
+- [ ] Loading states e Suspense boundaries
+- [x] Rate limiting nas API routes críticas (AI, Auth)
+- [x] [vercel.json](file:///c:/psique/psique/vercel.json) com configuração de cron jobs (a cada 30min)
+- [ ] Testes E2E Playwright (fluxos críticos: booking, videochamada, telegram)
+- [ ] Setup Sentry (DSN, error boundaries)
+- [ ] Deploy Vercel → configurar env vars, domínio, cron
+- [ ] Checklist pré-commit (tsc, eslint, sem secrets, ARIA, RLS)
+
+## HANDOFFS (registrar ao fim de cada fase)
+
+- [x] HANDOFF-FASE1.md — Fundação Next.js 15
+- [x] HANDOFF-FASE2-3.md — Supabase Schema + Auth
+- [x] HANDOFF-FASE4.md — Design System (12 componentes)
+- [x] HANDOFF-FASE5-6.md — Libs de Integração + API Routes
+- [x] HANDOFF-FASE7.md — Dashboard Terapeuta (parcial)
+- [ ] HANDOFF-FASE8-9.md — Portal Paciente + Booking
+- [ ] HANDOFF-FASE10-12.md — Gaps + Deploy
