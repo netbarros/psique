@@ -6,7 +6,7 @@
 
 ## Contexto do Projeto
 
-Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS clínico para psicanalistas brasileiros, construído em **Next.js 15 + TypeScript strict + Supabase + Tailwind v4**.
+Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS clínico para psicanalistas brasileiros, construído em **Next.js 16.1.6 (latest) + TypeScript strict + Supabase + Tailwind v4**.
 
 **Projeto localizado em:** `c:\psique\psique`  
 **Documentação master:** `c:\psique\psique\docs\PSIQUE_CURSOR_MASTER_PROMPT.md`  

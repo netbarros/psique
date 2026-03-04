@@ -42,7 +42,14 @@ export async function middleware(request: NextRequest) {
     pathname.startsWith("/(auth)") ||
     pathname.startsWith("/auth");
 
-  if (!user && !isPublic) {
+  // Known protected routes that require authentication
+  const isProtectedRoute =
+    pathname.startsWith("/dashboard") ||
+    pathname.startsWith("/portal") ||
+    pathname.startsWith("/admin");
+
+  // Allow public routes and unknown routes (which should 404 naturally)
+  if (!user && isProtectedRoute) {
     const url = request.nextUrl.clone();
     url.pathname = "/auth/login";
     url.searchParams.set("next", pathname);
@@ -60,7 +67,8 @@ export const config = {
      * - _next/image (image optimization)
      * - favicon.ico
      * - public folder files
+     * - root public assets (robots.txt, sitemap.xml)
      */
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };

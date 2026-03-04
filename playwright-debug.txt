@@ -1,0 +1,45 @@
+
+Running 4 tests using 4 workers
+
+  ✓  4 [chromium] › e2e\auth.spec.ts:28:7 › Auth — Login Page › shows register form when switching to cadastro (if available) (830ms)
+  ✓  3 [chromium] › e2e\auth.spec.ts:41:7 › Auth — Login Page › unauthenticated redirect from /dashboard to /auth/login (826ms)
+  ✓  2 [chromium] › e2e\auth.spec.ts:21:7 › Auth — Login Page › shows validation error for empty submission (894ms)
+  ✘  1 [chromium] › e2e\auth.spec.ts:8:7 › Auth — Login Page › shows login form with role toggle (6.0s)
+
+
+  1) [chromium] › e2e\auth.spec.ts:8:7 › Auth — Login Page › shows login form with role toggle ─────
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: locator('text=/Sou Terapeuta|Terapeuta/i').first()
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for locator('text=/Sou Terapeuta|Terapeuta/i').first()[22m
+
+
+      11 |
+      12 |     // Role buttons / tabs
+    > 13 |     await expect(page.locator("text=/Sou Terapeuta|Terapeuta/i").first()).toBeVisible();
+         |                                                                           ^
+      14 |     await expect(page.locator("text=/Sou Paciente|Paciente/i").first()).toBeVisible();
+      15 |
+      16 |     // Email + password fields
+        at c:\psique\psique\e2e\auth.spec.ts:13:75
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\auth-Auth-—-Login-Page-shows-login-form-with-role-toggle-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\auth-Auth-—-Login-Page-shows-login-form-with-role-toggle-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\auth-Auth-—-Login-Page-shows-login-form-with-role-toggle-chromium\error-context.md
+
+  1 failed
+    [chromium] › e2e\auth.spec.ts:8:7 › Auth — Login Page › shows login form with role toggle ──────
+  3 passed (7.6s)

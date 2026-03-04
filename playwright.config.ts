@@ -31,11 +31,4 @@ export default defineConfig({
       use: { ...devices["Pixel 5"] },
     },
   ],
-  webServer: {
-    command: "npm run dev",
-    cwd: "c:/psique/psique",
-    url: "http://localhost:3000",
-    reuseExistingServer: true,
-    timeout: 180 * 1000,
-  },
 });
