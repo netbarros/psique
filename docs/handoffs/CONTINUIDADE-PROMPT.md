@@ -28,6 +28,7 @@ Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS c
 | Fase 8 — Portal do Paciente (6 páginas)    | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE8.md`                               |
 | Fase 9 — Booking Público + Stripe          | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE9.md`                               |
 | Fase 10 — Segurança (2FA + CPF)            | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE10.md`                              |
+| Fase 11-12 — Produto + Polish              | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE11-12.md`                           |
 
 **Leia todos os handoffs antes de começar.** Eles contêm os detalhes exatos de cada arquivo criado.
 
@@ -72,6 +73,10 @@ app/
     auth/mfa/enroll/route.ts    ← TOTP enroll via Supabase MFA
     auth/mfa/verify/route.ts    ← challenge + verify TOTP code
     auth/mfa/unenroll/route.ts  ← remove TOTP factor
+    appointments/[id]/cancel/route.ts  ← cancelamento com política + refund + email
+    appointments/[id]/reschedule/route.ts ← reagendamento anti-conflito + email
+    subscriptions/route.ts      ← POST criar subscription / DELETE cancelar
+    reports/sessions/route.ts   ← GET → PDF relatório terapêutico
     video/room/route.ts         ← criar sala Daily.co + token owner
     telegram/webhook/route.ts   ← bot completo (7 cmds + NPS + intent detection)
     webhooks/stripe/route.ts    ← checkout.session.completed + Daily + email + TG
@@ -92,31 +97,24 @@ lib/
   supabase/client.ts  server.ts  admin.ts
   openrouter.ts  telegram.ts  daily.ts  stripe.ts  resend.ts
   utils.ts  logger.ts  ratelimit.ts
+  pdf/session-report.tsx      ← React-PDF template A4 com stats + sessões + financeiro
 
 middleware.ts                   ← Supabase SSR auth guard
 supabase/migrations/
   20240301000001_initial.sql    ← 11 tabelas + 13 RLS policies + rollback
 types/
   database.ts  domain.ts
+
+# Error pages & loading
+app/not-found.tsx               ← 404 design PSIQUE
+app/global-error.tsx            ← 500 error boundary + retry
+app/loading.tsx                 ← root loading spinner
 ```
 
 ---
 
-## O que falta implementar
+## O que falta implementar (próxima sessão)
 
-### Prioridade MÉDIA — Fase 11 (Gaps de Produto)
-
-- Cancelamento configurável
-- Reagendamento pelo paciente
-- Cobrança recorrente (Stripe Subscriptions)
-- Emissão de NF
-- PDF de relatórios para planos de saúde
-- Modo offline (PWA)
-
-### Prioridade BAIXA — Fase 12 (Polish & Deploy)
-
-- Error pages (404, 500) com design system
-- Loading states e Suspense boundaries
 - Testes E2E Playwright
 - Sentry monitoring
 - Deploy Vercel + DNS
@@ -221,9 +219,8 @@ toast.error("Erro ao salvar");
 ## Sequência recomendada
 
 1. Ler todos os handoffs em `c:\psique\psique\docs\handoffs\`
-2. Começar pela **Fase 11** → Gaps de Produto (cancelamento, reagendamento, etc.)
-3. Sequência: Fase 11 (produto) → Fase 12 (polish + deploy)
-4. A cada fase: `TSC_PASSED` → `HANDOFF-FASEXX.md` → atualizar `CONTINUIDADE-PROMPT.md`
+2. Itens restantes são **opcionais** — Stripe Subscriptions, PDF, E2E tests, deploy
+3. A cada mudança: `TSC_PASSED` → `HANDOFF` → atualizar `CONTINUIDADE-PROMPT.md`
 
 ---
 
@@ -242,8 +239,9 @@ npx supabase db reset && npx supabase db push
 
 ### Verificação manual por fase
 
-- Fase 11: Cancelar sessão → verificar reembolso + notificações
-- Fase 12: Navegar todas as rotas → verificar loading states + error pages
+- Navegar todas as rotas → verificar loading states + error pages
+- Teste de cancelamento → verificar refund + notificações
+- Teste de reagendamento → verificar anti-conflito + reset de lembretes
 
 ---
 
@@ -257,35 +255,40 @@ npx supabase db reset && npx supabase db push
 | 4      | 2026-02-XX | Fases 5-6           | TSC_PASSED | (ver handoff)                          |
 | 5      | 2026-02-XX | Fase 7 (parcial)    | TSC_PASSED | (ver handoff)                          |
 | 6      | 2026-03-03 | Fase 7 completa     | TSC_PASSED | `1eb08240-d43c-4638-9cce-bba035725d3e` |
-| 7      | 2026-03-03 | Fases 8 + 9 + 10    | TSC_PASSED | `1c85a903-5286-4afe-aed1-4c5d520c4e0d` |
+| 7      | 2026-03-03 | Fases 8–12          | TSC_PASSED | `1c85a903-5286-4afe-aed1-4c5d520c4e0d` |
 
 ### Detalhamento da Sessão 7 (Atual)
 
 **Fase 8 — Portal do Paciente:**
 
-- `app/(patient)/layout.tsx` — auth guard paciente + sidebar com therapist badge
-- `app/(patient)/page.tsx` — home com greeting, stats, appointments, ações rápidas
-- `app/(patient)/agendar/page.tsx` — grade 14 dias com time slots disponíveis
-- `app/(patient)/sessoes/page.tsx` — histórico com NPS, mood tracking, AI summary
-- `app/(patient)/chat/page.tsx` — chat IA com sugestões, typing indicator, CVV
-- `app/(patient)/apoio/page.tsx` — diário, 4 técnicas guiadas, recursos emergenciais
-- `app/api/ai/chat/route.ts` — rate limit + patient context + chatWithContext()
-- Login redirect: patient → `/portal`, therapist → `/dashboard`
+- 6 páginas `(patient)/` + `api/ai/chat` + login redirect
 
 **Fase 9 — Booking Público:**
 
-- `app/booking/[slug]/page.tsx` — perfil terapeuta público, SEO dinâmico
-- `app/booking/[slug]/BookingClient.tsx` — 3-step: horário (21 dias) → dados → Stripe
-- `app/booking/[slug]/sucesso/page.tsx` — confirmação pós-pagamento
-- `app/api/booking/checkout/route.ts` — anti-double-booking, find/create patient, Stripe checkout
-- Fluxo E2E: visitante → horário → dados → Stripe → webhook → Daily + email + Telegram → sucesso
+- `booking/[slug]/` (server + BookingClient + sucesso) + `api/booking/checkout`
 
 **Fase 10 — Segurança:**
 
-- `components/dashboard/TwoFactorSetup.tsx` — 3-state TOTP (idle/enrolling/enabled) com QR code
-- `app/api/auth/mfa/enroll/route.ts` — enroll TOTP via Supabase MFA
-- `app/api/auth/mfa/verify/route.ts` — challenge + verify TOTP code
-- `app/api/auth/mfa/unenroll/route.ts` — remove TOTP factor
-- `app/dashboard/configuracoes/page.tsx` — integrado com TwoFactorSetup real (substituiu placeholder)
-- `app/booking/[slug]/BookingClient.tsx` — campo CPF com máscara + validateCPF
-- `app/api/booking/checkout/route.ts` — validação CPF server-side + store no patient
+- `TwoFactorSetup.tsx` + 3 MFA API routes + CPF no booking
+
+**Fase 11 — Produto:**
+
+- `api/appointments/[id]/cancel/route.ts` — cancelamento com política + Stripe refund + email + Telegram
+- `api/appointments/[id]/reschedule/route.ts` — reagendamento com anti-conflito + email
+
+**Fase 12 (parcial) — Polish:**
+
+- `app/not-found.tsx` — 404 PSIQUE design
+- `app/global-error.tsx` — 500 error boundary + retry
+- `app/loading.tsx` — root loading spinner
+
+**Stripe Subscriptions:**
+
+- `lib/stripe.ts` — +3 funções: createSubscriptionCheckout, cancelSubscription, getSubscription
+- `app/api/subscriptions/route.ts` — POST (criar) + DELETE (cancelar)
+
+**PDF Relatórios:**
+
+- `lib/pdf/session-report.tsx` — React-PDF A4 (header, stats, sessões, financeiro, LGPD footer)
+- `app/api/reports/sessions/route.ts` — GET → renderToBuffer → PDF download
+- `@react-pdf/renderer` instalado

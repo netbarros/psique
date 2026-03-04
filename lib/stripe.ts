@@ -71,3 +71,66 @@ export async function createRefund(params: {
     reason: params.reason ?? "requested_by_customer",
   });
 }
+
+// ── Subscriptions (Session Packs) ──────────────────────────────────
+
+export async function createSubscriptionCheckout(params: {
+  therapistId: string;
+  therapistName: string;
+  patientEmail: string;
+  patientName: string;
+  sessionsPerMonth: number;
+  pricePerSession: number; // BRL (not cents)
+  successUrl: string;
+  cancelUrl: string;
+}): Promise<Stripe.Checkout.Session> {
+  const totalMonthly = Math.round(params.pricePerSession * params.sessionsPerMonth * 100);
+
+  logger.info("[Stripe] Creating subscription checkout", {
+    therapistId: params.therapistId,
+    sessions: params.sessionsPerMonth,
+  });
+
+  return stripe.checkout.sessions.create({
+    payment_method_types: ["card"],
+    mode: "subscription",
+    customer_email: params.patientEmail,
+    line_items: [
+      {
+        price_data: {
+          currency: "brl",
+          unit_amount: totalMonthly,
+          recurring: { interval: "month" },
+          product_data: {
+            name: `Pacote ${params.sessionsPerMonth}x sessões — ${params.therapistName}`,
+            description: `${params.sessionsPerMonth} sessões mensais com ${params.therapistName}`,
+          },
+        },
+        quantity: 1,
+      },
+    ],
+    metadata: {
+      therapistId: params.therapistId,
+      patientName: params.patientName,
+      sessionsPerMonth: String(params.sessionsPerMonth),
+      type: "subscription",
+    },
+    success_url: params.successUrl,
+    cancel_url: params.cancelUrl,
+  });
+}
+
+export async function cancelSubscription(
+  subscriptionId: string
+): Promise<Stripe.Subscription> {
+  logger.info("[Stripe] Cancelling subscription", { subscriptionId });
+
+  return stripe.subscriptions.cancel(subscriptionId);
+}
+
+export async function getSubscription(
+  subscriptionId: string
+): Promise<Stripe.Subscription> {
+  return stripe.subscriptions.retrieve(subscriptionId);
+}
+
