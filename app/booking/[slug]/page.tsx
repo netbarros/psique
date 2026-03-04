@@ -1,13 +1,21 @@
-import { createClient } from "@/lib/supabase/server";
+import { createClient as createServerClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import BookingClient from "./BookingClient";
 
 type Props = { params: Promise<{ slug: string }> };
 
+async function getPublicBookingClient() {
+  if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return createAdminClient();
+  }
+  return createServerClient();
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const supabase = await createClient();
+  const supabase = await getPublicBookingClient();
   const { data: therapist } = await supabase
     .from("therapists")
     .select("name, bio")
@@ -26,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BookingPage({ params }: Props) {
   const { slug } = await params;
-  const supabase = await createClient();
+  const supabase = await getPublicBookingClient();
 
   // Fetch therapist by slug (public page — no auth required)
   const { data: therapist } = await supabase
@@ -85,172 +93,66 @@ export default async function BookingPage({ params }: Props) {
   );
 
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "var(--bg)",
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div className="min-h-screen bg-[var(--color-background)] flex flex-col font-sans animate-[fadeUp_.4s_ease-out_both]">
       {/* Header */}
-      <header
-        style={{
-          padding: "16px 32px",
-          borderBottom: "1px solid var(--border)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-        }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 24,
-              color: "var(--mint)",
-              fontFamily: "var(--ff)",
-              fontWeight: 200,
-            }}
-          >
+      <header className="px-8 py-5 border-b border-[var(--color-border-subtle)] bg-[var(--color-surface)]/30 backdrop-blur-md flex items-center justify-between sticky top-0 z-50">
+        <div className="flex items-center gap-2.5">
+          <span className="text-[26px] text-[var(--color-brand)] font-[family-name:var(--font-display)] font-light leading-none">
             Ψ
           </span>
-          <span
-            style={{
-              fontFamily: "var(--ff)",
-              fontSize: 18,
-              fontWeight: 200,
-              color: "var(--ivory)",
-            }}
-          >
+          <span className="font-[family-name:var(--font-display)] text-[20px] font-light text-[var(--color-text-primary)] tracking-wide">
             Psique
           </span>
         </div>
         <a
           href="/auth/login"
-          style={{
-            fontSize: 13,
-            color: "var(--ivoryDD)",
-            textDecoration: "none",
-          }}
+          className="text-[13px] text-[var(--color-text-muted)] no-underline hover:text-[var(--color-text-primary)] transition-colors font-medium tracking-wide"
         >
           Já tem conta? Entrar
         </a>
       </header>
 
       {/* Content */}
-      <main
-        style={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          padding: "40px 24px",
-        }}
-      >
-        <div style={{ maxWidth: 900, width: "100%" }}>
+      <main className="flex-1 flex justify-center py-12 px-6">
+        <div className="max-w-[900px] w-full">
           {/* Therapist profile */}
-          <div
-            style={{
-              display: "flex",
-              gap: 24,
-              marginBottom: 36,
-              alignItems: "flex-start",
-            }}
-          >
+          <div className="flex flex-col sm:flex-row gap-8 mb-12 items-start animate-[fadeUp_.4s_ease-out_.1s_both]">
             {/* Avatar */}
-            <div
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: "50%",
-                flexShrink: 0,
-                background:
-                  "radial-gradient(circle at 35% 35%, rgba(82,183,136,.44), rgba(82,183,136,.22))",
-                border: "2px solid rgba(82,183,136,.55)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontFamily: "var(--ff)",
-                fontSize: 28,
-                fontWeight: 200,
-                color: "var(--mint)",
-              }}
-            >
-              {t.name
-                .split(" ")
-                .map((w) => w[0])
-                .slice(0, 2)
-                .join("")
-                .toUpperCase()}
+            <div className="w-[100px] h-[100px] shrink-0 rounded-full flex items-center justify-center font-[family-name:var(--font-display)] text-[32px] font-light text-[var(--color-brand)] bg-[var(--color-brand)]/5 border-2 border-[var(--color-brand)]/20 shadow-[0_0_30px_rgba(var(--color-brand-rgb),0.1)] relative group overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-tr from-[var(--color-brand)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <span className="relative z-10">
+                {t.name
+                  .split(" ")
+                  .map((w) => w[0])
+                  .slice(0, 2)
+                  .join("")
+                  .toUpperCase()}
+              </span>
             </div>
-            <div>
-              <h1
-                style={{
-                  fontFamily: "var(--ff)",
-                  fontSize: 36,
-                  fontWeight: 200,
-                  color: "var(--ivory)",
-                  lineHeight: 1.1,
-                  marginBottom: 6,
-                }}
-              >
+            <div className="flex-1">
+              <h1 className="font-[family-name:var(--font-display)] text-[42px] font-light text-[var(--color-text-primary)] leading-[1.1] mb-3 tracking-tight">
                 {t.name}
               </h1>
-              <div
-                style={{
-                  fontSize: 13,
-                  color: "var(--ivoryDD)",
-                  display: "flex",
-                  gap: 12,
-                  alignItems: "center",
-                  marginBottom: 10,
-                }}
-              >
-                <span>CRP {t.crp}</span>
-                <span>·</span>
+              <div className="text-[14px] text-[var(--color-text-muted)] flex flex-wrap gap-x-3 gap-y-1 items-center mb-5 font-light">
+                <span className="tracking-wide">CRP {t.crp}</span>
+                <span className="opacity-50">·</span>
                 <span>{t.session_duration} min</span>
-                <span>·</span>
-                <span style={{ color: "var(--gold)", fontWeight: 500 }}>
+                <span className="opacity-50">·</span>
+                <span className="text-[#fbbf24] font-medium tracking-wide">
                   R$ {Number(t.session_price).toFixed(2)}
                 </span>
               </div>
               {t.bio && (
-                <p
-                  style={{
-                    fontSize: 14,
-                    color: "var(--ivoryD)",
-                    lineHeight: 1.7,
-                    maxWidth: 500,
-                  }}
-                >
+                <p className="text-[15px] text-[var(--color-text-secondary)] leading-[1.75] max-w-[600px] font-light mb-6">
                   {t.bio}
                 </p>
               )}
               {t.specialties && t.specialties.length > 0 && (
-                <div
-                  style={{
-                    display: "flex",
-                    flexWrap: "wrap",
-                    gap: 6,
-                    marginTop: 10,
-                  }}
-                >
+                <div className="flex flex-wrap gap-2.5 mt-2">
                   {t.specialties.map((s) => (
                     <span
                       key={s}
-                      style={{
-                        fontSize: 11,
-                        padding: "3px 10px",
-                        borderRadius: 20,
-                        background: "rgba(82,183,136,.1)",
-                        color: "var(--mint)",
-                        border: "1px solid rgba(82,183,136,.25)",
-                      }}
+                      className="text-[12px] px-3.5 py-1.5 rounded-full bg-[var(--color-brand)]/5 text-[var(--color-brand)] border border-[var(--color-brand)]/20 tracking-wide"
                     >
                       {s}
                     </span>
@@ -261,28 +163,22 @@ export default async function BookingPage({ params }: Props) {
           </div>
 
           {/* Booking client component */}
-          <BookingClient
-            therapistId={t.id}
-            therapistName={t.name}
-            sessionPrice={Number(t.session_price)}
-            sessionDuration={t.session_duration}
-            availabilitySlots={slots}
-            bookedTimes={bookedTimes}
-            slug={t.slug}
-          />
+          <div className="animate-[fadeUp_.4s_ease-out_.2s_both]">
+            <BookingClient
+              therapistId={t.id}
+              therapistName={t.name}
+              sessionPrice={Number(t.session_price)}
+              sessionDuration={t.session_duration}
+              availabilitySlots={slots}
+              bookedTimes={bookedTimes}
+              slug={t.slug}
+            />
+          </div>
         </div>
       </main>
 
       {/* Footer */}
-      <footer
-        style={{
-          padding: "16px 32px",
-          borderTop: "1px solid var(--border)",
-          textAlign: "center",
-          fontSize: 11,
-          color: "var(--ivoryDD)",
-        }}
-      >
+      <footer className="py-6 px-8 border-t border-[var(--color-border-subtle)] text-center text-[11px] text-[var(--color-text-muted)] tracking-wide font-light bg-[var(--color-surface)]/10 backdrop-blur-sm relative z-10">
         Psique — Plataforma Terapêutica · Seus dados são protegidos por criptografia e LGPD
       </footer>
     </div>

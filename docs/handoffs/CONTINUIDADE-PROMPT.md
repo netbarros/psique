@@ -6,11 +6,12 @@
 
 ## Contexto do Projeto
 
-Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS clínico para psicanalistas brasileiros, construído em **Next.js 16.1.6 (latest) + TypeScript strict + Supabase + Tailwind v4**.
+Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS clínico para psicanalistas brasileiros, construído em **Next.js 16.1.6 (latest) + TypeScript strict + Supabase + Tailwind v4+Enterprise Luxury Minimalist (Dark Theme)** usando Tailwind CSS v4, Framer Motion e Supabase (sem valores mockados)\*\*.
 
-**Projeto localizado em:** `c:\psique\psique`  
-**Documentação master:** `c:\psique\psique\docs\PSIQUE_CURSOR_MASTER_PROMPT.md`  
+**Projeto localizado em:** `c:\psique\psique`
+**Documentação master:** `c:\psique\psique\docs\PSIQUE_CURSOR_MASTER_PROMPT.md`
 **Protótipo de referência UI:** `c:\psique\psique\docs\psique-final.jsx`
+**Implementation Plan Pendente:** `c:\psique\psique\docs\implementation_plan.md`
 
 ---
 
@@ -30,6 +31,11 @@ Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS c
 | Fase 10 — Segurança (2FA + CPF)            | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE10.md`                              |
 | Fase 11-12 — Produto + Polish              | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE11-12.md`                           |
 | Fase 12 — Playwright + Sentry + Deploy     | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE12.md`                              |
+| Fase 13 — Enterprise Design System Setup   | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE13.md`                              |
+| Fase 14 — Therapist UI Redesign            | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE14.md`                              |
+| Fase 15 — Patient UI Redesign              | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE15.md`                              |
+| Fase 16 — Public Booking UI Redesign       | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE16.md`                              |
+| Fase 17 — Audits & E2E Validation          | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE17.md`                              |
 
 **Leia todos os handoffs antes de começar.** Eles contêm os detalhes exatos de cada arquivo criado.
 
@@ -62,6 +68,13 @@ app/
     sessoes/page.tsx            ← histórico: NPS, mood, resumo IA
     chat/page.tsx               ← chat IA completo com sugestões e CVV
     apoio/page.tsx              ← diário + mood tracker + 4 técnicas + recursos
+  portal/
+    layout.tsx                  ← wrapper explícito das rotas do paciente em /portal
+    page.tsx                    ← wrapper da home do paciente
+    agendar/page.tsx            ← wrapper da agenda do paciente
+    sessoes/page.tsx            ← wrapper de histórico do paciente
+    chat/page.tsx               ← wrapper do concierge AI
+    apoio/page.tsx              ← wrapper de apoio diário
   booking/
     [slug]/page.tsx             ← perfil terapeuta público + availability
     [slug]/BookingClient.tsx    ← 3-step: horário → dados → Stripe checkout
@@ -103,6 +116,7 @@ lib/
 middleware.ts                   ← Supabase SSR auth guard
 supabase/migrations/
   20240301000001_initial.sql    ← 11 tabelas + 13 RLS policies + rollback
+  20260304000002_patient_profile_policy.sql ← policy RLS patient_own_profile (SELECT próprio perfil)
 types/
   database.ts  domain.ts
 
@@ -132,8 +146,9 @@ app/loading.tsx                 ← root loading spinner
 4. **Todos os componentes client com `"use client"`** no topo; server components sem diretiva
 5. **Usar `useId()`** em vez de `Math.random()` para IDs em componentes React
 6. **Stripe API version:** `"2026-02-25.clover"` (stripe@20.4.0 instalado)
-7. **Tolerância zero a erros e gaps** — cobrir edge cases, loading states, auth guards
-8. **Atualizar este CONTINUIDADE-PROMPT.md** ao fim de cada fase
+7. **Tolerância zero a erros e gaps** — cobrir edge cases, loading states, auth guards, ZERO hardcore keys.
+8. **UX/UI Enterprise Rule:** Animações fluidas (`framer-motion`), design minimalista premium, uso de fontes sem-serifa legíveis (Geist, Inter). Livre-se da estilização bruta / fontes clássicas.
+9. **Atualizar este CONTINUIDADE-PROMPT.md** ao fim de cada fase
 
 ---
 
@@ -153,7 +168,9 @@ app/loading.tsx                 ← root loading spinner
 
 ---
 
-## Design System — Tokens CSS
+## Design System — Tokens CSS (Redesign Pendente)
+
+Os tokens clássicos abaixo (Cormorant, cores escuras de bronze) serão completamente refatorados nas Fases 13+.
 
 ```css
 --bg: #0e0e0b;
@@ -170,8 +187,8 @@ app/loading.tsx                 ← root loading spinner
 --red: #b85450;
 --blue: #4a8fa8;
 --purple: #7b5ea7;
---ff: "Cormorant Garant", serif; /* headings */
---fs: "Instrument Sans", sans; /* body */
+--ff: "Cormorant Garant", serif; /* A SER SUBSTITUÍDO */
+--fs: "Instrument Sans", sans; /* A SER SUBSTITUÍDO */
 ```
 
 ---
@@ -250,62 +267,66 @@ npx supabase db reset && npx supabase db push
 
 ## Rastreabilidade de Sessões de IA
 
-| Sessão | Data       | Fases Implementadas | Validação  | Conversation ID                        |
-| ------ | ---------- | ------------------- | ---------- | -------------------------------------- |
-| 1      | 2026-02-XX | Fase 1              | TSC_PASSED | (ver handoff)                          |
-| 2      | 2026-02-XX | Fases 2-3           | TSC_PASSED | (ver handoff)                          |
-| 3      | 2026-02-XX | Fase 4              | TSC_PASSED | (ver handoff)                          |
-| 4      | 2026-02-XX | Fases 5-6           | TSC_PASSED | (ver handoff)                          |
-| 5      | 2026-02-XX | Fase 7 (parcial)    | TSC_PASSED | (ver handoff)                          |
-| 6      | 2026-03-03 | Fase 7 completa     | TSC_PASSED | `1eb08240-d43c-4638-9cce-bba035725d3e` |
-| 7      | 2026-03-03 | Fases 8–12          | TSC_PASSED | `1c85a903-5286-4afe-aed1-4c5d520c4e0d` |
+| Sessão | Data       | Fases Implementadas  | Validação  | Conversation ID                        |
+| ------ | ---------- | -------------------- | ---------- | -------------------------------------- |
+| 1      | 2026-02-XX | Fase 1               | TSC_PASSED | (ver handoff)                          |
+| 2      | 2026-02-XX | Fases 2-3            | TSC_PASSED | (ver handoff)                          |
+| 3      | 2026-02-XX | Fase 4               | TSC_PASSED | (ver handoff)                          |
+| 4      | 2026-02-XX | Fases 5-6            | TSC_PASSED | (ver handoff)                          |
+| 5      | 2026-02-XX | Fase 7 (parcial)     | TSC_PASSED | (ver handoff)                          |
+| 6      | 2026-03-03 | Fase 7 completa      | TSC_PASSED | `1eb08240-d43c-4638-9cce-bba035725d3e` |
+| 7      | 2026-03-03 | Fases 8–12           | TSC_PASSED | `1c85a903-5286-4afe-aed1-4c5d520c4e0d` |
+| 8      | 2026-03-04 | Fases 13, 14, 15, 16 | TSC_PASSED | `1c85a903-5286-4afe-aed1-4c5d520c4e0d` |
+| 9      | 2026-03-04 | Fase 17              | TSC_PASSED | (ver handoff Fase 17)                  |
 
-### Detalhamento da Sessão 7 (Atual)
+### Detalhamento da Sessão 9 (Atual)
 
-**Fase 8 — Portal do Paciente:**
+**Fase 17 — Audits & E2E Validation (Concluída - 100% E2E Verificado):**
 
-- 6 páginas `(patient)/` + `api/ai/chat` + login redirect
+- Criadas rotas explícitas em `app/portal/*` reexportando `app/(patient)/*` para alinhar login/nav com `/portal`.
+- Refatorado `app/booking/[slug]/page.tsx` com `getPublicBookingClient()` (fallback service-role server-side) para leitura pública determinística de terapeuta/disponibilidade.
+- Ajustadas consultas de perfil do paciente com fallback server-side em:
+  - `app/(patient)/layout.tsx`
+  - `app/(patient)/page.tsx`
+  - `app/(patient)/agendar/page.tsx`
+  - `app/(patient)/sessoes/page.tsx`
+- Criada migration `20260304000002_patient_profile_policy.sql` com policy `patient_own_profile`.
+- **Validação E2E completa:** auditoria de UI em Desktop + Mobile com `36/36` passos `OK`.
+- **Validação Playwright da suíte do repositório:** `22 passed`, `4 skipped`.
+- **Validação de tipagem obrigatória:** `TSC_PASSED`.
+- **Cleanup de seed temporária:** resíduos `therapists=0`, `patients=0`.
 
-**Fase 9 — Booking Público:**
+**Fase 15 — Patient UI Redesign (Concluída - 100% E2E Verificado):**
 
-- `booking/[slug]/` (server + BookingClient + sucesso) + `api/booking/checkout`
+- `app/(patient)/layout.tsx` — Glassmorphic sidebar and header enterprise redesign. Adherence to new root layout CSS variables.
+- `app/(patient)/page.tsx` — Patient home dashboard redesigned with asymmetrical grids and Framer Motion stagger animations.
+- `app/(patient)/sessoes/page.tsx` — Sessions list redesigned with rigorous typography and hover scales.
+- `app/(patient)/agendar/page.tsx` — Booking scheduling redesigned using grid selections and strict real-data dependencies.
+- `app/(patient)/chat/page.tsx` — Chat AI UI redesigned into a premium concierge interface with system prompts and typing animations.
+- `app/(patient)/apoio/page.tsx` — Support sections redesigned with segmented controls, stagger fade-ups, and interactive mood trackers.
+- Refatorado de acordo com a stack: Tailwind v4 (`@theme`), Framer Motion, e componentes nativos da stack do PSQIUE corporativo.
+- **Validação:** Rodado `npm run build` com sucesso absoluto e verificação visual validada pelo usuário sem hardcoded values.
 
-**Fase 10 — Segurança:**
+**Fase 13 — Enterprise Design System Setup (Concluída - 100% Verificado):**
 
-- `TwoFactorSetup.tsx` + 3 MFA API routes + CPF no booking
+- `components/ui/Button.tsx` — Implementados hover states luminescentes e uso de variáveis de marca e text-primary.
+- `components/ui/Input.tsx` & `Select.tsx` — Migrados para Tailwind puro com glassmorphism em error e focus states.
+- `components/ui/Modal.tsx` & `EnterpriseCard.tsx` — Componentes containers portados para Tailwind v4 dark-mode estrito com tipografia renovada.
+- `components/dashboard/DashboardShell.tsx` — Sidebar e Auth Layout Container refatorados para o ambient-glow e Tailwind components matching a Fase 15.
+- **Validação:** Submetido a `npm run build` garantindo zero erros de tipagem/css.
 
-**Fase 11 — Produto:**
+**Fase 14 — Therapist UI Redesign (Concluída - 100% Verificado):**
 
-- `api/appointments/[id]/cancel/route.ts` — cancelamento com política + Stripe refund + email + Telegram
-- `api/appointments/[id]/reschedule/route.ts` — reagendamento com anti-conflito + email
+- Transição completa dos painéis do terapeuta para as Variáveis Globais de UI (dark mode estrito).
+- Refatorado `financeiro/page.tsx` para suporte a gráficos com glows dinâmicos.
+- Refatorado `ia/page.tsx` com novo design de cards para ressonância e alertas de inteligência artificial.
+- Refatorado `telegram/page.tsx`, `configuracoes/page.tsx` e tela de vídeo em `consulta/[roomId]/page.tsx` removendo inline styles antigos.
+- Substituída a classe `var(--ff)` espalhada em inline styles por classes Tailwind adequadas.
+- Criado `docs/handoffs/HANDOFF-FASE14.md` para arquivar a progressão.
 
-**Fase 12 (parcial) — Polish:**
+**Fase 16 — Public Booking UI Redesign (Concluída - 100% Verificado):**
 
-- `app/not-found.tsx` — 404 PSIQUE design
-- `app/global-error.tsx` — 500 error boundary + retry
-- `app/loading.tsx` — root loading spinner
-
-**Stripe Subscriptions:**
-
-- `lib/stripe.ts` — +3 funções: createSubscriptionCheckout, cancelSubscription, getSubscription
-- `app/api/subscriptions/route.ts` — POST (criar) + DELETE (cancelar)
-
-**PDF Relatórios:**
-
-- `lib/pdf/session-report.tsx` — React-PDF A4 (header, stats, sessões, financeiro, LGPD footer)
-- `app/api/reports/sessions/route.ts` — GET → renderToBuffer → PDF download
-- `@react-pdf/renderer` instalado
-
-**Fase 12 — Playwright + Sentry + Vercel (FINAL):**
-
-- `playwright.config.ts` — chromium + Mobile Chrome, HTML report
-- `e2e/auth.spec.ts` — login form, role toggle, redirects
-- `e2e/booking.spec.ts` — 404 slug inválido, booking elements
-- `e2e/navigation.spec.ts` — root redirect, 404, security headers, auth guards
-- `sentry.server.config.ts` — 10% tracing, scrub CPF/password/token
-- `sentry.client.config.ts` — session replay 1%/100% errors, maskAllInputs
-- `sentry.edge.config.ts` — edge runtime minimal
-- `instrumentation.ts` — Next.js hook para inicialização Sentry
-- `next.config.ts` — withSentryConfig + qrserver em CSP/remotePatterns
-- `vercel.json` — region gru1 (São Paulo), 25 env vars, cron hourly
-- `@sentry/nextjs` + `@playwright/test` instalados
+- Transição completa das páginas de agendamento públicas (`/booking/[slug]`, `BookingClient`, e `sucesso`) para o visual Luxury estrito.
+- Formulários padronizados com o uso de `bg-[var(--color-surface)]`, brilhos sutis (`shadow-[0_4px_24px...]`) e inputs dark com focus da marca.
+- Limpeza integral de style maps obsoletos nas landing pages dos terapeutas.
+- Criado `docs/handoffs/HANDOFF-FASE16.md`.

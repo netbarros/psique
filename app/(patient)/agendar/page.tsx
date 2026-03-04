@@ -1,9 +1,24 @@
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import { formatBRL, formatDate } from "@/lib/utils";
+import { 
+  CalendarDays, 
+  Clock, 
+  CreditCard, 
+  Video, 
+  Lightbulb,
+  Link2 
+} from "lucide-react";
 
 export const metadata: Metadata = { title: "Agendar Sessão" };
+
+// Safe CSS animation delays
+const stagger = (delay: number = 0.1) => ({
+  animationDelay: `${delay}s`,
+  animationFillMode: 'backwards' as const,
+});
 
 export default async function AgendarPage() {
   const supabase = await createClient();
@@ -12,14 +27,28 @@ export default async function AgendarPage() {
   } = await supabase.auth.getUser();
   if (!user) redirect("/auth/login");
 
-  const { data: patient } = await supabase
+  const { data: patientRls } = await supabase
     .from("patients")
     .select("id, name, therapist_id")
     .eq("user_id", user.id)
     .single();
+
+  let patient = patientRls as unknown as { id: string; name: string; therapist_id: string } | null;
+
+  if (!patient && process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    const admin = createAdminClient();
+    const { data: patientAdmin } = await admin
+      .from("patients")
+      .select("id, name, therapist_id")
+      .eq("user_id", user.id)
+      .single();
+
+    patient = patientAdmin as unknown as { id: string; name: string; therapist_id: string } | null;
+  }
+
   if (!patient) redirect("/dashboard");
 
-  const therapistId = (patient as unknown as { therapist_id: string }).therapist_id;
+  const therapistId = patient.therapist_id;
 
   // Fetch therapist info
   const { data: therapist } = await supabase
@@ -66,7 +95,8 @@ export default async function AgendarPage() {
     (a: unknown) => (a as { scheduled_at: string }).scheduled_at
   );
 
-  const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
+  const DAYS = ["Domingo", "Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado"];
+  const DAYS_SHORT = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
   // Group slots by day
   const slotsByDay: Record<number, typeof slots> = {};
@@ -76,7 +106,7 @@ export default async function AgendarPage() {
   }
 
   // Generate next 14 days
-  const days: Array<{ date: Date; dayOfWeek: number; dateStr: string }> = [];
+  const days: Array<{ date: Date; dayOfWeek: number; dateStr: string; fullDate: string }> = [];
   for (let i = 1; i <= 14; i++) {
     const d = new Date();
     d.setDate(d.getDate() + i);
@@ -84,241 +114,195 @@ export default async function AgendarPage() {
     days.push({
       date: d,
       dayOfWeek: d.getDay(),
-      dateStr: d.toLocaleDateString("pt-BR", {
-        weekday: "short",
-        day: "2-digit",
-        month: "2-digit",
-      }),
+      dateStr: d.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit" }),
+      fullDate: d.toLocaleDateString("pt-BR", { weekday: "long", day: "numeric", month: "long" })
     });
   }
 
   return (
-    <div style={{ padding: "32px 40px", maxWidth: 900 }}>
-      {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <h1
-          style={{
-            fontFamily: "var(--ff)",
-            fontSize: 34,
-            fontWeight: 200,
-            color: "var(--ivory)",
-          }}
-        >
-          Agendar Sessão
+    <div className="w-full max-w-[1200px] mx-auto p-6 md:p-10 lg:p-12 relative z-10">
+      
+      {/* Header Area */}
+      <header className="mb-10 animate-slide-up" style={stagger(0.1)}>
+        <h1 className="text-4xl md:text-5xl font-[family-name:var(--font-display)] font-light text-[var(--color-text-primary)] tracking-tight">
+          Agendar <span className="text-[var(--color-brand)] font-medium">Sessão</span>
         </h1>
-        <p style={{ fontSize: 14, color: "var(--ivoryDD)", marginTop: 4 }}>
+        <p className="text-[15px] text-[var(--color-text-secondary)] mt-4 max-w-2xl font-light">
           Escolha o melhor horário para sua próxima sessão
           {t && (
-            <span>
-              {" "}com <span style={{ color: "var(--blue)" }}>{t.name}</span>
-            </span>
+            <>
+              <span className="mx-2 opacity-30">|</span>
+              com <strong className="font-medium text-[var(--color-text-primary)]">{t.name}</strong>
+            </>
           )}
         </p>
-      </div>
+      </header>
 
-      {/* Session info */}
+      {/* Session Info Cards */}
       {t && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gap: 14,
-            marginBottom: 24,
-          }}
-        >
-          <InfoCard label="Duração" value={`${t.session_duration} min`} icon="⏱" />
-          <InfoCard label="Valor" value={formatBRL(Number(t.session_price))} icon="💳" />
-          <InfoCard label="Modalidade" value="Online" icon="🎥" />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-10">
+          <InfoBox 
+            label="Duração" 
+            value={`${t.session_duration} min`} 
+            icon={<Clock size={18} className="text-[var(--color-text-primary)]" />} 
+            delay={0.15} 
+          />
+          <InfoBox 
+            label="Investimento" 
+            value={formatBRL(Number(t.session_price))} 
+            icon={<CreditCard size={18} className="text-[var(--color-brand)]" />} 
+            delay={0.2} 
+          />
+          <InfoBox 
+            label="Modalidade" 
+            value="Remoto" 
+            icon={<Video size={18} className="text-[var(--color-text-primary)]" />} 
+            delay={0.25} 
+          />
         </div>
       )}
 
-      {/* Availability grid */}
-      <div
-        style={{
-          background: "var(--card)",
-          border: "1px solid var(--border)",
-          borderRadius: 18,
-          padding: "24px 28px",
-          marginBottom: 24,
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--ff)",
-            fontSize: 22,
-            fontWeight: 300,
-            color: "var(--ivory)",
-            marginBottom: 18,
-          }}
-        >
-          Horários Disponíveis
-        </h2>
+      {/* Main Grid container */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10">
+        
+        {/* Availability Section */}
+        <div className="lg:col-span-8 flex flex-col gap-6 animate-slide-up" style={stagger(0.3)}>
+          <div className="glass-card p-6 md:p-8">
+            <div className="flex items-center gap-3 mb-8">
+              <CalendarDays size={20} className="text-[var(--color-brand)]" />
+              <h2 className="text-[20px] font-[family-name:var(--font-display)] font-medium text-[var(--color-text-primary)] tracking-tight">
+                Horários Disponíveis da Semana
+              </h2>
+            </div>
+            
+            {slots.length === 0 ? (
+              <div className="py-12 flex flex-col items-center justify-center text-center border border-dashed border-[var(--color-border-subtle)] rounded-2xl bg-[var(--color-surface-hover)]">
+                <CalendarDays size={32} className="text-[var(--color-text-muted)] mb-4 opacity-50" />
+                <p className="text-[14px] text-[var(--color-text-secondary)]">
+                  Nenhuma disponibilidade configurada pelo profissional.
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-8">
+                {days
+                  .filter((d) => slotsByDay[d.dayOfWeek])
+                  .map((day) => (
+                    <div key={day.dateStr} className="relative pl-4 border-l-2 border-[var(--color-border-subtle)] hover:border-[var(--color-brand)] transition-colors group">
+                      <div className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-[var(--color-bg-base)] border-2 border-[var(--color-border-subtle)] group-hover:border-[var(--color-brand)] transition-colors" />
+                      
+                      <div className="mb-4">
+                        <h3 className="text-[15px] font-medium text-[var(--color-text-primary)] capitalize">
+                          {DAYS[day.dayOfWeek]}, <span className="text-[var(--color-text-muted)] font-normal">{day.dateStr}</span>
+                        </h3>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-3">
+                        {slotsByDay[day.dayOfWeek].map((slot) => {
+                          const times = generateTimeSlots(
+                            slot.start_time,
+                            slot.end_time,
+                            t?.session_duration ?? 50
+                          );
+                          
+                          return times.map((time) => {
+                            const slotDate = new Date(day.date);
+                            const [h, m] = time.split(":").map(Number);
+                            slotDate.setHours(h, m, 0, 0);
+                            const isBooked = booked.some(
+                              (b) => Math.abs(new Date(b).getTime() - slotDate.getTime()) < 3600000
+                            );
 
-        {slots.length === 0 ? (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "32px",
-              color: "var(--ivoryDD)",
-              fontSize: 14,
-            }}
-          >
-            O terapeuta ainda não configurou seus horários disponíveis.
+                            return (
+                              <div
+                                key={`${day.dateStr}-${time}`}
+                                className={`
+                                  relative overflow-hidden px-5 py-2.5 rounded-xl text-[14px] font-[family-name:var(--font-display)] tracking-wider transition-all duration-300
+                                  ${isBooked 
+                                    ? "bg-[var(--color-surface)] text-[var(--color-text-muted)] border border-[var(--color-border-subtle)] cursor-not-allowed opacity-50" 
+                                    : "bg-gradient-to-br from-[var(--color-surface-hover)] to-[var(--color-surface)] text-[var(--color-text-primary)] border border-[var(--color-border-subtle)] cursor-pointer hover:border-[var(--color-brand)] hover:text-[var(--color-brand)] hover:-translate-y-0.5 shadow-sm hover:shadow-[0_4px_15px_rgba(82,183,136,0.1)]"
+                                  }
+                                `}
+                              >
+                                {isBooked && (
+                                  <div className="absolute inset-0 flex items-center justify-center opacity-30 select-none">
+                                     <div className="w-full h-px bg-[var(--color-text-muted)] rotate-[-15deg] scale-150" />
+                                  </div>
+                                )}
+                                <span className={isBooked ? "line-through" : ""}>{time}</span>
+                              </div>
+                            );
+                          });
+                        })}
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
           </div>
-        ) : (
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 16,
-            }}
-          >
-            {days
-              .filter((d) => slotsByDay[d.dayOfWeek])
-              .map((day) => (
-                <div key={day.dateStr}>
-                  <div
-                    style={{
-                      fontSize: 13,
-                      color: "var(--ivoryD)",
-                      fontWeight: 500,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {DAYS[day.dayOfWeek]} · {formatDate(day.date)}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 8,
-                    }}
-                  >
-                    {slotsByDay[day.dayOfWeek].map((slot) => {
-                      // Generate hourly slots between start and end
-                      const times = generateTimeSlots(
-                        slot.start_time,
-                        slot.end_time,
-                        t?.session_duration ?? 50
-                      );
-                      return times.map((time) => {
-                        const slotDate = new Date(day.date);
-                        const [h, m] = time.split(":").map(Number);
-                        slotDate.setHours(h, m, 0, 0);
-                        const isBooked = booked.some(
-                          (b) =>
-                            Math.abs(
-                              new Date(b).getTime() - slotDate.getTime()
-                            ) < 3600000
-                        );
+        </div>
 
-                        return (
-                          <div
-                            key={`${day.dateStr}-${time}`}
-                            style={{
-                              padding: "8px 16px",
-                              borderRadius: 10,
-                              fontSize: 13,
-                              fontWeight: 500,
-                              background: isBooked
-                                ? "var(--bg3)"
-                                : "rgba(82,183,136,.08)",
-                              color: isBooked
-                                ? "var(--ivoryDD)"
-                                : "var(--mint)",
-                              border: isBooked
-                                ? "1px solid var(--border)"
-                                : "1px solid rgba(82,183,136,.3)",
-                              cursor: isBooked ? "not-allowed" : "pointer",
-                              opacity: isBooked ? 0.5 : 1,
-                              textDecoration: isBooked
-                                ? "line-through"
-                                : "none",
-                              transition: "all .15s var(--ease-out)",
-                            }}
-                          >
-                            {time}
-                          </div>
-                        );
-                      });
-                    })}
+        {/* Info Sidebar */}
+        <div className="lg:col-span-4 flex flex-col gap-6 animate-slide-up" style={stagger(0.4)}>
+          <div className="glass-panel p-6 rounded-2xl border border-[var(--color-brand)]/20 shadow-[0_4px_30px_rgba(82,183,136,0.05)] relative overflow-hidden group">
+            <div className="absolute -right-6 -top-6 w-24 h-24 bg-[var(--color-brand)] blur-[40px] opacity-10 group-hover:opacity-20 transition-opacity duration-700" />
+            
+            <div className="flex items-start gap-4 relative z-10">
+              <div className="w-10 h-10 shrink-0 rounded-full bg-[var(--color-brand)]/10 flex items-center justify-center border border-[var(--color-brand)]/20">
+                <Lightbulb size={18} className="text-[var(--color-brand)]" />
+              </div>
+              <div>
+                <h3 className="text-[14px] font-medium text-[var(--color-text-primary)] mb-2 uppercase tracking-widest">
+                  Como funciona
+                </h3>
+                <p className="text-[13px] text-[var(--color-text-secondary)] leading-relaxed mb-4">
+                  Ao selecionar um horário disponível, o sistema reservará a vaga. Sua sessão será confirmada <strong>automaticamente após a compensação do pagamento</strong>.
+                </p>
+                {t && (
+                  <div className="pt-4 border-t border-[var(--color-border-subtle)]">
+                    <p className="text-[13px] text-[var(--color-text-muted)] mb-2">
+                       Acesso rápido via link externo:
+                    </p>
+                    <a
+                      href={`/booking/${t.slug}`}
+                      className="inline-flex items-center gap-1.5 text-[13px] font-medium text-[var(--color-brand)] hover:text-[var(--color-brand-hover)] transition-colors focus:outline-none"
+                    >
+                      <Link2 size={14} /> Página Pública de Agendamento
+                    </a>
                   </div>
-                </div>
-              ))}
+                )}
+              </div>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
 
-      {/* Info note */}
-      <div
-        style={{
-          padding: "14px 18px",
-          background: "rgba(74,143,168,.08)",
-          border: "1px solid rgba(74,143,168,.2)",
-          borderRadius: 14,
-          fontSize: 13,
-          color: "var(--ivoryDD)",
-          lineHeight: 1.6,
-        }}
-      >
-        💡 Após selecionar o horário, você será redirecionado para a página de
-        pagamento. A sessão será confirmada após o pagamento.
-        {t && (
-          <span>
-            {" "}
-            Ou agende diretamente via{" "}
-            <a
-              href={`/booking/${t.slug}`}
-              style={{ color: "var(--mint)", fontWeight: 500 }}
-            >
-              página pública
-            </a>
-            .
-          </span>
-        )}
       </div>
     </div>
   );
 }
 
-function InfoCard({
+// Internal standard component
+function InfoBox({
   label,
   value,
   icon,
+  delay
 }: {
   label: string;
   value: string;
-  icon: string;
+  icon: React.ReactNode;
+  delay: number;
 }) {
   return (
-    <div
-      style={{
-        background: "var(--card)",
-        border: "1px solid var(--border)",
-        borderRadius: 14,
-        padding: "16px 20px",
-      }}
+    <div 
+      className="glass-card p-6 flex flex-col justify-between animate-slide-up hover:border-[var(--color-border-strong)] transition-all duration-300"
+      style={stagger(delay)}
     >
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 6,
-          fontSize: 11,
-          color: "var(--ivoryDD)",
-          marginBottom: 6,
-        }}
-      >
-        <span>{icon}</span> {label}
+      <div className="flex items-start justify-between mb-4">
+        <span className="text-[12px] text-[var(--color-text-muted)] uppercase tracking-widest font-semibold flex items-center gap-2">
+           {icon} {label}
+        </span>
       </div>
-      <div
-        style={{
-          fontFamily: "var(--ff)",
-          fontSize: 22,
-          fontWeight: 300,
-          color: "var(--ivory)",
-        }}
-      >
+      <div className="font-[family-name:var(--font-display)] text-[26px] font-light text-[var(--color-text-primary)] tracking-tight">
         {value}
       </div>
     </div>
