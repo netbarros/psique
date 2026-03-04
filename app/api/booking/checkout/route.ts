@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createCheckoutSession } from "@/lib/stripe";
+import { validateCPF } from "@/lib/utils";
 import { logger } from "@/lib/logger";
 
 export async function POST(req: NextRequest) {
@@ -11,6 +12,7 @@ export async function POST(req: NextRequest) {
     patientName: string;
     patientEmail: string;
     patientPhone?: string;
+    patientCpf?: string;
     slug: string;
   };
 
@@ -22,6 +24,14 @@ export async function POST(req: NextRequest) {
   ) {
     return NextResponse.json(
       { error: "Campos obrigatórios faltando" },
+      { status: 400 }
+    );
+  }
+
+  // Validate CPF if provided
+  if (body.patientCpf && !validateCPF(body.patientCpf)) {
+    return NextResponse.json(
+      { error: "CPF inválido. Verifique e tente novamente." },
       { status: 400 }
     );
   }
@@ -84,6 +94,7 @@ export async function POST(req: NextRequest) {
           name: body.patientName,
           email: body.patientEmail,
           phone: body.patientPhone ?? null,
+          cpf: body.patientCpf ?? null,
           status: "lead",
           onboarding_source: "booking",
           gdpr_consent: true,

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useCallback, useId } from "react";
+import { validateCPF, formatCPF } from "@/lib/utils";
 
 interface BookingClientProps {
   therapistId: string;
@@ -20,6 +21,7 @@ interface BookingForm {
   name: string;
   email: string;
   phone: string;
+  cpf: string;
 }
 
 const DAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
@@ -39,6 +41,7 @@ export default function BookingClient({
     name: "",
     email: "",
     phone: "",
+    cpf: "",
   });
   const [error, setError] = useState<string | null>(null);
   const formId = useId();
@@ -120,6 +123,11 @@ export default function BookingClient({
       return;
     }
 
+    if (form.cpf && !validateCPF(form.cpf)) {
+      setError("CPF inválido. Verifique e tente novamente.");
+      return;
+    }
+
     setStep("processing");
     setError(null);
 
@@ -133,6 +141,7 @@ export default function BookingClient({
           patientName: form.name,
           patientEmail: form.email,
           patientPhone: form.phone,
+          patientCpf: form.cpf || undefined,
           slug,
         }),
       });
@@ -488,6 +497,34 @@ export default function BookingClient({
                   setForm((f) => ({ ...f, phone: e.target.value }))
                 }
                 aria-label="Telefone"
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor={`${formId}-cpf`}
+                style={{
+                  fontSize: 11,
+                  color: "var(--ivoryDD)",
+                  textTransform: "uppercase",
+                  letterSpacing: ".08em",
+                  display: "block",
+                  marginBottom: 6,
+                }}
+              >
+                CPF (opcional)
+              </label>
+              <input
+                id={`${formId}-cpf`}
+                style={inputStyle}
+                placeholder="000.000.000-00"
+                value={form.cpf ? formatCPF(form.cpf) : ""}
+                onChange={(e) => {
+                  const raw = e.target.value.replace(/\D/g, "").slice(0, 11);
+                  setForm((f) => ({ ...f, cpf: raw }));
+                }}
+                inputMode="numeric"
+                aria-label="CPF"
               />
             </div>
           </div>

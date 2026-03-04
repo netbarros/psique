@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import TwoFactorSetup from "@/components/dashboard/TwoFactorSetup";
 
 export const metadata: Metadata = { title: "Configurações" };
 
@@ -17,6 +18,14 @@ export default async function ConfiguracoesPage() {
     .eq("user_id", user.id)
     .single();
   if (!therapist) redirect("/auth/login");
+
+  // Fetch MFA factors
+  const { data: mfaData } = await supabase.auth.mfa.listFactors();
+  const factors = (mfaData?.totp ?? []).map((f) => ({
+    id: f.id,
+    type: f.factor_type,
+    status: f.status,
+  }));
 
   return (
     <div style={{ padding: "32px 40px", maxWidth: 900 }}>
@@ -106,19 +115,7 @@ export default async function ConfiguracoesPage() {
         />
 
         <div style={{ marginTop: 16 }}>
-          <div
-            style={{
-              padding: "12px 16px",
-              background: "rgba(184,84,80,.08)",
-              border: "1px solid rgba(184,84,80,.2)",
-              borderRadius: 12,
-              fontSize: 12,
-              color: "var(--ivoryDD)",
-            }}
-          >
-            🔐 2FA via TOTP será habilitado na Fase 10 (Segurança). Os dados dos
-            pacientes são protegidos por Row Level Security (RLS) no Supabase.
-          </div>
+          <TwoFactorSetup initialFactors={factors} />
         </div>
       </Section>
 

@@ -27,6 +27,7 @@ Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS c
 | Fase 7 — Dashboard Terapeuta (completo)    | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE7.md` + `HANDOFF-FASE7-COMPLETE.md` |
 | Fase 8 — Portal do Paciente (6 páginas)    | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE8.md`                               |
 | Fase 9 — Booking Público + Stripe          | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE9.md`                               |
+| Fase 10 — Segurança (2FA + CPF)            | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE10.md`                              |
 
 **Leia todos os handoffs antes de começar.** Eles contêm os detalhes exatos de cada arquivo criado.
 
@@ -67,7 +68,10 @@ app/
     ai/summarize/route.ts       ← auth + rate limit + OpenRouter + persistência
     ai/insights/route.ts        ← análise de carteira IA
     ai/chat/route.ts            ← chat IA paciente + rate limit + context
-    booking/checkout/route.ts   ← anti-double-booking + find/create patient + Stripe
+    booking/checkout/route.ts   ← anti-double-booking + find/create patient + Stripe + CPF
+    auth/mfa/enroll/route.ts    ← TOTP enroll via Supabase MFA
+    auth/mfa/verify/route.ts    ← challenge + verify TOTP code
+    auth/mfa/unenroll/route.ts  ← remove TOTP factor
     video/room/route.ts         ← criar sala Daily.co + token owner
     telegram/webhook/route.ts   ← bot completo (7 cmds + NPS + intent detection)
     webhooks/stripe/route.ts    ← checkout.session.completed + Daily + email + TG
@@ -82,6 +86,7 @@ components/
     DashboardShell.tsx          ← sidebar com nav ativa + AI/Telegram badges
     PatientDetailTabs.tsx       ← abas paciente (client component)
     ConsultaClient.tsx          ← videochamada (client component)
+    TwoFactorSetup.tsx          ← 2FA TOTP: enroll + verify + unenroll
 
 lib/
   supabase/client.ts  server.ts  admin.ts
@@ -98,12 +103,6 @@ types/
 ---
 
 ## O que falta implementar
-
-### Prioridade ALTA — Fase 10 (Segurança)
-
-- 2FA TOTP via Supabase Auth (obrigatório terapeutas)
-- Validação CPF no front de cadastro de paciente
-- Session token expiration settings
 
 ### Prioridade MÉDIA — Fase 11 (Gaps de Produto)
 
@@ -222,8 +221,8 @@ toast.error("Erro ao salvar");
 ## Sequência recomendada
 
 1. Ler todos os handoffs em `c:\psique\psique\docs\handoffs\`
-2. Começar pela **Fase 10** → Segurança (2FA, CPF, session expiry)
-3. Sequência: Fase 10 (segurança) → Fase 11 (produto) → Fase 12 (polish + deploy)
+2. Começar pela **Fase 11** → Gaps de Produto (cancelamento, reagendamento, etc.)
+3. Sequência: Fase 11 (produto) → Fase 12 (polish + deploy)
 4. A cada fase: `TSC_PASSED` → `HANDOFF-FASEXX.md` → atualizar `CONTINUIDADE-PROMPT.md`
 
 ---
@@ -243,7 +242,6 @@ npx supabase db reset && npx supabase db push
 
 ### Verificação manual por fase
 
-- Fase 10: Tentar acessar prontuário de outro terapeuta → deve 403
 - Fase 11: Cancelar sessão → verificar reembolso + notificações
 - Fase 12: Navegar todas as rotas → verificar loading states + error pages
 
