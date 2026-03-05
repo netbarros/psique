@@ -28,6 +28,7 @@ export default function IAPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [errorCode, setErrorCode] = useState<AIErrorCode | null>(null);
+  const [aiModelInUse, setAiModelInUse] = useState<string>("anthropic/claude-3-haiku");
   const scrollRef = useRef<HTMLDivElement | null>(null);
 
   const canSubmit = draft.trim().length > 0 && !loading;
@@ -69,7 +70,12 @@ export default function IAPage() {
       const payload = (await response.json().catch(() => ({}))) as {
         error?: string;
         code?: AIErrorCode;
-        data?: { reply?: string };
+        data?: {
+          reply?: string;
+          ai?: {
+            model?: string;
+          };
+        };
       };
 
       if (response.status === 429) {
@@ -99,6 +105,9 @@ export default function IAPage() {
         content: payload.data?.reply?.trim() || "Sem resposta da IA no momento.",
         createdAt: new Date().toISOString(),
       });
+      if (payload.data?.ai?.model?.trim()) {
+        setAiModelInUse(payload.data.ai.model.trim());
+      }
     } catch (err) {
       setErrorCode(null);
       setError(err instanceof Error ? err.message : "Erro inesperado ao consultar a IA.");
@@ -127,7 +136,7 @@ export default function IAPage() {
               <div className="mt-0.5 flex items-center gap-2 text-xs text-text-muted">
                 <span className="h-2 w-2 rounded-full bg-brand shadow-[0_0_8px_rgba(82,183,136,0.5)]" />
                 <span className="rounded-full border border-border-subtle bg-surface px-2 py-0.5">
-                  Claude 3.5 Sonnet
+                  {aiModelInUse}
                 </span>
               </div>
             </div>

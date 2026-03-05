@@ -7,8 +7,8 @@ import { getAIRatelimiter } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
 import { createClient } from "@/lib/supabase/server";
 import { parseJsonBody } from "@/lib/api/request-validation";
-import { sanitizeOpenRouterApiKeyCandidate } from "@/lib/api/openrouter-key";
 import { classifyAIError } from "@/lib/api/ai-error";
+import { resolveOpenRouterRuntimeConfig } from "@/lib/api/openrouter-runtime";
 
 const postSchema = z.object({
   sessionId: z.string().uuid(),
@@ -86,14 +86,21 @@ export async function POST(req: NextRequest) {
       .order("created_at", { ascending: false })
       .limit(3);
 
+    const runtime = await resolveOpenRouterRuntimeConfig({
+      route,
+      defaultModel: "anthropic/claude-3.5-sonnet",
+      therapistModel: session.therapist?.ai_model,
+      therapistApiKeyCandidate: session.therapist?.openrouter_key_hash,
+    });
+
     // 7. Generate AI summary
     const result = await generateSessionSummary({
       notes,
       patientName: (session.patient as { name: string })?.name ?? "Paciente",
       sessionNumber: session.session_number,
       previousSummaries: history?.map((h) => h.ai_summary!).filter(Boolean),
-      model: session.therapist?.ai_model ?? undefined,
-      apiKey: sanitizeOpenRouterApiKeyCandidate(session.therapist?.openrouter_key_hash),
+      model: runtime.model,
+      apiKey: runtime.apiKey,
     });
 
     // 8. Save result to database
@@ -114,9 +121,23 @@ export async function POST(req: NextRequest) {
       sessionId,
       userId: user.id,
       remaining,
+      model: runtime.modelUsed,
+      modelSource: runtime.modelSource,
+      keySource: runtime.keySource,
     });
 
-    return NextResponse.json({ success: true, data: result });
+    return NextResponse.json({
+      success: true,
+      data: {
+        ...result,
+        ai: {
+          provider: "openrouter",
+          model: runtime.modelUsed,
+          modelSource: runtime.modelSource,
+          keySource: runtime.keySource,
+        },
+      },
+    });
   } catch (error) {
     const classified = classifyAIError(error);
     logger.error("[AI/Summarize] Error", {

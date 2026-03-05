@@ -6,8 +6,8 @@ import { chatWithContext } from "@/lib/openrouter";
 import { getAIRatelimiter } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
 import { parseJsonBody } from "@/lib/api/request-validation";
-import { sanitizeOpenRouterApiKeyCandidate } from "@/lib/api/openrouter-key";
 import { classifyAIError } from "@/lib/api/ai-error";
+import { resolveOpenRouterRuntimeConfig } from "@/lib/api/openrouter-runtime";
 
 const postSchema = z.object({
   messages: z
@@ -86,16 +86,20 @@ export async function POST(req: NextRequest) {
         ai_model: string | null;
         openrouter_key_hash: string | null;
       } | null;
-      const model = settings?.ai_model ?? undefined;
-      const apiKey = sanitizeOpenRouterApiKeyCandidate(settings?.openrouter_key_hash);
+      const runtime = await resolveOpenRouterRuntimeConfig({
+        route,
+        defaultModel: "anthropic/claude-3-haiku",
+        therapistModel: settings?.ai_model,
+        therapistApiKeyCandidate: settings?.openrouter_key_hash,
+      });
 
       patientContext = `Paciente: ${p.name}. Este é um chat de apoio emocional para o paciente. Não compartilhe informações clínicas privadas. Foque em bem-estar, técnicas de mindfulness, reflexão e apoio. Nunca faça diagnósticos. Responda sempre em português brasileiro.`;
 
       const reply = await chatWithContext({
         messages: recentMessages,
         patientContext,
-        model,
-        apiKey,
+        model: runtime.model,
+        apiKey: runtime.apiKey,
       });
 
       logger.info("[AI Chat] Patient chat completed", {
@@ -103,11 +107,22 @@ export async function POST(req: NextRequest) {
         requestId: parsed.requestId,
         patientId: p.id,
         messageCount: recentMessages.length,
+        model: runtime.modelUsed,
+        modelSource: runtime.modelSource,
+        keySource: runtime.keySource,
       });
 
       return NextResponse.json({
         success: true,
-        data: { reply },
+        data: {
+          reply,
+          ai: {
+            provider: "openrouter",
+            model: runtime.modelUsed,
+            modelSource: runtime.modelSource,
+            keySource: runtime.keySource,
+          },
+        },
       });
     }
 
@@ -123,15 +138,40 @@ export async function POST(req: NextRequest) {
       openrouter_key_hash: string | null;
     } | null;
 
+    const runtime = await resolveOpenRouterRuntimeConfig({
+      route,
+      defaultModel: "anthropic/claude-3-haiku",
+      therapistModel: fallbackSettings?.ai_model,
+      therapistApiKeyCandidate: fallbackSettings?.openrouter_key_hash,
+    });
+
     const reply = await chatWithContext({
       messages: recentMessages,
-      model: fallbackSettings?.ai_model ?? undefined,
-      apiKey: sanitizeOpenRouterApiKeyCandidate(fallbackSettings?.openrouter_key_hash),
+      model: runtime.model,
+      apiKey: runtime.apiKey,
+    });
+
+    logger.info("[AI Chat] Therapist chat completed", {
+      route,
+      requestId: parsed.requestId,
+      userId: user.id,
+      messageCount: recentMessages.length,
+      model: runtime.modelUsed,
+      modelSource: runtime.modelSource,
+      keySource: runtime.keySource,
     });
 
     return NextResponse.json({
       success: true,
-      data: { reply },
+      data: {
+        reply,
+        ai: {
+          provider: "openrouter",
+          model: runtime.modelUsed,
+          modelSource: runtime.modelSource,
+          keySource: runtime.keySource,
+        },
+      },
     });
   } catch (error) {
     const classified = classifyAIError(error);

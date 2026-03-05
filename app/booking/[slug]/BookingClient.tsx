@@ -53,6 +53,7 @@ export default function BookingClient({
   uiContent,
 }: BookingClientProps) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
+  const [selectedDayIndex, setSelectedDayIndex] = useState<number>(0);
   const [step, setStep] = useState<"select" | "form" | "processing">("select");
   const [form, setForm] = useState<BookingForm>({
     name: "",
@@ -245,45 +246,61 @@ export default function BookingClient({
           {daysWithSlots.length === 0 ? (
             <div className="py-8 text-center text-text-muted">{uiContent.noSlotsLabel}</div>
           ) : (
-            <div
-              className={`flex flex-col gap-5 ${
-                step === "form" ? "max-h-[320px] overflow-y-auto pr-2" : ""
-              }`}
-            >
-              {daysWithSlots.map((day) => (
-                <div key={day.label}>
-                  <div className="mb-2.5 text-[13px] font-medium text-text-secondary">
-                    {DAYS[day.dayOfWeek]} ·{" "}
-                    {day.date.toLocaleDateString("pt-BR", {
-                      day: "2-digit",
-                      month: "2-digit",
-                    })}
-                  </div>
-                  {/* 3-col slot grid — stitch S02 */}
-                  <div className="grid grid-cols-3 gap-2.5">
-                    {day.times.map((t) => {
-                      const isSelected = selectedSlot === t.iso;
-                      return (
-                        <button
-                          key={t.iso}
-                          type="button"
-                          disabled={t.booked}
-                          onClick={() => handleSlotClick(t.iso, t.booked)}
-                          className={`rounded-xl border py-2.5 text-[14px] font-medium transition-all duration-200 ${
-                            isSelected
-                              ? "border-brand bg-brand text-bg-base shadow-[0_0_10px_rgba(82,183,136,0.2)]"
-                              : t.booked
-                              ? "cursor-not-allowed border-border-subtle bg-surface opacity-40 line-through"
-                              : "border-border-subtle bg-surface text-text-primary hover:border-brand hover:text-brand"
-                          }`}
-                        >
-                          {t.time}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
+            <div>
+              {/* ── Dates Row (Horizontal Swiper) ── */}
+              <div className="flex gap-3 overflow-x-auto pb-4 scrollbar-hide -mx-2 px-2 mask-linear-fade">
+                {daysWithSlots.map((day, index) => {
+                  const isSelected = selectedDayIndex === index;
+                  return (
+                    <button
+                      key={day.label}
+                      onClick={() => {
+                        setSelectedDayIndex(index);
+                        setSelectedSlot(null);
+                      }}
+                      className={`shrink-0 flex flex-col items-center justify-center rounded-[18px] border p-3 min-w-[70px] transition-all duration-300 ${
+                        isSelected
+                          ? "border-brand/50 bg-brand/15 text-brand shadow-[0_0_20px_rgba(82,183,136,0.15)] ring-1 ring-brand/30"
+                          : "border-border-subtle bg-bg-elevated text-text-muted hover:border-brand/30 hover:bg-surface-hover hover:text-text-primary"
+                      }`}
+                    >
+                      <span className="text-[10px] uppercase font-semibold tracking-wider">
+                        {DAYS[day.dayOfWeek]}
+                      </span>
+                      <span className="font-display text-[22px] font-medium mt-1 leading-none">
+                        {day.date.getDate()}
+                      </span>
+                      <span className="text-[10px] opacity-70 mt-1 capitalize">
+                        {day.date.toLocaleDateString("pt-BR", { month: "short" })}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* ── Time Slots Grid ── */}
+              <div className="mt-6 animate-[fadeUp_.3s_ease-out_both] grid grid-cols-3 sm:grid-cols-4 gap-3">
+                {daysWithSlots[selectedDayIndex]?.times.map((t) => {
+                  const isSelected = selectedSlot === t.iso;
+                  return (
+                    <button
+                      key={t.iso}
+                      type="button"
+                      disabled={t.booked}
+                      onClick={() => handleSlotClick(t.iso, t.booked)}
+                      className={`rounded-xl border py-3 text-[14px] font-medium transition-all duration-200 ${
+                        isSelected
+                          ? "border-brand bg-brand text-bg-base shadow-[0_0_15px_rgba(82,183,136,0.3)] scale-[1.02]"
+                          : t.booked
+                          ? "cursor-not-allowed border-border-subtle bg-surface/30 text-text-muted/40 line-through"
+                          : "border-border-subtle bg-bg-elevated text-text-primary hover:border-brand/70 hover:text-brand hover:shadow-sm"
+                      }`}
+                    >
+                      {t.time}
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           )}
         </div>
@@ -376,31 +393,30 @@ export default function BookingClient({
             </div>
           </div>
 
-          {/* Summary & submit — stitch S02 sticky-like bottom summary */}
-          <div className="mt-5 flex flex-col items-center justify-between gap-4 rounded-xl border border-border-subtle bg-surface-hover/30 p-4 sm:flex-row sm:items-start">
-            <div className="text-center sm:text-left">
-              <div className="mb-1 text-[11px] text-text-muted">Valor da sessão</div>
-              <div className="font-display text-[28px] font-light text-gold">
-                R$ {sessionPrice.toFixed(2)}
+          <div className="pb-28 sm:pb-0 relative z-0">
+            {/* Sticky/Fixed bottom summary no Mobile, block fixo no Desktop */}
+            <div className="fixed sm:static bottom-0 inset-x-0 z-50 border-t sm:border-t-0 sm:border border-border-strong sm:border-border-subtle bg-surface/90 sm:bg-surface-hover/30 p-4 sm:p-5 sm:rounded-2xl sm:mt-8 backdrop-blur-xl sm:backdrop-blur-none shadow-[0_-10px_40px_rgba(0,0,0,0.2)] sm:shadow-none flex flex-row items-center justify-between gap-4">
+              <div className="text-left">
+                <div className="mb-0.5 text-[11px] text-text-muted uppercase tracking-wider">Investimento</div>
+                <div className="font-display text-[26px] sm:text-[28px] font-medium text-gold leading-none drop-shadow-sm">
+                  R$ {sessionPrice.toFixed(2)}
+                </div>
               </div>
+              <button
+                type="button"
+                onClick={handleSubmit}
+                className="rounded-xl flex-1 max-w-[200px] bg-brand px-6 py-3.5 text-[14px] font-medium text-bg-base shadow-[0_4px_20px_rgba(82,183,136,0.25)] transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] hover:bg-brand-hover hover:shadow-[0_4px_32px_rgba(82,183,136,0.4)]"
+              >
+                {uiContent.submitLabel}
+              </button>
             </div>
-            {/* Stitch S02: bg-brand, text-bg-base, glow shadow */}
-            <button
-              type="button"
-              onClick={handleSubmit}
-              className="w-full rounded-xl bg-brand px-8 py-3.5 text-[15px] font-semibold text-bg-base shadow-[0_4px_20px_rgba(82,183,136,0.25)] transition-all duration-300 hover:scale-[1.02] hover:bg-brand-hover hover:shadow-[0_4px_32px_rgba(82,183,136,0.4)] sm:w-auto"
-            >
-              {uiContent.submitLabel}
-            </button>
           </div>
 
-          <div className="mt-3 text-center text-[11px] font-light tracking-wide text-text-muted">
+          <div className="mt-6 mb-12 sm:mb-0 text-center text-[11px] font-light tracking-wide text-text-muted hidden sm:block">
             {uiContent.footerNote}
           </div>
         </div>
       )}
-
-      {/* ── Step 3: Processing ── */}
       {step === "processing" && (
         <div className="rounded-2xl border border-border-subtle bg-surface/50 p-[60px_28px] text-center backdrop-blur-md">
           <div className="mx-auto mb-5 h-12 w-12 animate-spin rounded-full border-4 border-border-subtle border-t-brand" />

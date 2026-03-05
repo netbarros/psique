@@ -4,8 +4,8 @@ import { createClient } from "@/lib/supabase/server";
 import { generatePatientInsights } from "@/lib/openrouter";
 import { getAIRatelimiter } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
-import { sanitizeOpenRouterApiKeyCandidate } from "@/lib/api/openrouter-key";
 import { classifyAIError } from "@/lib/api/ai-error";
+import { resolveOpenRouterRuntimeConfig } from "@/lib/api/openrouter-runtime";
 
 const postSchema = z.object({
   patientLimit: z.number().int().min(1).max(50).optional(),
@@ -105,17 +105,34 @@ export async function POST(req: Request) {
       };
     });
 
+    const runtime = await resolveOpenRouterRuntimeConfig({
+      route,
+      defaultModel: "anthropic/claude-3.5-sonnet",
+      therapistModel: therapist.ai_model,
+      therapistApiKeyCandidate: therapist.openrouter_key_hash,
+    });
+
     if (patientsData.length === 0) {
       return NextResponse.json({
         success: true,
-        data: { insights: ["Adicione pacientes para gerar insights de carteira."], recommendations: [], alerts: [] },
+        data: {
+          insights: ["Adicione pacientes para gerar insights de carteira."],
+          recommendations: [],
+          alerts: [],
+          ai: {
+            provider: "openrouter",
+            model: runtime.modelUsed,
+            modelSource: runtime.modelSource,
+            keySource: runtime.keySource,
+          },
+        },
       });
     }
 
     const result = await generatePatientInsights({
       patients: patientsData,
-      model: therapist.ai_model ?? undefined,
-      apiKey: sanitizeOpenRouterApiKeyCandidate(therapist.openrouter_key_hash),
+      model: runtime.model,
+      apiKey: runtime.apiKey,
     });
 
     logger.info("[AI/Insights] Generated insights", {
@@ -123,9 +140,23 @@ export async function POST(req: Request) {
       therapistId: therapist.id,
       patientCount: patientsData.length,
       patientLimit,
+      model: runtime.modelUsed,
+      modelSource: runtime.modelSource,
+      keySource: runtime.keySource,
     });
 
-    return NextResponse.json({ success: true, data: result });
+    return NextResponse.json({
+      success: true,
+      data: {
+        ...result,
+        ai: {
+          provider: "openrouter",
+          model: runtime.modelUsed,
+          modelSource: runtime.modelSource,
+          keySource: runtime.keySource,
+        },
+      },
+    });
   } catch (error) {
     const classified = classifyAIError(error);
     logger.error("[AI/Insights] Error", {

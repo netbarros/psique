@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 type PatientOption = { id: string; name: string };
@@ -12,9 +12,22 @@ export function NewAppointmentSheet({
 }) {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState<"sessao" | "bloqueio">("sessao");
-  
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const [dateStr, setDateStr] = useState("");
+  const [timeStr, setTimeStr] = useState("");
+
+  React.useEffect(() => {
+    const handleOpen = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      setOpen(true);
+      if (customEvent.detail?.date) setDateStr(customEvent.detail.date);
+      if (customEvent.detail?.time) setTimeStr(customEvent.detail.time);
+    };
+    window.addEventListener("open-new-appointment", handleOpen);
+    return () => window.removeEventListener("open-new-appointment", handleOpen);
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -184,6 +197,8 @@ export function NewAppointmentSheet({
                       type="date"
                       name="date"
                       required
+                      value={dateStr}
+                      onChange={(e) => setDateStr(e.target.value)}
                       data-theme="dark"
                       className="w-full rounded-xl border border-border-strong bg-bg-base py-2.5 pl-10 pr-3 text-sm text-text-primary outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand scheme-dark"
                     />
@@ -202,6 +217,8 @@ export function NewAppointmentSheet({
                       name="time"
                       required
                       step="1800"
+                      value={timeStr}
+                      onChange={(e) => setTimeStr(e.target.value)}
                       data-theme="dark"
                       className="w-full rounded-xl border border-border-strong bg-bg-base py-2.5 pl-10 pr-3 text-sm text-text-primary outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand scheme-dark"
                     />

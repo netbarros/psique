@@ -119,6 +119,8 @@ describe("AI routes behavior", () => {
       const json = await res.json();
       expect(json.success).toBe(true);
       expect(json.data.reply).toBe("ok");
+      expect(json.data.ai?.provider).toBe("openrouter");
+      expect(json.data.ai?.model).toBe("anthropic/claude-3-haiku");
     });
 
     it("returns 429 when rate limited", async () => {
@@ -248,9 +250,11 @@ describe("AI routes behavior", () => {
       const json = await res.json();
       expect(json.success).toBe(true);
       expect(json.data.insights).toContain("insight");
+      expect(json.data.ai?.provider).toBe("openrouter");
+      expect(json.data.ai?.model).toBe("anthropic/claude-3.5-sonnet");
       expect(generatePatientInsightsMock).toHaveBeenCalledWith(
         expect.objectContaining({
-          apiKey: undefined,
+          model: "anthropic/claude-3.5-sonnet",
         })
       );
     });
@@ -401,6 +405,8 @@ describe("AI routes behavior", () => {
       const json = await res.json();
       expect(json.success).toBe(true);
       expect(json.data.summary).toBe("Resumo");
+      expect(json.data.ai?.provider).toBe("openrouter");
+      expect(json.data.ai?.model).toBe("anthropic/claude-3.5-sonnet");
     });
 
     it("returns 429 when rate limited", async () => {

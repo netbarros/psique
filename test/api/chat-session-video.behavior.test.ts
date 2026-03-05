@@ -190,6 +190,8 @@ describe("Patient chat, sessions close and video room behavior", () => {
       const body = await res.json();
       expect(body.success).toBe(true);
       expect(body.data.reply).toBe("Resposta");
+      expect(body.data.ai?.provider).toBe("openrouter");
+      expect(body.data.ai?.model).toBe("anthropic/claude-3-haiku");
     });
 
     it("returns 429 when rate limited", async () => {

@@ -5,8 +5,8 @@ import { chatWithContext } from "@/lib/openrouter";
 import { getAIRatelimiter } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
 import { parseJsonBody } from "@/lib/api/request-validation";
-import { sanitizeOpenRouterApiKeyCandidate } from "@/lib/api/openrouter-key";
 import { classifyAIError } from "@/lib/api/ai-error";
+import { resolveOpenRouterRuntimeConfig } from "@/lib/api/openrouter-runtime";
 
 const postSchema = z.object({
   content: z.string().trim().min(1).max(4000),
@@ -150,11 +150,18 @@ export async function POST(request: Request) {
     .single();
 
   try {
+    const runtime = await resolveOpenRouterRuntimeConfig({
+      route,
+      defaultModel: "anthropic/claude-3-haiku",
+      therapistModel: therapistSettings?.ai_model,
+      therapistApiKeyCandidate: therapistSettings?.openrouter_key_hash,
+    });
+
     const reply = await chatWithContext({
       messages: recentMessages,
       patientContext: `Paciente: ${patient.patientName}. Responda em português brasileiro com acolhimento, sem diagnóstico e sem prescrição. Foque em suporte breve, técnicas de regulação emocional e orientação para levar o tema à sessão clínica.`,
-      model: therapistSettings?.ai_model ?? undefined,
-      apiKey: sanitizeOpenRouterApiKeyCandidate(therapistSettings?.openrouter_key_hash),
+      model: runtime.model,
+      apiKey: runtime.apiKey,
     });
 
     const { data: assistantMessage, error: assistantError } = await supabase
@@ -189,6 +196,9 @@ export async function POST(request: Request) {
       requestId: parsed.requestId,
       threadId,
       patientId: patient.patientId,
+      model: runtime.modelUsed,
+      modelSource: runtime.modelSource,
+      keySource: runtime.keySource,
     });
 
     return NextResponse.json({
@@ -201,6 +211,12 @@ export async function POST(request: Request) {
           role: assistantMessage.role,
           content: assistantMessage.content,
           createdAt: assistantMessage.created_at,
+        },
+        ai: {
+          provider: "openrouter",
+          model: runtime.modelUsed,
+          modelSource: runtime.modelSource,
+          keySource: runtime.keySource,
         },
       },
     });
