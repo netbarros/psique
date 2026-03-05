@@ -2,8 +2,12 @@ import { logger } from "@/lib/logger";
 
 const TELEGRAM_API = `https://api.telegram.org/bot${process.env.TELEGRAM_BOT_TOKEN}`;
 
+export type InlineKeyboardButton =
+  | { text: string; callback_data: string; url?: never }
+  | { text: string; url: string; callback_data?: never };
+
 export interface InlineKeyboardMarkup {
-  inline_keyboard: Array<Array<{ text: string; callback_data: string }>>;
+  inline_keyboard: Array<Array<InlineKeyboardButton>>;
 }
 
 export interface ReplyKeyboardMarkup {
@@ -75,7 +79,7 @@ export async function answerCallbackQuery(params: {
 }
 
 export function inlineKeyboard(
-  buttons: Array<Array<{ text: string; callback_data: string }>>
+  buttons: Array<Array<InlineKeyboardButton>>
 ): InlineKeyboardMarkup {
   return { inline_keyboard: buttons };
 }

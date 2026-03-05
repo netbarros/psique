@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PSIQUE - Therapist Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --bg: #080f0b;
+            --bg2: #0c1510;
+            --card: #121a14;
+            --border: #1c2e20;
+            --mint: #52b788;
+            --mintl: #74c9a0;
+            --gold: #c4a35a;
+            --ivory: #ede7d9;
+            --ivoryD: #c8bfa8;
+            --ivoryDD: #8a8070;
+            --red: #b85450;
+            --blue: #4a8fa8;
+            --ff: 'Cormorant Garamond', serif;
+            --fs: 'Instrument Sans', sans-serif;
+        }
+        body {
+            font-family: var(--fs);
+            background-color: var(--bg);
+            color: var(--ivory);
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6, .serif {
+            font-family: var(--ff);
+        }::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--mint);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col bg-[var(--bg)]">
+<header class="sticky top-0 z-50 bg-[var(--bg2)]/90 backdrop-blur-md border-b border-[var(--border)] px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="text-[var(--ivory)] hover:text-[var(--mint)] transition-colors">
+<span class="material-symbols-outlined text-2xl">menu</span>
+</button>
+<h1 class="serif text-2xl font-semibold tracking-wide text-[var(--ivory)]">PSIQUE</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative text-[var(--ivoryD)] hover:text-[var(--ivory)] transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-[var(--mint)] rounded-full border border-[var(--bg2)]"></span>
+</button>
+<div class="w-8 h-8 rounded-full bg-[var(--card)] border border-[var(--border)] overflow-hidden">
+<img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLXwYBVGH1m6p2ypGI30JMjXqiGW1Z4UKmkf2E4onXSNa_AUdu3O1zDxkQtnW8BsjQMnLoHBmCUc-qrr-Xjk0HkyfmYTz2mrBrrpBebEpfbdnm5JwzI16FXZ4Rz4FKtWGRfvrarr3t2RP9BXVNrN8USQX0AVF_o5AVsIJi_XxiJVdzBNn5nXahyCRS7Dz83TN9Xdj1rdUwW_sYrzT3YFFMgpEporqtNLQ7ULX-4A5g7d-bKziN3ApQL4SjOtblmJsMaQLNqPm7YsH2"/>
+</div>
+</div>
+</header>
+<main class="flex-1 p-4 pb-20 space-y-6 overflow-y-auto">
+<section class="space-y-1">
+<h2 class="serif text-3xl font-semibold text-[var(--ivory)]">Good Morning, Dr. Silva</h2>
+<p class="text-sm text-[var(--ivoryDD)]">Here's your clinical overview for today, October 24th.</p>
+</section>
+<section class="grid grid-cols-2 gap-3">
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-medium text-[var(--ivoryDD)] uppercase tracking-wider">MRR</span>
+<span class="material-symbols-outlined text-[16px] text-[var(--mint)]">trending_up</span>
+</div>
+<div>
+<span class="serif text-2xl font-bold text-[var(--ivory)]">R$ 12.4k</span>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-[10px] text-[var(--mint)] bg-[var(--mint)]/10 px-1.5 py-0.5 rounded flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[10px]">arrow_upward</span> 8%
+                        </span>
+</div>
+</div>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-medium text-[var(--ivoryDD)] uppercase tracking-wider">NPS</span>
+<span class="material-symbols-outlined text-[16px] text-[var(--gold)]">star</span>
+</div>
+<div>
+<span class="serif text-2xl font-bold text-[var(--ivory)]">4.8</span>
+<div class="flex items-center gap-1 mt-1">
+<span class="text-[10px] text-[var(--ivoryDD)]">Avg. last 30 days</span>
+</div>
+</div>
+</div>
+<div class="col-span-2 bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-center justify-between">
+<div>
+<span class="text-xs font-medium text-[var(--ivoryDD)] uppercase tracking-wider block mb-1">Session Attendance</span>
+<div class="flex items-baseline gap-2">
+<span class="serif text-2xl font-bold text-[var(--ivory)]">94%</span>
+<span class="text-xs text-[var(--mint)]">+2% vs last week</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full border-4 border-[var(--mint)]/20 border-t-[var(--mint)] flex items-center justify-center">
+<span class="material-symbols-outlined text-[var(--mint)]">check_circle</span>
+</div>
+</div>
+</section>
+<section class="bg-gradient-to-br from-[var(--bg2)] to-[var(--card)] border border-[var(--mint)]/30 rounded-2xl p-5 relative overflow-hidden shadow-[0_0_15px_rgba(82,183,136,0.05)]">
+<div class="absolute -right-6 -top-6 w-24 h-24 bg-[var(--mint)]/5 rounded-full blur-xl"></div>
+<div class="flex items-start justify-between mb-4 relative z-10">
+<div>
+<span class="inline-flex items-center gap-1 text-[10px] font-semibold text-[var(--mint)] bg-[var(--mint)]/10 px-2 py-1 rounded-full uppercase tracking-widest mb-2">
+<span class="w-1.5 h-1.5 rounded-full bg-[var(--mint)] animate-pulse"></span>
+                        Up Next
+                    </span>
+<h3 class="serif text-xl font-semibold text-[var(--ivory)]">Marina Costa</h3>
+<p class="text-sm text-[var(--ivoryD)] flex items-center gap-1 mt-1">
+<span class="material-symbols-outlined text-[14px]">schedule</span>
+                        10:00 - 10:50 AM
+                    </p>
+</div>
+<div class="text-right">
+<span class="text-xs text-[var(--ivoryDD)] block">Session #12</span>
+<span class="text-[10px] text-[var(--blue)] bg-[var(--blue)]/10 px-1.5 py-0.5 rounded mt-1 inline-block">Online</span>
+</div>
+</div>
+<div class="flex gap-3 relative z-10">
+<button class="flex-1 bg-[var(--mint)] hover:bg-[var(--mintl)] text-[var(--bg)] font-semibold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_4px_10px_rgba(82,183,136,0.2)]">
+<span class="material-symbols-outlined text-[20px]">videocam</span>
+                    Join Session
+                </button>
+<button class="bg-[var(--card)] hover:bg-[var(--border)] border border-[var(--border)] text-[var(--ivory)] py-3 px-4 rounded-xl transition-colors">
+<span class="material-symbols-outlined text-[20px]">sticky_note_2</span>
+</button>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="serif text-xl font-semibold text-[var(--ivory)]">Today's Schedule</h3>
+<button class="text-sm text-[var(--mint)] font-medium hover:text-[var(--mintl)]">View all</button>
+</div>
+<div class="space-y-3">
+<div class="flex gap-4 opacity-50">
+<div class="w-12 text-right pt-1">
+<span class="text-xs font-medium text-[var(--ivoryDD)]">09:00</span>
+</div>
+<div class="flex-1 bg-[var(--bg2)] border border-[var(--border)] rounded-xl p-3 flex justify-between items-center">
+<div>
+<p class="font-medium text-[var(--ivory)] text-sm">Ricardo Mendes</p>
+<p class="text-xs text-[var(--ivoryDD)]">Completed</p>
+</div>
+<span class="material-symbols-outlined text-[var(--ivoryDD)]">check</span>
+</div>
+</div>
+<div class="flex gap-4 relative">
+<div class="absolute left-[54px] top-1/2 bottom-0 w-[1px] bg-gradient-to-b from-[var(--mint)]/50 to-transparent -z-10"></div>
+<div class="w-12 text-right pt-1">
+<span class="text-xs font-medium text-[var(--mint)]">10:00</span>
+</div>
+<div class="flex-1 bg-[var(--card)] border border-[var(--mint)]/30 rounded-xl p-3 flex justify-between items-center">
+<div>
+<p class="font-medium text-[var(--ivory)] text-sm">Marina Costa</p>
+<p class="text-xs text-[var(--mint)]">Starting now</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-[var(--mint)]/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-[var(--mint)]">videocam</span>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-12 text-right pt-1">
+<span class="text-xs font-medium text-[var(--ivoryDD)]">14:00</span>
+</div>
+<div class="flex-1 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 flex justify-between items-center">
+<div>
+<p class="font-medium text-[var(--ivory)] text-sm">Elena Soares</p>
+<p class="text-xs text-[var(--ivoryDD)]">In-person</p>
+</div>
+<span class="text-xs text-[var(--gold)] border border-[var(--gold)]/30 bg-[var(--gold)]/10 px-2 py-0.5 rounded-full">New</span>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-12 text-right pt-1">
+<span class="text-xs font-medium text-[var(--ivoryDD)]">16:30</span>
+</div>
+<div class="flex-1 bg-[var(--card)] border border-[var(--border)] rounded-xl p-3 flex justify-between items-center">
+<div>
+<p class="font-medium text-[var(--ivory)] text-sm">Lucas Ferreira</p>
+<p class="text-xs text-[var(--ivoryDD)]">Online</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section class="space-y-3">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-[var(--gold)]">auto_awesome</span>
+<h3 class="serif text-xl font-semibold text-[var(--ivory)]">AI Clinical Insights</h3>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 space-y-4">
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-[var(--blue)]/10 border border-[var(--blue)]/20 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px] text-[var(--blue)]">psychology</span>
+</div>
+<div>
+<p class="text-sm font-medium text-[var(--ivory)]">Pattern Detected: Ricardo M.</p>
+<p class="text-xs text-[var(--ivoryD)] mt-1 leading-relaxed">Recent sessions indicate a recurring theme of workplace anxiety linked to imposter syndrome. Suggested focus for next session: early career experiences.</p>
+</div>
+</div>
+<div class="h-px w-full bg-[var(--border)]"></div>
+<div class="flex items-start gap-3">
+<div class="w-8 h-8 rounded-full bg-[var(--mint)]/10 border border-[var(--mint)]/20 flex items-center justify-center shrink-0 mt-0.5">
+<span class="material-symbols-outlined text-[16px] text-[var(--mint)]">summarize</span>
+</div>
+<div>
+<p class="text-sm font-medium text-[var(--ivory)]">2 Summaries Ready</p>
+<p class="text-xs text-[var(--ivoryD)] mt-1">AI has generated clinical notes for yesterday's sessions with Ana P. and João V.</p>
+<button class="text-xs text-[var(--mint)] mt-2 font-medium hover:underline">Review &amp; Sign</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 w-full bg-[var(--bg2)]/90 backdrop-blur-md border-t border-[var(--border)] px-6 py-3 pb-safe">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<a class="flex flex-col items-center gap-1 text-[var(--mint)]" href="#">
+<span class="material-symbols-outlined text-2xl">dashboard</span>
+<span class="text-[10px] font-medium">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">calendar_month</span>
+<span class="text-[10px] font-medium">Agenda</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors" href="#">
+<span class="material-symbols-outlined text-2xl">group</span>
+<span class="text-[10px] font-medium">Patients</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors relative" href="#">
+<span class="material-symbols-outlined text-2xl">chat</span>
+<span class="text-[10px] font-medium">Messages</span>
+<span class="absolute top-0 right-2 w-2 h-2 bg-[var(--mint)] rounded-full"></span>
+</a>
+</div>
+</nav>
+<style>
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 1rem);
+        }
+    </style>
+
+</body></html>

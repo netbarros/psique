@@ -1,7 +1,14 @@
 import Stripe from "stripe";
 import { logger } from "@/lib/logger";
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+const stripeSecretKey =
+  process.env.STRIPE_SECRET_KEY ?? "sk_test_000000000000000000000000";
+
+if (!process.env.STRIPE_SECRET_KEY && process.env.NODE_ENV !== "test") {
+  logger.warn("[Stripe] STRIPE_SECRET_KEY is missing. Stripe calls will fail at runtime.");
+}
+
+export const stripe = new Stripe(stripeSecretKey, {
   apiVersion: "2026-02-25.clover",
   typescript: true,
 });

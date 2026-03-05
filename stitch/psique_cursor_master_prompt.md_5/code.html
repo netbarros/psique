@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AI Clinical Assistant Workspace</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Instrument+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['"Instrument Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        psique: {
+                            bg: '#080f0b',
+                            bg2: '#0c1510',
+                            card: '#121a14',
+                            border: '#1c2e20',
+                            mint: '#52b788',
+                            mintl: '#74c9a0',
+                            gold: '#c4a35a',
+                            ivory: '#ede7d9',
+                            ivoryD: '#c8bfa8',
+                            ivoryDD: '#8a8070',
+                            red: '#b85450',
+                            blue: '#4a8fa8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            @apply bg-psique-bg text-psique-ivory font-sans antialiased overflow-hidden h-screen flex flex-col;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body>
+<header class="flex items-center justify-between px-6 py-4 border-b border-psique-border bg-psique-bg2 shrink-0">
+<div class="flex items-center gap-3">
+<button class="text-psique-ivoryDD hover:text-psique-ivory transition-colors">
+<span class="material-symbols-outlined text-[24px]">arrow_back_ios_new</span>
+</button>
+<div>
+<h1 class="font-serif text-xl font-semibold text-psique-ivory tracking-wide leading-tight">Therapeutic AI</h1>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="w-2 h-2 rounded-full bg-psique-mint shadow-[0_0_8px_rgba(82,183,136,0.5)]"></span>
+<span class="text-xs text-psique-ivoryDD">Claude 3.5 Sonnet</span>
+</div>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full bg-psique-card border border-psique-border flex items-center justify-center text-psique-ivory hover:border-psique-mint transition-colors">
+<span class="material-symbols-outlined text-[20px]">history</span>
+</button>
+</header>
+<main class="flex-1 flex flex-col overflow-hidden relative">
+<div class="shrink-0 px-6 py-5 overflow-x-auto hide-scrollbar border-b border-psique-border/50 bg-gradient-to-b from-psique-bg2/50 to-transparent">
+<div class="flex gap-3 w-max">
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-full border border-psique-border bg-psique-card hover:border-psique-mint/50 hover:bg-psique-bg transition-all group">
+<span class="material-symbols-outlined text-[18px] text-psique-gold group-hover:text-psique-mint transition-colors">description</span>
+<span class="text-sm font-medium text-psique-ivoryD">Generate Case Study</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-full border border-psique-border bg-psique-card hover:border-psique-mint/50 hover:bg-psique-bg transition-all group">
+<span class="material-symbols-outlined text-[18px] text-psique-blue group-hover:text-psique-mint transition-colors">monitoring</span>
+<span class="text-sm font-medium text-psique-ivoryD">Analyze Portfolio Health</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2.5 rounded-full border border-psique-border bg-psique-card hover:border-psique-mint/50 hover:bg-psique-bg transition-all group">
+<span class="material-symbols-outlined text-[18px] text-psique-red group-hover:text-psique-mint transition-colors">warning</span>
+<span class="text-sm font-medium text-psique-ivoryD">Review Clinical Risk</span>
+</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto hide-scrollbar px-6 py-6 space-y-6">
+<div class="flex flex-col items-center justify-center py-12 text-center space-y-4">
+<div class="w-16 h-16 rounded-full bg-psique-card border border-psique-mint/30 flex items-center justify-center shadow-[0_0_30px_rgba(82,183,136,0.1)]">
+<span class="material-symbols-outlined text-[32px] text-psique-mint">psychiatry</span>
+</div>
+<div>
+<h2 class="font-serif text-2xl text-psique-ivory mb-2">How can I assist your practice today?</h2>
+<p class="text-sm text-psique-ivoryDD max-w-[280px] mx-auto leading-relaxed">
+                        Secure, confidential analysis powered by Claude 3.5 Sonnet. Select a template above or type your request below.
+                    </p>
+</div>
+</div>
+<div class="flex justify-end">
+<div class="max-w-[85%] bg-psique-card border border-psique-border rounded-2xl rounded-tr-sm px-5 py-4 shadow-sm">
+<p class="text-sm text-psique-ivory leading-relaxed">
+                        Please analyze the latest session notes for Patient ID #8492 and identify any underlying themes related to workplace anxiety.
+                    </p>
+<span class="text-[10px] text-psique-ivoryDD mt-2 block text-right">09:41 AM</span>
+</div>
+</div>
+<div class="flex justify-start">
+<div class="max-w-[90%] space-y-3">
+<div class="flex items-center gap-2 mb-1">
+<div class="w-6 h-6 rounded-full bg-psique-mint/20 border border-psique-mint/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-psique-mint">smart_toy</span>
+</div>
+<span class="text-xs font-medium text-psique-mintl">PSIQUE AI</span>
+</div>
+<div class="bg-transparent border border-psique-mint/30 rounded-2xl rounded-tl-sm px-5 py-4 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-psique-mint/50"></div>
+<p class="text-sm text-psique-ivoryD leading-relaxed mb-4">
+                            Based on the provided notes for Patient ID #8492, several recurring themes indicate acute workplace anxiety, specifically tied to performance evaluation.
+                        </p>
+<div class="space-y-2 mb-4">
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-[16px] text-psique-gold shrink-0 mt-0.5">emergency</span>
+<p class="text-sm text-psique-ivoryD"><strong class="text-psique-ivory font-medium">Imposter Syndrome:</strong> Frequent mentions of feeling "unqualified" despite recent promotions.</p>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-[16px] text-psique-gold shrink-0 mt-0.5">emergency</span>
+<p class="text-sm text-psique-ivoryD"><strong class="text-psique-ivory font-medium">Avoidance Behaviors:</strong> Canceling 1:1 meetings with leadership due to physical symptoms (nausea).</p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-psique-border flex items-center justify-between">
+<span class="text-xs text-psique-ivoryDD flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+                                End-to-end encrypted
+                            </span>
+<div class="flex gap-2">
+<button class="text-psique-ivoryDD hover:text-psique-ivory transition-colors">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+<button class="text-psique-ivoryDD hover:text-psique-mint transition-colors">
+<span class="material-symbols-outlined text-[18px]">thumb_up</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="h-4"></div> 
+</div>
+<div class="p-4 bg-psique-bg border-t border-psique-border relative z-10 shrink-0">
+<div class="relative flex items-end gap-3 bg-psique-card border border-psique-border rounded-2xl p-2 focus-within:border-psique-mint/60 transition-colors shadow-lg">
+<button class="p-2.5 text-psique-ivoryDD hover:text-psique-ivory transition-colors shrink-0">
+<span class="material-symbols-outlined text-[22px]">attach_file</span>
+</button>
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-psique-ivory placeholder:text-psique-ivoryDD/60 text-sm resize-none py-3 max-h-32 min-h-[44px]" placeholder="Ask about a patient, request an analysis, or summarize notes..." rows="1"></textarea>
+<button class="p-2.5 bg-psique-mint text-psique-bg rounded-xl hover:bg-psique-mintl transition-colors shrink-0 shadow-[0_4px_12px_rgba(82,183,136,0.3)]">
+<span class="material-symbols-outlined text-[20px] font-medium">arrow_upward</span>
+</button>
+</div>
+<div class="text-center mt-3">
+<span class="text-[10px] text-psique-ivoryDD/70 uppercase tracking-widest font-medium">Confidential &amp; HIPAA / LGPD Compliant</span>
+</div>
+</div>
+</main>
+
+</body></html>

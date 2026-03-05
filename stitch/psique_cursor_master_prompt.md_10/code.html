@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PSIQUE - Portal de Reflexão</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+    :root {
+      --bg: #F8F9FA;--card: #FFFFFF;--border: #E2E8F0;--primary: #4A8FA8;--primary-hover: #3b7489;
+      --text-main: #2D3748;--text-muted: #718096;--accent: #EBF4F7;--ff-heading: 'Cormorant Garamond', serif;
+      --ff-body: 'Instrument Sans', sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      font-family: var(--ff-body);
+      color: var(--text-main);
+      -webkit-font-smoothing: antialiased;
+    }
+    h1, h2, h3, h4, h5, h6, .font-heading {
+      font-family: var(--ff-heading);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      box-shadow: 0 4px 20px rgba(74, 143, 168, 0.05);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen pb-20 md:pb-0 selection:bg-[var(--primary)] selection:text-white">
+<header class="sticky top-0 z-50 bg-[var(--bg)]/80 backdrop-blur-md border-b border-[var(--border)] px-6 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[var(--accent)] flex items-center justify-center text-[var(--primary)]">
+<span class="material-symbols-outlined text-[20px]">psychology</span>
+</div>
+<div>
+<p class="text-xs text-[var(--text-muted)] font-medium tracking-widest uppercase">Portal do Paciente</p>
+<h1 class="text-xl font-heading font-semibold text-[var(--text-main)] leading-tight">PSIQUE</h1>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full border border-[var(--border)] bg-white flex items-center justify-center text-[var(--text-main)] shadow-sm">
+<img alt="Profile" class="w-full h-full rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA685L_XQWfcGxO-KgCYX7RgII8w2eHxF-EcsmssEXbcpRby-HNARE62p4NEIBopDehEjRYxFOdZ1zQrv4S7-IPDH32ZsoZr4Sl0ivdf9IdnovceSZUv_sjd-q4SeSgXgWNKCjzorYlFwT8KfVhd1XLvotl_CrrJO7vJ05n8XTW5kD4qkQUM8dC-mZA-Ea0YRxvBp_JreJ2mtSond-L3KQ5pD_VngUTSn3_2Fw3fPHvC08Pz5Ed8dnqAS8W6FMUmzEM9CE0qmEnZxQ_"/>
+</button>
+</header>
+<main class="max-w-md mx-auto p-6 space-y-8">
+<section>
+<h2 class="text-3xl font-heading font-medium text-[var(--text-main)] mb-2">Bom dia, Helena.</h2>
+<p class="text-[var(--text-muted)] text-base">"A mente que se abre a uma nova ideia jamais voltará ao seu tamanho original."</p>
+</section>
+<section>
+<div class="glass-card rounded-2xl overflow-hidden relative">
+<div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[var(--primary)] to-blue-300"></div>
+<div class="p-6">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2 text-[var(--primary)] bg-[var(--accent)] px-3 py-1 rounded-full text-xs font-medium">
+<span class="material-symbols-outlined text-[14px]">event</span>
+              Próxima Sessão
+            </div>
+<span class="text-sm font-medium text-[var(--text-muted)]">Faltam 2 dias</span>
+</div>
+<div class="mb-6">
+<h3 class="text-2xl font-heading font-semibold mb-1">Quinta-feira, 24 de Out</h3>
+<p class="text-[var(--text-muted)] flex items-center gap-1.5 text-sm">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+              14:00 - 14:50 (50 min)
+            </p>
+<p class="text-[var(--text-muted)] flex items-center gap-1.5 text-sm mt-1">
+<span class="material-symbols-outlined text-[16px]">person</span>
+              Dr. Carlos Mendes
+            </p>
+</div>
+<button class="w-full bg-[var(--primary)] hover:bg-[var(--primary-hover)] text-white py-3.5 px-4 rounded-xl font-medium transition-colors flex items-center justify-center gap-2 shadow-md shadow-blue-900/10">
+<span class="material-symbols-outlined">videocam</span>
+            Entrar na Sala Virtual
+          </button>
+</div>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-heading font-medium flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--primary)]">edit_note</span>
+          Diário de Reflexão
+        </h3>
+<button class="text-sm text-[var(--primary)] font-medium hover:underline">Ver todos</button>
+</div>
+<p class="text-sm text-[var(--text-muted)]">Um espaço seguro para anotar seus pensamentos, sonhos ou sentimentos entre as sessões.</p>
+<div class="bg-white rounded-2xl border border-[var(--border)] shadow-sm overflow-hidden focus-within:ring-2 focus-within:ring-[var(--primary)]/20 focus-within:border-[var(--primary)] transition-all">
+<textarea class="w-full p-4 border-0 focus:ring-0 text-[var(--text-main)] placeholder:text-gray-300 resize-none min-h-[120px] bg-transparent" placeholder="O que está em sua mente hoje?"></textarea>
+<div class="px-4 py-3 bg-gray-50 border-t border-[var(--border)] flex justify-between items-center">
+<div class="flex gap-2 text-[var(--text-muted)]">
+<button class="p-1.5 rounded-md hover:bg-gray-200 transition-colors"><span class="material-symbols-outlined text-[18px]">mood</span></button>
+<button class="p-1.5 rounded-md hover:bg-gray-200 transition-colors"><span class="material-symbols-outlined text-[18px]">mic</span></button>
+</div>
+<button class="bg-[var(--text-main)] hover:bg-black text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-colors">
+            Salvar
+          </button>
+</div>
+</div>
+<div class="bg-white p-5 rounded-2xl border border-[var(--border)] shadow-sm">
+<div class="flex justify-between items-start mb-2">
+<span class="text-xs font-medium text-[var(--text-muted)] uppercase tracking-wider">Ontem, 21:45</span>
+<span class="bg-gray-100 text-gray-600 px-2 py-0.5 rounded text-[10px] font-medium">Sonho</span>
+</div>
+<p class="text-sm leading-relaxed text-[var(--text-main)] line-clamp-3">
+          Tive aquele sonho recorrente de novo. Eu estava correndo em um corredor que não tinha fim, mas desta vez as paredes não estavam apertando. Senti uma leveza estranha ao acordar.
+        </p>
+</div>
+</section>
+<section class="grid grid-cols-2 gap-4 pb-6">
+<button class="bg-white p-4 rounded-2xl border border-[var(--border)] shadow-sm flex flex-col items-start gap-3 hover:border-[var(--primary)] transition-colors text-left">
+<div class="w-8 h-8 rounded-full bg-blue-50 text-[var(--primary)] flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">self_improvement</span>
+</div>
+<div>
+<h4 class="font-medium text-sm">Exercício de Respiração</h4>
+<p class="text-xs text-[var(--text-muted)] mt-0.5">3 minutos</p>
+</div>
+</button>
+<button class="bg-white p-4 rounded-2xl border border-[var(--border)] shadow-sm flex flex-col items-start gap-3 hover:border-[var(--primary)] transition-colors text-left">
+<div class="w-8 h-8 rounded-full bg-blue-50 text-[var(--primary)] flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">forum</span>
+</div>
+<div>
+<h4 class="font-medium text-sm">Assistente IA</h4>
+<p class="text-xs text-[var(--text-muted)] mt-0.5">Tirar dúvidas</p>
+</div>
+</button>
+</section>
+</main>
+<nav class="fixed bottom-0 w-full bg-white/90 backdrop-blur-md border-t border-[var(--border)] pb-safe pt-2 px-6 flex justify-between items-center z-50 md:hidden pb-4">
+<a class="flex flex-col items-center gap-1 text-[var(--primary)]" href="#">
+<span class="material-symbols-outlined text-[24px]">home</span>
+<span class="text-[10px] font-medium">Início</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">calendar_month</span>
+<span class="text-[10px] font-medium">Agenda</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">book</span>
+<span class="text-[10px] font-medium">Diário</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">credit_card</span>
+<span class="text-[10px] font-medium">Pagamentos</span>
+</a>
+</nav>
+
+</body></html>

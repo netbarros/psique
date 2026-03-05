@@ -3,7 +3,22 @@
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 import type React from "react";
+import type { LucideIcon } from "lucide-react";
+import {
+  LayoutDashboard,
+  CalendarDays,
+  Users,
+  BrainCircuit,
+  Send,
+  Wallet,
+  Settings2,
+  Menu,
+  X,
+  LogOut,
+  Bell,
+} from "lucide-react";
 
 interface TherapistProfile {
   id: string;
@@ -13,6 +28,7 @@ interface TherapistProfile {
   onboarding_completed: boolean;
   ai_model: string | null;
   telegram_bot_username: string | null;
+  openrouter_key_hash?: string | null;
 }
 
 interface User {
@@ -23,18 +39,56 @@ interface User {
 interface NavItem {
   id: string;
   label: string;
-  icon: string;
+  icon: LucideIcon;
   path: string;
 }
 
 const NAV: NavItem[] = [
-  { id: "dashboard", label: "Dashboard", icon: "▤", path: "/dashboard" },
-  { id: "agenda", label: "Agenda", icon: "📅", path: "/dashboard/agenda" },
-  { id: "pacientes", label: "Pacientes", icon: "👥", path: "/dashboard/pacientes" },
-  { id: "ia", label: "IA Clínica", icon: "✦", path: "/dashboard/ia" },
-  { id: "telegram", label: "Telegram", icon: "✈", path: "/dashboard/telegram" },
-  { id: "financeiro", label: "Financeiro", icon: "⚡", path: "/dashboard/financeiro" },
-  { id: "configuracoes", label: "Config.", icon: "⚙", path: "/dashboard/configuracoes" },
+  {
+    id: "dashboard",
+    label: "Dashboard",
+    icon: LayoutDashboard,
+    path: "/dashboard",
+  },
+  {
+    id: "agenda",
+    label: "Agenda",
+    icon: CalendarDays,
+    path: "/dashboard/agenda",
+  },
+  {
+    id: "pacientes",
+    label: "Pacientes",
+    icon: Users,
+    path: "/dashboard/pacientes",
+  },
+  { id: "ia", label: "IA Clínica", icon: BrainCircuit, path: "/dashboard/ia" },
+  {
+    id: "telegram",
+    label: "Telegram",
+    icon: Send,
+    path: "/dashboard/telegram",
+  },
+  {
+    id: "financeiro",
+    label: "Financeiro",
+    icon: Wallet,
+    path: "/dashboard/financeiro",
+  },
+  {
+    id: "configuracoes",
+    label: "Configurações",
+    icon: Settings2,
+    path: "/dashboard/configuracoes",
+  },
+];
+
+/* Bottom nav — 4 items per Stitch S01 */
+const BOTTOM_NAV: NavItem[] = [
+  NAV[0], // Dashboard (Home)
+  NAV[1], // Agenda
+  NAV[2], // Pacientes
+  NAV[4], // Telegram (Messages)
 ];
 
 function initials(name: string): string {
@@ -56,13 +110,18 @@ export function DashboardShell({
   const pathname = usePathname();
   const supabase = createClient();
   const [signingOut, setSigningOut] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // Redirect to onboarding if needed
   useEffect(() => {
-    if (therapist && !therapist.onboarding_completed && !pathname.includes("onboarding")) {
+    if (
+      therapist &&
+      !therapist.onboarding_completed &&
+      !pathname.includes("onboarding")
+    ) {
       router.push("/dashboard/onboarding");
     }
   }, [therapist, pathname, router]);
+
 
   const handleSignOut = async () => {
     setSigningOut(true);
@@ -70,117 +129,253 @@ export function DashboardShell({
     router.push("/auth/login");
   };
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) =>
+    path === "/dashboard" ? pathname === path : pathname.startsWith(path);
 
   return (
-    <div style={{ display: "flex", height: "100vh", width: "100%", overflow: "hidden" }}>
-      {/* ── Sidebar ────────────────────────────────────── */}
-      <aside style={{
-        width: 230,
-        background: "var(--bg2)",
-        borderRight: "1px solid var(--border)",
-        display: "flex",
-        flexDirection: "column",
-        flexShrink: 0,
-        zIndex: 10,
-      }}>
+    <div className="relative flex h-screen w-full overflow-hidden bg-bg-base">
+      {/* ═══════ Ambient background glow ═══════ */}
+      <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+        <div className="absolute -left-[10%] -top-[20%] h-[50%] w-[50%] rounded-full bg-brand/6 blur-[140px]" />
+        <div className="absolute -bottom-[22%] -right-[12%] h-[62%] w-[62%] rounded-full bg-info/4 blur-[170px]" />
+        <div className="noise-overlay absolute inset-0 opacity-[0.018] mix-blend-overlay" />
+      </div>
+
+      {/* ═══════ MOBILE HEADER (< md) ═══════ */}
+      <header className="fixed inset-x-0 top-0 z-40 flex h-14 items-center justify-between border-b border-border-subtle bg-bg-elevated/85 px-4 backdrop-blur-xl md:hidden">
+        <button
+          type="button"
+          onClick={() => setSidebarOpen((v) => !v)}
+          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border-subtle bg-surface text-text-primary transition-colors hover:border-border-strong"
+          aria-label="Abrir menu"
+        >
+          {sidebarOpen ? <X size={16} /> : <Menu size={16} />}
+        </button>
+        <div className="flex items-center gap-1.5">
+          <span className="font-display text-xl font-light text-brand">Ψ</span>
+          <span className="font-display text-lg font-light tracking-wide text-text-primary">
+            Psique
+          </span>
+        </div>
+        <button
+          type="button"
+          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border-subtle bg-surface text-text-muted transition-colors hover:border-border-strong hover:text-text-primary"
+          aria-label="Notificações"
+        >
+          <Bell size={16} />
+        </button>
+      </header>
+
+      {/* ═══════ SIDEBAR ═══════
+          Mobile: hidden (overlay), Tablet md: icon-only 64px, Desktop lg: full 240px
+      */}
+      <div
+        className={cn(
+          "fixed inset-y-0 left-0 z-30 flex w-60 shrink-0 flex-col border-r border-border-subtle bg-bg-elevated/95 backdrop-blur-xl transition-transform duration-300",
+          /* Mobile: overlay slide */
+          sidebarOpen ? "translate-x-0" : "-translate-x-full",
+          /* Tablet: always visible, collapsed */
+          "md:relative md:w-16 md:translate-x-0",
+          /* Desktop: expanded */
+          "lg:w-60",
+        )}
+      >
         {/* Logo */}
-        <div style={{ padding: "22px 18px 18px", borderBottom: "1px solid var(--border)", display: "flex", alignItems: "center", gap: 10 }}>
-          <div style={{ fontSize: 28, color: "var(--mint)", lineHeight: 1, fontFamily: "var(--ff)", fontWeight: 200 }}>Ψ</div>
-          <div>
-            <div style={{ fontFamily: "var(--ff)", fontSize: 20, fontWeight: 200, color: "var(--ivory)" }}>Psique</div>
-            <div style={{ fontSize: 9, color: "var(--ivoryDD)", letterSpacing: ".1em", textTransform: "uppercase" }}>Painel Clínico</div>
-          </div>
-        </div>
-
-        {/* User info */}
-        <div style={{ padding: "14px 16px", borderBottom: "1px solid var(--border)", display: "flex", gap: 10, alignItems: "center" }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: "50%", flexShrink: 0,
-            background: "radial-gradient(circle at 35% 35%, rgba(82,183,136,.44), rgba(82,183,136,.22))",
-            border: "1.5px solid rgba(82,183,136,.55)",
-            display: "flex", alignItems: "center", justifyContent: "center",
-            fontSize: 12, fontFamily: "var(--ff)", color: "var(--mint)", fontWeight: 300,
-          }}>
-            {therapist ? initials(therapist.name) : "?"}
-          </div>
-          <div>
-            <div style={{ fontSize: 13, color: "var(--ivory)", fontFamily: "var(--ff)", fontWeight: 300 }}>
-              {therapist?.name ?? user.email}
-            </div>
-            <div style={{ fontSize: 10, color: "var(--ivoryDD)" }}>
-              {therapist?.crp ? `CRP ${therapist.crp}` : "Carregando..."}
+        <div className="flex h-14 items-center border-b border-border-subtle px-4 lg:h-16 lg:px-5">
+          <div className="flex items-center gap-2.5">
+            <span className="font-display text-3xl font-light leading-none text-brand">
+              Ψ
+            </span>
+            <div className="hidden lg:block">
+              <div className="font-display text-xl font-light text-text-primary">
+                Psique
+              </div>
+              <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-brand">
+                Painel Clínico
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Navigation */}
-        <nav style={{ flex: 1, padding: "10px 8px", display: "flex", flexDirection: "column", gap: 2, overflowY: "auto" }}>
-          {NAV.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => router.push(item.path)}
-              aria-label={item.label}
-              aria-current={isActive(item.path) ? "page" : undefined}
-              style={{
-                display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10,
-                fontSize: 13, cursor: "pointer",
-                background: isActive(item.path) ? "var(--g1)" : "transparent",
-                color: isActive(item.path) ? "var(--mint)" : "var(--ivoryDD)",
-                border: isActive(item.path) ? "1px solid rgba(82,183,136,.25)" : "1px solid transparent",
-                transition: "all .2s var(--ease-out)",
-                textAlign: "left",
-              }}
-            >
-              <span style={{ fontSize: 14, flexShrink: 0, lineHeight: 1 }}>{item.icon}</span>
-              {item.label}
-            </button>
-          ))}
+        {/* Therapist profile (desktop only) */}
+        <div className="hidden border-b border-border-subtle px-4 py-3 lg:block">
+          <div className="flex items-center gap-2.5">
+            <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border-strong bg-surface-hover text-xs font-semibold text-brand">
+              <div className="pointer-events-none absolute inset-0 bg-linear-to-tr from-brand/20 to-transparent" />
+              <span className="relative z-10">
+                {therapist ? initials(therapist.name) : "?"}
+              </span>
+            </div>
+            <div className="min-w-0">
+              <div className="truncate text-sm font-semibold text-text-primary">
+                {therapist?.name ?? user.email}
+              </div>
+              <div className="truncate text-xs text-text-muted">
+                {therapist?.crp ? `CRP ${therapist.crp}` : "Carregando..."}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Nav items */}
+        <nav className="custom-scrollbar flex flex-1 flex-col gap-0.5 overflow-y-auto px-2 py-3">
+          {NAV.map((item) => {
+            const Icon = item.icon;
+            const active = isActive(item.path);
+            return (
+              <button
+                key={item.id}
+                onClick={() => {
+                  setSidebarOpen(false);
+                  router.push(item.path);
+                }}
+                aria-label={item.label}
+                aria-current={active ? "page" : undefined}
+                title={item.label}
+                className={cn(
+                  "group flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-medium transition-all duration-200",
+                  /* Collapsed: center-align icon */
+                  "md:justify-center md:px-0 lg:justify-start lg:px-3",
+                  active
+                    ? "border border-brand/30 bg-brand/10 text-brand glow-mint"
+                    : "border border-transparent text-text-secondary hover:border-border-subtle hover:bg-surface-hover hover:text-text-primary",
+                )}
+              >
+                <Icon
+                  size={18}
+                  className={cn(
+                    "shrink-0 transition-colors",
+                    active
+                      ? "text-brand"
+                      : "text-text-muted group-hover:text-text-primary",
+                  )}
+                />
+                {/* Label: hidden on tablet, visible on mobile overlay + desktop */}
+                <span className="md:hidden lg:inline">{item.label}</span>
+              </button>
+            );
+          })}
         </nav>
 
-        {/* AI Status badge */}
-        <div style={{ margin: "0 8px 8px", padding: "12px 14px", borderRadius: 12, background: "rgba(74,143,168,.08)", border: "1px solid rgba(74,143,168,.2)" }}>
-          <div style={{ fontSize: 11, color: "var(--blue)", fontWeight: 600, marginBottom: 2, display: "flex", alignItems: "center", gap: 5 }}>
-            ✦ OpenRouter IA
-          </div>
-          <div style={{ fontSize: 10, color: "var(--ivoryDD)" }}>
-            {therapist?.ai_model?.split("/")[1]?.split("-").slice(0, 2).join(" ") ?? "Claude 3.5"} · Ativo
-          </div>
-          <div style={{ height: 2, background: "var(--border)", borderRadius: 1, marginTop: 8 }}>
-            <div style={{ width: "78%", height: "100%", background: "linear-gradient(90deg,var(--mint),var(--blue))", borderRadius: 1 }} />
+        {/* AI Model Card (desktop only) */}
+        <div className="hidden px-3 pb-2 lg:block">
+          <div className="rounded-xl border border-border-strong bg-surface p-2.5">
+            <div className="mb-1 flex items-center gap-1.5 text-xs font-semibold text-info">
+              <BrainCircuit size={13} /> OpenRouter IA
+            </div>
+            <div className="flex items-center justify-between text-[11px] text-text-muted">
+              <span className="max-w-[110px] truncate">
+                {therapist?.ai_model
+                  ?.split("/")[1]
+                  ?.split("-")
+                  .slice(0, 2)
+                  .join(" ") ?? "Claude Sonnet"}
+              </span>
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 font-semibold",
+                  therapist?.openrouter_key_hash
+                    ? "text-brand"
+                    : "text-text-muted",
+                )}
+              >
+                <span
+                  className={cn(
+                    "inline-block h-1.5 w-1.5 rounded-full",
+                    therapist?.openrouter_key_hash
+                      ? "bg-brand shadow-[0_0_8px_var(--color-brand)]"
+                      : "bg-text-muted",
+                  )}
+                />
+                {therapist?.openrouter_key_hash ? "Próprio" : "Plataforma"}
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Telegram badge */}
+        {/* Telegram badge (desktop only) */}
         {therapist?.telegram_bot_username && (
-          <div style={{ margin: "0 8px 8px", padding: "10px 14px", borderRadius: 12, background: "rgba(34,158,217,.07)", border: "1px solid rgba(34,158,217,.2)", display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ color: "#54C5F8", fontSize: 14 }}>✈</span>
-            <div>
-              <div style={{ fontSize: 10, color: "#54C5F8", fontWeight: 600 }}>@{therapist.telegram_bot_username}</div>
-              <div style={{ fontSize: 10, color: "var(--ivoryDD)", display: "flex", alignItems: "center", gap: 4 }}>
-                <span style={{ width: 6, height: 6, borderRadius: "50%", background: "var(--mint)", display: "inline-block" }} />
-                Ativo
+          <div className="hidden px-3 pb-2 lg:block">
+            <div className="rounded-xl border border-[#2AABEE]/20 bg-[#2AABEE]/10 p-2.5">
+              <div className="mb-0.5 inline-flex items-center gap-1.5 text-xs font-semibold text-[#2AABEE]">
+                <Send size={12} /> Telegram
+              </div>
+              <div className="truncate text-[11px] text-[#2AABEE]/70">
+                @{therapist.telegram_bot_username}
               </div>
             </div>
           </div>
         )}
 
-        {/* Sign out */}
-        <div style={{ margin: "0 8px 12px" }}>
+        {/* Logout */}
+        <div className="border-t border-border-subtle px-3 py-3">
           <button
             onClick={handleSignOut}
             disabled={signingOut}
-            style={{ width: "100%", padding: "8px 12px", borderRadius: 10, fontSize: 12, color: "var(--ivoryDD)", background: "transparent", border: "1px solid transparent", cursor: "pointer", textAlign: "left" }}
+            className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-xs font-medium text-text-muted transition-all hover:bg-surface-hover hover:text-text-primary md:justify-center md:px-0 lg:justify-start lg:px-3"
+            title="Sair da conta"
           >
-            {signingOut ? "Saindo..." : "↩ Sair"}
+            {signingOut ? (
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            ) : (
+              <LogOut size={15} />
+            )}
+            <span className="md:hidden lg:inline">
+              {signingOut ? "Saindo..." : "Sair"}
+            </span>
           </button>
         </div>
-      </aside>
+      </div>
 
-      {/* ── Main content ─────────────────────────────── */}
-      <main style={{ flex: 1, overflowY: "auto", display: "flex", flexDirection: "column" }}>
+      {/* ═══════ MOBILE SIDEBAR OVERLAY ═══════ */}
+      {sidebarOpen && (
+        <button
+          type="button"
+          className="fixed inset-0 z-20 bg-black/60 backdrop-blur-sm md:hidden"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Fechar menu"
+        />
+      )}
+
+      {/* ═══════ MAIN CONTENT ═══════ */}
+      <main className="custom-scrollbar relative z-10 flex min-w-0 flex-1 flex-col overflow-y-auto pb-20 pt-14 md:pb-0 md:pt-0">
         {children}
       </main>
+
+      {/* ═══════ MOBILE BOTTOM NAV (< md) — AGENTS §5.17 ═══════ */}
+      <nav className="fixed inset-x-0 bottom-0 z-40 flex items-center justify-between border-t border-border-subtle bg-bg-elevated/95 px-6 pb-safe pt-2 backdrop-blur-xl md:hidden">
+        {BOTTOM_NAV.map((item) => {
+          const Icon = item.icon;
+          const active = isActive(item.path);
+          return (
+            <button
+              key={item.id}
+              onClick={() => router.push(item.path)}
+              className="flex flex-col items-center gap-0.5 py-1"
+              aria-label={item.label}
+              aria-current={active ? "page" : undefined}
+            >
+              <Icon
+                size={20}
+                className={cn(
+                  "transition-colors",
+                  active ? "text-brand" : "text-text-muted",
+                )}
+              />
+              <span
+                className={cn(
+                  "text-[10px] font-medium",
+                  active ? "text-brand" : "text-text-muted",
+                )}
+              >
+                {item.label.length > 6
+                  ? item.label.slice(0, 6) + "."
+                  : item.label}
+              </span>
+            </button>
+          );
+        })}
+      </nav>
     </div>
   );
 }

@@ -1,9 +1,36 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
-import TwoFactorSetup from "@/components/dashboard/TwoFactorSetup";
+import SecurityTwoFactorCard, { type SecurityMFAFactor } from "@/components/dashboard/SecurityTwoFactorCard";
+import SettingsTabs from "@/components/dashboard/SettingsTabs";
+import { SecuritySettingsPanel } from "@/components/dashboard/SecuritySettingsPanel";
+import { EnterpriseCard } from "@/components/ui/EnterpriseCard";
 
 export const metadata: Metadata = { title: "Configurações" };
+
+type AuditEvent = {
+  id: string;
+  title: string;
+  action: string;
+  tableName: string;
+  createdAt: string;
+  ip: string | null;
+};
+
+function titleFromAction(action: string, tableName: string): string {
+  if (tableName === "patient_journal_entries") return "Registro de diário";
+  if (tableName === "therapist_settings") return "Atualização de segurança";
+  if (tableName === "therapists") return "Atualização de perfil";
+  if (tableName === "appointments") return "Mudança em agendamento";
+  if (tableName === "sessions") return "Atualização de sessão";
+
+  if (action === "export") return "Exportação de dados";
+  if (action === "view") return "Acesso a registro";
+  if (action === "create") return "Criação de registro";
+  if (action === "delete") return "Remoção de registro";
+
+  return "Atualização de registro";
+}
 
 export default async function ConfiguracoesPage() {
   const supabase = await createClient();
@@ -14,292 +41,78 @@ export default async function ConfiguracoesPage() {
 
   const { data: therapist } = await supabase
     .from("therapists")
-    .select("*")
+    .select("id, name, cancellation_policy_hours")
     .eq("user_id", user.id)
     .single();
   if (!therapist) redirect("/auth/login");
 
-  // Fetch MFA factors
-  const { data: mfaData } = await supabase.auth.mfa.listFactors();
-  const factors = (mfaData?.totp ?? []).map((f) => ({
-    id: f.id,
-    type: f.factor_type,
-    status: f.status,
+  const [{ data: mfaData }, { data: securitySettings }, { data: auditRows }] = await Promise.all([
+    supabase.auth.mfa.listFactors(),
+    supabase
+      .from("therapist_settings")
+      .select("encrypt_records, require_lgpd_consent, blur_patient_data")
+      .eq("therapist_id", therapist.id)
+      .maybeSingle(),
+    supabase
+      .from("audit_logs")
+      .select("id, action, table_name, created_at, ip_address")
+      .eq("therapist_id", therapist.id)
+      .order("created_at", { ascending: false })
+      .limit(20),
+  ]);
+
+  const factors: SecurityMFAFactor[] = (mfaData?.totp ?? []).map((factor) => ({
+    id: factor.id,
+    type: factor.factor_type,
+    status: factor.status,
+  }));
+
+  const therapistInitials = therapist.name
+    .split(" ")
+    .map((part: string) => part[0] ?? "")
+    .join("")
+    .slice(0, 2)
+    .toUpperCase();
+
+  const initialEvents: AuditEvent[] = (auditRows ?? []).map((row) => ({
+    id: row.id,
+    title: titleFromAction(row.action, row.table_name),
+    action: row.action,
+    tableName: row.table_name,
+    createdAt: row.created_at,
+    ip: row.ip_address,
   }));
 
   return (
-    <div style={{ padding: "32px 40px", maxWidth: 900 }}>
-      {/* Header */}
-      <div style={{ marginBottom: 32 }}>
-        <h1
-          style={{
-            fontFamily: "var(--ff)",
-            fontSize: 34,
-            fontWeight: 200,
-            color: "var(--ivory)",
-          }}
-        >
-          Configurações
-        </h1>
-        <p style={{ fontSize: 14, color: "var(--ivoryDD)", marginTop: 4 }}>
-          Perfil, integrações e segurança
-        </p>
-      </div>
-
-      {/* Profile section */}
-      <Section title="Perfil Profissional" icon="👤">
-        <InfoRow label="Nome" value={therapist.name} />
-        <InfoRow label="CRP" value={therapist.crp} />
-        <InfoRow label="Bio" value={therapist.bio ?? "Não definida"} />
-        <InfoRow label="Slug" value={`/booking/${therapist.slug}`} mono />
-        <InfoRow
-          label="Especialidades"
-          value={
-            therapist.specialties && (therapist.specialties as string[]).length > 0
-              ? (therapist.specialties as string[]).join(", ")
-              : "Nenhuma definida"
-          }
-        />
-        <InfoRow label="Foto" value={therapist.photo_url ?? "Não definida"} />
-      </Section>
-
-      {/* Session config */}
-      <Section title="Sessão" icon="🕐">
-        <InfoRow
-          label="Preço"
-          value={`R$ ${Number(therapist.session_price).toFixed(2)}`}
-          highlight
-        />
-        <InfoRow label="Duração" value={`${therapist.session_duration} minutos`} />
-        <InfoRow label="Timezone" value={therapist.timezone} />
-      </Section>
-
-      {/* Integrations */}
-      <Section title="Integrações" icon="🔗">
-        <IntegrationRow
-          name="OpenRouter (IA)"
-          connected={!!therapist.openrouter_key_hash}
-          detail={therapist.ai_model ?? "Modelo não selecionado"}
-        />
-        <IntegrationRow
-          name="Telegram Bot"
-          connected={!!therapist.telegram_bot_token}
-          detail={
-            therapist.telegram_bot_username
-              ? `@${therapist.telegram_bot_username}`
-              : undefined
-          }
-        />
-        <IntegrationRow
-          name="Stripe"
-          connected={!!therapist.stripe_account_id}
-          detail={therapist.stripe_account_id ?? undefined}
-        />
-      </Section>
-
-      {/* Security */}
-      <Section title="Segurança" icon="🔒">
-        <InfoRow label="Email" value={user.email ?? "—"} />
-        <InfoRow
-          label="Último login"
-          value={
-            user.last_sign_in_at
-              ? new Date(user.last_sign_in_at).toLocaleString("pt-BR")
-              : "—"
-          }
-        />
-        <InfoRow label="Conta ativa" value={therapist.active ? "Sim" : "Não"} />
-        <InfoRow
-          label="Onboarding"
-          value={therapist.onboarding_completed ? "Concluído ✅" : "Pendente"}
-        />
-
-        <div style={{ marginTop: 16 }}>
-          <TwoFactorSetup initialFactors={factors} />
+    <div className="mx-auto w-full max-w-5xl px-4 pb-24 pt-6 sm:px-6 lg:pb-10">
+      <header className="mb-6 flex items-center justify-between rounded-2xl border border-border-subtle bg-bg-elevated/70 p-4 backdrop-blur-sm">
+        <div>
+          <h1 className="font-display text-3xl font-semibold text-text-primary sm:text-4xl">
+            Segurança & LGPD
+          </h1>
+          <p className="mt-1 text-sm text-text-secondary">
+            Gerencie proteção de acesso, privacidade e trilhas de auditoria.
+          </p>
         </div>
-      </Section>
-
-      {/* Timestamps */}
-      <div
-        style={{
-          marginTop: 24,
-          padding: "12px 16px",
-          background: "var(--card)",
-          border: "1px solid var(--border)",
-          borderRadius: 12,
-          display: "flex",
-          gap: 24,
-          fontSize: 11,
-          color: "var(--ivoryDD)",
-        }}
-      >
-        <span>
-          Conta criada:{" "}
-          {new Date(therapist.created_at).toLocaleDateString("pt-BR")}
+        <span className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface text-xs font-semibold tracking-wide text-gold">
+          {therapistInitials || "DR"}
         </span>
-        <span>
-          Última atualização:{" "}
-          {new Date(therapist.updated_at).toLocaleDateString("pt-BR")}
-        </span>
-      </div>
-    </div>
-  );
-}
+      </header>
 
-// ── Subcomponents ─────────────────────────────────────────────────
-function Section({
-  title,
-  icon,
-  children,
-}: {
-  title: string;
-  icon: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div
-      style={{
-        background: "var(--card)",
-        border: "1px solid var(--border)",
-        borderRadius: 18,
-        padding: "24px 28px",
-        marginBottom: 20,
-      }}
-    >
-      <h2
-        style={{
-          fontFamily: "var(--ff)",
-          fontSize: 22,
-          fontWeight: 300,
-          color: "var(--ivory)",
-          marginBottom: 18,
-          display: "flex",
-          alignItems: "center",
-          gap: 8,
-        }}
-      >
-        <span>{icon}</span> {title}
-      </h2>
-      <div style={{ display: "flex", flexDirection: "column", gap: 0 }}>
-        {children}
-      </div>
-    </div>
-  );
-}
+      <SettingsTabs active="seguranca" />
 
-function InfoRow({
-  label,
-  value,
-  mono,
-  highlight,
-}: {
-  label: string;
-  value: string;
-  mono?: boolean;
-  highlight?: boolean;
-}) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 0",
-        borderBottom: "1px solid var(--border)",
-      }}
-    >
-      <span
-        style={{
-          fontSize: 13,
-          color: "var(--ivoryDD)",
-        }}
-      >
-        {label}
-      </span>
-      <span
-        style={{
-          fontSize: 13,
-          color: highlight ? "var(--gold)" : "var(--ivoryD)",
-          fontFamily: mono ? "monospace" : "var(--fs)",
-          fontWeight: highlight ? 600 : 400,
-          maxWidth: 400,
-          textAlign: "right",
-          overflow: "hidden",
-          textOverflow: "ellipsis",
-          whiteSpace: "nowrap",
-        }}
-      >
-        {value}
-      </span>
-    </div>
-  );
-}
-
-function IntegrationRow({
-  name,
-  connected,
-  detail,
-}: {
-  name: string;
-  connected: boolean;
-  detail?: string;
-}) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "12px 0",
-        borderBottom: "1px solid var(--border)",
-      }}
-    >
-      <div>
-        <div
-          style={{ fontSize: 14, color: "var(--ivory)", fontWeight: 500 }}
-        >
-          {name}
-        </div>
-        {detail && (
-          <div
-            style={{
-              fontSize: 11,
-              color: "var(--ivoryDD)",
-              marginTop: 2,
-            }}
-          >
-            {detail}
-          </div>
-        )}
-      </div>
-      <span
-        style={{
-          fontSize: 11,
-          padding: "3px 10px",
-          borderRadius: 20,
-          background: connected
-            ? "rgba(82,183,136,.12)"
-            : "rgba(184,84,80,.12)",
-          color: connected ? "var(--mint)" : "var(--red)",
-          border: connected
-            ? "1px solid rgba(82,183,136,.3)"
-            : "1px solid rgba(184,84,80,.3)",
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 5,
-        }}
-      >
-        <span
-          style={{
-            width: 5,
-            height: 5,
-            borderRadius: "50%",
-            background: connected ? "var(--mint)" : "var(--red)",
-            display: "inline-block",
+      <EnterpriseCard delay={0.1} className="flex flex-col p-0 border-border-subtle bg-bg-base overflow-hidden">
+        <SecurityTwoFactorCard factors={factors} />
+        <SecuritySettingsPanel
+          initial={{
+            encryptRecords: securitySettings?.encrypt_records ?? true,
+            requireLgpdConsent: securitySettings?.require_lgpd_consent ?? true,
+            blurPatientData: securitySettings?.blur_patient_data ?? false,
+            cancellationPolicyHours: therapist.cancellation_policy_hours ?? 24,
           }}
+          initialEvents={initialEvents}
         />
-        {connected ? "Conectado" : "Desconectado"}
-      </span>
+      </EnterpriseCard>
     </div>
   );
 }

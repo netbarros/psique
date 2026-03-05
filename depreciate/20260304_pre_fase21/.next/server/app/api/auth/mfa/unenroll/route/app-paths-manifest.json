@@ -1,0 +1,3 @@
+{
+  "/api/auth/mfa/unenroll/route": "app/api/auth/mfa/unenroll/route.js"
+}

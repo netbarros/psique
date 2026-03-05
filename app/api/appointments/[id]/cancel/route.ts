@@ -1,19 +1,26 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createRefund } from "@/lib/stripe";
 import { sendEmail } from "@/lib/resend";
 import { sendMessage } from "@/lib/telegram";
 import { logger } from "@/lib/logger";
+import { parseJsonBody } from "@/lib/api/request-validation";
 
 // Default cancellation policy: 24 hours before
 const DEFAULT_CANCELLATION_HOURS = 24;
+
+const postSchema = z.object({
+  reason: z.string().trim().max(500).optional(),
+});
 
 export async function POST(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const route = "/api/appointments/[id]/cancel";
   const { id: appointmentId } = await params;
   const supabase = await createClient();
   const {
@@ -22,10 +29,22 @@ export async function POST(
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
+    logger.warn("[Cancel] Unauthorized request", { route, appointmentId });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await req.json()) as { reason?: string };
+  const parsed = await parseJsonBody({
+    route,
+    request: req,
+    schema: postSchema,
+    allowEmptyBody: true,
+    context: { appointmentId, userId: user.id },
+  });
+  if (!parsed.ok) {
+    return parsed.response;
+  }
+
+  const body = parsed.data;
   const admin = createAdminClient();
 
   try {
@@ -131,6 +150,8 @@ export async function POST(
         refunded = true;
       } catch (refundError) {
         logger.error("[Cancel] Refund failed", {
+          route,
+          requestId: parsed.requestId,
           error: String(refundError),
           appointmentId,
         });
@@ -178,6 +199,8 @@ export async function POST(
     }
 
     logger.info("[Cancel] Appointment cancelled", {
+      route,
+      requestId: parsed.requestId,
       appointmentId,
       cancelledBy,
       refunded,
@@ -193,7 +216,13 @@ export async function POST(
       },
     });
   } catch (error) {
-    logger.error("[Cancel] Error", { error: String(error) });
+    logger.error("[Cancel] Error", {
+      route,
+      requestId: parsed.requestId,
+      appointmentId,
+      userId: user.id,
+      error: String(error),
+    });
     return NextResponse.json(
       { error: "Erro interno ao cancelar" },
       { status: 500 }

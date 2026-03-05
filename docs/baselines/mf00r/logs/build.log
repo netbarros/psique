@@ -1,0 +1,81 @@
+
+> psique@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  · clientTraceMetadata
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 5.9s
+  Running next.config.js provided runAfterProductionCompile ...
+✓ Completed runAfterProductionCompile in 850ms
+  Running TypeScript ...
+  Collecting page data using 23 workers ...
+  Generating static pages using 23 workers (0/46) ...
+  Generating static pages using 23 workers (11/46) 
+  Generating static pages using 23 workers (22/46) 
+  Generating static pages using 23 workers (34/46) 
+✓ Generating static pages using 23 workers (46/46) in 547.9ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /agendar
+├ ƒ /api/ai/chat
+├ ƒ /api/ai/insights
+├ ƒ /api/ai/summarize
+├ ƒ /api/ai/transcribe
+├ ƒ /api/appointments/[id]/cancel
+├ ƒ /api/appointments/[id]/reschedule
+├ ƒ /api/auth/mfa/enroll
+├ ƒ /api/auth/mfa/unenroll
+├ ƒ /api/auth/mfa/verify
+├ ƒ /api/booking/checkout
+├ ƒ /api/cron/reminders
+├ ƒ /api/reports/sessions
+├ ƒ /api/subscriptions
+├ ƒ /api/telegram/webhook
+├ ƒ /api/video/room
+├ ƒ /api/webhooks/stripe
+├ ƒ /api/webhooks/supabase
+├ ƒ /apoio
+├ ƒ /auth/callback
+├ ○ /auth/forgot-password
+├ ○ /auth/login
+├ ○ /auth/register
+├ ○ /auth/register/patient
+├ ○ /auth/reset-password
+├ ƒ /booking/[slug]
+├ ƒ /booking/[slug]/sucesso
+├ ƒ /chat
+├ ○ /checkout/secure
+├ ƒ /dashboard
+├ ƒ /dashboard/agenda
+├ ƒ /dashboard/configuracoes
+├ ƒ /dashboard/configuracoes/integracoes
+├ ƒ /dashboard/configuracoes/perfil
+├ ƒ /dashboard/consulta/[roomId]
+├ ƒ /dashboard/financeiro
+├ ƒ /dashboard/ia
+├ ƒ /dashboard/onboarding
+├ ƒ /dashboard/pacientes
+├ ƒ /dashboard/pacientes/[id]
+├ ƒ /dashboard/telegram
+├ ƒ /portal
+├ ƒ /portal/agendar
+├ ƒ /portal/apoio
+├ ƒ /portal/chat
+├ ƒ /portal/sessoes
+├ ○ /pricing
+└ ƒ /sessoes
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

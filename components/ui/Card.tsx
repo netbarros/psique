@@ -19,15 +19,15 @@ export function Card({ glow, hoverable, padding = "md", className, children, ...
   return (
     <div
       className={cn(
-        "rounded-2xl border border-[var(--border)] bg-[var(--card)]",
+        "rounded-2xl border border-border-subtle bg-surface",
         "transition-all duration-300",
         hoverable && [
           "cursor-pointer",
-          "hover:border-[rgba(82,183,136,.3)]",
+          "hover:border-border-strong",
           "hover:shadow-[0_8px_32px_rgba(0,0,0,.3)]",
           "hover:-translate-y-0.5",
         ],
-        glow && "hover:shadow-[0_0_32px_rgba(82,183,136,.12)]",
+        glow && "hover:shadow-[0_0_32px_rgba(82,183,136,.18)]",
         PADDING[padding],
         className
       )}
@@ -38,7 +38,7 @@ export function Card({ glow, hoverable, padding = "md", className, children, ...
   );
 }
 
-interface CardHeaderProps extends HTMLAttributes<HTMLDivElement> {}
+type CardHeaderProps = HTMLAttributes<HTMLDivElement>;
 Card.Header = function CardHeader({ className, children, ...props }: CardHeaderProps) {
   return (
     <div className={cn("mb-5", className)} {...props}>
@@ -47,11 +47,11 @@ Card.Header = function CardHeader({ className, children, ...props }: CardHeaderP
   );
 };
 
-interface CardTitleProps extends HTMLAttributes<HTMLHeadingElement> {}
+type CardTitleProps = HTMLAttributes<HTMLHeadingElement>;
 Card.Title = function CardTitle({ className, children, ...props }: CardTitleProps) {
   return (
     <h3
-      className={cn("font-[family-name:var(--ff)] text-xl font-light text-[var(--ivory)]", className)}
+      className={cn("font-display text-xl font-light text-text-primary", className)}
       {...props}
     >
       {children}

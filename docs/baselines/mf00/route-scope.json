@@ -1,0 +1,227 @@
+{
+  "mf": "MF-00",
+  "description": "Baseline scope lock for Stitch parity program",
+  "viewports": [
+    { "name": "mobile-390x844", "width": 390, "height": 844 },
+    { "name": "tablet-768x1024", "width": 768, "height": 1024 },
+    { "name": "desktop-1440x900", "width": 1440, "height": 900 }
+  ],
+  "routes": [
+    {
+      "id": "S01",
+      "route": "/dashboard",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S01",
+      "sourceFile": "app/dashboard/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts", "e2e/layout.enterprise.spec.ts"]
+    },
+    {
+      "id": "S02",
+      "route": "/booking/test-terapeuta",
+      "actor": "public",
+      "capturable": true,
+      "stitchId": "S02",
+      "sourceFile": "app/booking/[slug]/page.tsx",
+      "tests": ["e2e/booking.spec.ts", "e2e/stitch.coverage.spec.ts"]
+    },
+    {
+      "id": "S03",
+      "route": "/dashboard/consulta/room-stitch-check",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S03",
+      "sourceFile": "app/dashboard/consulta/[roomId]/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S04",
+      "route": "/dashboard/pacientes/11111111-1111-1111-1111-111111111111",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S04",
+      "sourceFile": "app/dashboard/pacientes/[id]/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S05",
+      "route": "/dashboard/ia",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S05",
+      "sourceFile": "app/dashboard/ia/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S06",
+      "route": "/dashboard/financeiro",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S06",
+      "sourceFile": "app/dashboard/financeiro/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S07",
+      "route": "/dashboard/telegram",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S07",
+      "sourceFile": "app/dashboard/telegram/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S08",
+      "route": "/dashboard/onboarding",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S08",
+      "sourceFile": "app/dashboard/onboarding/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S09",
+      "route": "/dashboard/configuracoes",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": "S09",
+      "sourceFile": "app/dashboard/configuracoes/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts", "e2e/layout.enterprise.spec.ts"]
+    },
+    {
+      "id": "S10A",
+      "route": "/portal",
+      "actor": "patient",
+      "capturable": true,
+      "stitchId": "S10",
+      "sourceFile": "app/portal/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S10B",
+      "route": "/portal/apoio",
+      "actor": "patient",
+      "capturable": true,
+      "stitchId": "S10",
+      "sourceFile": "app/portal/apoio/page.tsx",
+      "tests": ["e2e/stitch.coverage.spec.ts", "e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "S11S12",
+      "route": "/",
+      "actor": "public",
+      "capturable": true,
+      "stitchId": "S11/S12",
+      "sourceFile": "app/page.tsx",
+      "tests": ["e2e/navigation.spec.ts", "e2e/stitch.coverage.spec.ts", "e2e/layout.enterprise.spec.ts"]
+    },
+    {
+      "id": "S13",
+      "route": "/pricing",
+      "actor": "public",
+      "capturable": true,
+      "stitchId": "S13",
+      "sourceFile": "app/pricing/page.tsx",
+      "tests": ["e2e/navigation.spec.ts", "e2e/stitch.coverage.spec.ts"]
+    },
+    {
+      "id": "S14",
+      "route": "/checkout/secure",
+      "actor": "public",
+      "capturable": true,
+      "stitchId": "S14",
+      "sourceFile": "app/checkout/secure/page.tsx",
+      "tests": ["e2e/navigation.spec.ts", "e2e/stitch.coverage.spec.ts"]
+    },
+    {
+      "id": "L01",
+      "route": "/dashboard/agenda",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/dashboard/agenda/page.tsx",
+      "tests": ["e2e/navigation.spec.ts", "e2e/layout.enterprise.spec.ts"]
+    },
+    {
+      "id": "L02",
+      "route": "/dashboard/pacientes",
+      "actor": "therapist",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/dashboard/pacientes/page.tsx",
+      "tests": ["e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "L03",
+      "route": "/portal/agendar",
+      "actor": "patient",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/portal/agendar/page.tsx",
+      "tests": ["e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "L04",
+      "route": "/portal/sessoes",
+      "actor": "patient",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/portal/sessoes/page.tsx",
+      "tests": ["e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "L05",
+      "route": "/portal/chat",
+      "actor": "patient",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/portal/chat/page.tsx",
+      "tests": ["e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "L06",
+      "route": "/auth/login",
+      "actor": "public",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/auth/login/page.tsx",
+      "tests": ["e2e/auth.spec.ts", "e2e/navigation.spec.ts", "e2e/layout.enterprise.spec.ts"]
+    },
+    {
+      "id": "L07",
+      "route": "/booking/test-terapeuta/sucesso",
+      "actor": "public",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/booking/[slug]/sucesso/page.tsx",
+      "tests": ["e2e/booking.spec.ts"]
+    },
+    {
+      "id": "L08",
+      "route": "/_mf00_not_found_probe_route",
+      "actor": "public",
+      "capturable": true,
+      "stitchId": null,
+      "sourceFile": "app/not-found.tsx",
+      "tests": ["e2e/navigation.spec.ts"]
+    },
+    {
+      "id": "L09",
+      "route": "__component__:app/loading.tsx",
+      "actor": "public",
+      "capturable": false,
+      "stitchId": null,
+      "sourceFile": "app/loading.tsx",
+      "tests": []
+    },
+    {
+      "id": "L10",
+      "route": "__component__:app/global-error.tsx",
+      "actor": "public",
+      "capturable": false,
+      "stitchId": null,
+      "sourceFile": "app/global-error.tsx",
+      "tests": []
+    }
+  ]
+}

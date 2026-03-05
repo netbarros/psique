@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PSIQUE - Secure Checkout</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --bg: #080f0b;
+            --bg2: #0c1510;
+            --card: #121a14;
+            --border: #1c2e20;
+            --mint: #52b788;
+            --mintl: #74c9a0;
+            --gold: #c4a35a;
+            --ivory: #ede7d9;
+            --ivoryD: #c8bfa8;
+            --ivoryDD: #8a8070;
+            --red: #b85450;
+            --blue: #4a8fa8;
+            --ff: "Cormorant Garamond", serif;
+            --fs: "Instrument Sans", sans-serif;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--ivory);
+            font-family: var(--fs);
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--ff);
+        }
+        .custom-radio:checked {
+            background-image: none;
+            background-color: var(--mint);
+            border-color: var(--mint);
+        }
+        .custom-radio:checked::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--bg);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col items-center justify-start pt-8 pb-12 px-4 relative overflow-x-hidden">
+<header class="w-full max-w-md mx-auto flex items-center justify-between mb-8 z-10">
+<button class="w-10 h-10 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-[var(--ivoryD)] hover:text-[var(--mint)] transition-colors">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--mint)] text-[20px] fill-1">lock</span>
+<span class="text-xs uppercase tracking-widest text-[var(--ivoryD)] font-medium">Secure Checkout</span>
+</div>
+<div class="w-10"></div> 
+</header>
+<main class="w-full max-w-md mx-auto z-10 flex flex-col gap-6">
+<section class="bg-[var(--card)] rounded-2xl p-6 border border-[var(--border)] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-[var(--mint)]/5 rounded-full blur-2xl -mr-10 -mt-10"></div>
+<div class="flex items-start gap-4 mb-6 relative z-10">
+<img alt="Dr. Sarah Mitchell" class="w-14 h-14 rounded-full object-cover border-2 border-[var(--border)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhNgZZR0fmea1CabdDI7HO-VPaOEREzbYZf98W6zFRYPeVGkPmXwA48H9YkT8uCsRpq1w28D6qz2KjzBmaOWDdY0Mpzbbo0YQel1RHM83XMtnEMH70Ir1WQxztufUIYColHUkCVxOjU8NAggu8SuxrSyDEhDVoCqiCuRmzTpWf6PNsIqbvYdBm2sNTC98fN1qUfjhNypOiMll-nggnYAXScTsA8fAudESjspcxL_HxfTNNHB0XKmfSxWqp6u7Pvlb-6ms_xUhDBUrd"/>
+<div>
+<h2 class="text-xl text-[var(--ivory)] font-medium leading-tight mb-1">Dr. Sarah Mitchell</h2>
+<p class="text-[var(--ivoryDD)] text-sm">Psychoanalysis Session • 50 min</p>
+</div>
+</div>
+<div class="space-y-4 relative z-10">
+<div class="flex items-center justify-between p-3 rounded-xl bg-[var(--bg2)] border border-[var(--border)]">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-[var(--bg)] flex items-center justify-center text-[var(--mint)]">
+<span class="material-symbols-outlined text-[18px]">calendar_today</span>
+</div>
+<div>
+<p class="text-[var(--ivoryD)] text-xs mb-0.5">Date</p>
+<p class="text-[var(--ivory)] text-sm font-medium">Thursday, Oct 24</p>
+</div>
+</div>
+<button class="text-[var(--mint)] text-sm font-medium hover:underline">Edit</button>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl bg-[var(--bg2)] border border-[var(--border)]">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-lg bg-[var(--bg)] flex items-center justify-center text-[var(--mint)]">
+<span class="material-symbols-outlined text-[18px]">schedule</span>
+</div>
+<div>
+<p class="text-[var(--ivoryD)] text-xs mb-0.5">Time</p>
+<p class="text-[var(--ivory)] text-sm font-medium">14:00 (GMT-3)</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-5 border-t border-[var(--border)] flex items-center justify-between relative z-10">
+<span class="text-[var(--ivoryD)] text-sm">Total Due</span>
+<span class="text-2xl font-serif text-[var(--ivory)]">R$ 250,00</span>
+</div>
+</section>
+<section class="space-y-4 mt-2">
+<h3 class="text-lg font-serif text-[var(--ivory)] mb-4">Payment Method</h3>
+<label class="block relative cursor-pointer group">
+<input checked="" class="peer sr-only" name="payment_method" type="radio" value="card"/>
+<div class="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between transition-all peer-checked:border-[var(--mint)] peer-checked:bg-[var(--mint)]/5 hover:border-[var(--mintl)]/50">
+<div class="flex items-center gap-4">
+<div class="w-5 h-5 rounded-full border-2 border-[var(--ivoryDD)] relative peer-checked:border-[var(--mint)] flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-[var(--mint)] opacity-0 transition-opacity"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-[var(--ivory)] font-medium">Credit Card</span>
+<span class="text-[var(--ivoryDD)] text-xs">Powered by Stripe</span>
+</div>
+</div>
+<div class="flex gap-1.5 opacity-60">
+<span class="material-symbols-outlined text-[24px]">credit_card</span>
+</div>
+</div>
+<style>
+                    input[value="card"]:checked ~ div > div > div:first-child { border-color: var(--mint); }
+                    input[value="card"]:checked ~ div > div > div:first-child > div { opacity: 1; }
+                </style>
+<div class="hidden peer-checked:block mt-2 bg-[var(--bg2)] rounded-xl p-4 border border-[var(--border)]">
+<div class="space-y-3">
+<div>
+<label class="text-[var(--ivoryDD)] text-xs mb-1 block">Card Number</label>
+<div class="relative">
+<input class="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--ivory)] text-sm focus:outline-none focus:border-[var(--mint)] focus:ring-1 focus:ring-[var(--mint)] placeholder:text-[var(--ivoryDD)]/50 font-mono" placeholder="0000 0000 0000 0000" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-[var(--ivoryDD)] text-[20px]">credit_card</span>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="flex-1">
+<label class="text-[var(--ivoryDD)] text-xs mb-1 block">Expiry</label>
+<input class="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--ivory)] text-sm focus:outline-none focus:border-[var(--mint)] focus:ring-1 focus:ring-[var(--mint)] placeholder:text-[var(--ivoryDD)]/50 font-mono" placeholder="MM/YY" type="text"/>
+</div>
+<div class="flex-1">
+<label class="text-[var(--ivoryDD)] text-xs mb-1 block">CVC</label>
+<input class="w-full bg-[var(--bg)] border border-[var(--border)] rounded-lg px-3 py-2.5 text-[var(--ivory)] text-sm focus:outline-none focus:border-[var(--mint)] focus:ring-1 focus:ring-[var(--mint)] placeholder:text-[var(--ivoryDD)]/50 font-mono" placeholder="123" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</label>
+<label class="block relative cursor-pointer group">
+<input class="peer sr-only" name="payment_method" type="radio" value="pix"/>
+<div class="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl p-4 flex items-center justify-between transition-all peer-checked:border-[var(--mint)] peer-checked:bg-[var(--mint)]/5 hover:border-[var(--mintl)]/50">
+<div class="flex items-center gap-4">
+<div class="w-5 h-5 rounded-full border-2 border-[var(--ivoryDD)] relative flex items-center justify-center">
+<div class="w-2.5 h-2.5 rounded-full bg-[var(--mint)] opacity-0 transition-opacity"></div>
+</div>
+<div class="flex flex-col">
+<span class="text-[var(--ivory)] font-medium">PIX</span>
+<span class="text-[var(--ivoryDD)] text-xs">Instant payment</span>
+</div>
+</div>
+<div class="opacity-60 text-[var(--mint)]">
+<span class="material-symbols-outlined text-[24px]">qr_code_scanner</span>
+</div>
+</div>
+<style>
+                    input[value="pix"]:checked ~ div > div > div:first-child { border-color: var(--mint); }
+                    input[value="pix"]:checked ~ div > div > div:first-child > div { opacity: 1; }
+                </style>
+</label>
+</section>
+<div class="flex items-center justify-center gap-6 py-4 opacity-50 mt-4">
+<div class="flex items-center gap-1.5 text-[var(--ivoryD)] text-xs">
+<span class="material-symbols-outlined text-[16px]">lock</span>
+                256-bit Encryption
+            </div>
+<div class="flex items-center gap-1.5 text-[var(--ivoryD)] text-xs">
+<span class="material-symbols-outlined text-[16px]">verified_user</span>
+                LGPD Compliant
+            </div>
+</div>
+</main>
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)] to-transparent z-20 pb-8">
+<div class="max-w-md mx-auto">
+<button class="w-full bg-[var(--mint)] hover:bg-[var(--mintl)] text-[var(--bg)] font-semibold py-4 rounded-xl transition-all shadow-[0_4px_20px_rgba(82,183,136,0.15)] active:scale-[0.98] flex items-center justify-center gap-2">
+                Pay R$ 250,00
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+<p class="text-center text-[10px] text-[var(--ivoryDD)] mt-3">By confirming, you agree to our Cancellation Policy</p>
+</div>
+</div>
+
+</body></html>

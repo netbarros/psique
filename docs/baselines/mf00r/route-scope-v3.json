@@ -1,0 +1,39 @@
+{
+  "mf": "MF-00R",
+  "description": "Recalibrated baseline scope lock for AGENTS.md v3.0 (S01-S28)",
+  "viewports": [
+    { "name": "mobile-390x844", "width": 390, "height": 844 },
+    { "name": "tablet-768x1024", "width": 768, "height": 1024 },
+    { "name": "desktop-1440x900", "width": 1440, "height": 900 }
+  ],
+  "routes": [
+    { "id": "S01", "route": "/dashboard", "actor": "therapist", "capturable": true, "stitchId": "S01", "sourceFile": "app/dashboard/page.tsx", "tests": ["e2e/screen-contract.spec.ts", "e2e/navigation.spec.ts"] },
+    { "id": "S02", "route": "/booking/test-terapeuta", "actor": "public", "capturable": true, "stitchId": "S02", "sourceFile": "app/booking/[slug]/page.tsx", "tests": ["e2e/screen-contract.spec.ts", "e2e/booking.spec.ts"] },
+    { "id": "S03", "route": "/dashboard/consulta/room-stitch-check", "actor": "therapist", "capturable": true, "stitchId": "S03", "sourceFile": "app/dashboard/consulta/[roomId]/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S04", "route": "/dashboard/pacientes/11111111-1111-1111-1111-111111111111", "actor": "therapist", "capturable": true, "stitchId": "S04", "sourceFile": "app/dashboard/pacientes/[id]/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S05", "route": "/dashboard/ia", "actor": "therapist", "capturable": true, "stitchId": "S05", "sourceFile": "app/dashboard/ia/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S06", "route": "/dashboard/financeiro", "actor": "therapist", "capturable": true, "stitchId": "S06", "sourceFile": "app/dashboard/financeiro/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S07", "route": "/dashboard/telegram", "actor": "therapist", "capturable": true, "stitchId": "S07", "sourceFile": "app/dashboard/telegram/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S08", "route": "/dashboard/onboarding", "actor": "therapist", "capturable": true, "stitchId": "S08", "sourceFile": "app/dashboard/onboarding/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S09", "route": "/dashboard/configuracoes", "actor": "therapist", "capturable": true, "stitchId": "S09", "sourceFile": "app/dashboard/configuracoes/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S10", "route": "/portal", "actor": "patient", "capturable": true, "stitchId": "S10", "sourceFile": "app/(patient)/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S11", "route": "/", "actor": "public", "capturable": true, "stitchId": "S11", "sourceFile": "app/page.tsx", "tests": ["e2e/screen-contract.spec.ts", "e2e/navigation.spec.ts"] },
+    { "id": "S12", "route": "/", "actor": "public", "capturable": true, "stitchId": "S12", "sourceFile": "app/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S13", "route": "/pricing", "actor": "public", "capturable": true, "stitchId": "S13", "sourceFile": "app/pricing/page.tsx", "tests": ["e2e/screen-contract.spec.ts", "e2e/navigation.spec.ts"] },
+    { "id": "S14", "route": "/checkout/secure", "actor": "public", "capturable": true, "stitchId": "S14", "sourceFile": "app/checkout/secure/page.tsx", "tests": ["e2e/screen-contract.spec.ts", "e2e/navigation.spec.ts"] },
+    { "id": "S15", "route": "/auth/login", "actor": "public", "capturable": true, "stitchId": null, "sourceFile": "app/auth/login/page.tsx", "tests": ["e2e/auth.spec.ts", "e2e/screen-contract.spec.ts"] },
+    { "id": "S16", "route": "/auth/register", "actor": "public", "capturable": true, "stitchId": null, "sourceFile": "app/auth/register/page.tsx", "tests": ["e2e/auth.spec.ts", "e2e/screen-contract.spec.ts"] },
+    { "id": "S17", "route": "/auth/register/patient", "actor": "public", "capturable": true, "stitchId": null, "sourceFile": "app/auth/register/patient/page.tsx", "tests": ["e2e/auth.spec.ts", "e2e/screen-contract.spec.ts"] },
+    { "id": "S18", "route": "/auth/forgot-password", "actor": "public", "capturable": true, "stitchId": null, "sourceFile": "app/auth/forgot-password/page.tsx", "tests": ["e2e/auth.spec.ts", "e2e/screen-contract.spec.ts"] },
+    { "id": "S19", "route": "/dashboard/agenda", "actor": "therapist", "capturable": true, "stitchId": null, "sourceFile": "app/dashboard/agenda/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S20", "route": "/dashboard/pacientes", "actor": "therapist", "capturable": true, "stitchId": null, "sourceFile": "app/dashboard/pacientes/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S21", "route": "/dashboard/configuracoes/perfil", "actor": "therapist", "capturable": true, "stitchId": null, "sourceFile": "app/dashboard/configuracoes/perfil/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S22", "route": "/dashboard/configuracoes/integracoes", "actor": "therapist", "capturable": true, "stitchId": null, "sourceFile": "app/dashboard/configuracoes/integracoes/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S23", "route": "/portal/agendar", "actor": "patient", "capturable": true, "stitchId": null, "sourceFile": "app/(patient)/agendar/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S24", "route": "/portal/sessoes", "actor": "patient", "capturable": true, "stitchId": null, "sourceFile": "app/(patient)/sessoes/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S25", "route": "/portal/chat", "actor": "patient", "capturable": true, "stitchId": null, "sourceFile": "app/(patient)/chat/page.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S26", "route": "/booking/test-terapeuta/sucesso", "actor": "public", "capturable": true, "stitchId": null, "sourceFile": "app/booking/[slug]/sucesso/page.tsx", "tests": ["e2e/booking.spec.ts", "e2e/screen-contract.spec.ts"] },
+    { "id": "S27", "route": "__component__:app/loading.tsx", "actor": "system", "capturable": false, "stitchId": null, "sourceFile": "app/loading.tsx", "tests": ["e2e/screen-contract.spec.ts"] },
+    { "id": "S28", "route": "/_mf00r_not_found_probe", "actor": "public", "capturable": true, "stitchId": null, "sourceFile": "app/not-found.tsx | app/global-error.tsx", "tests": ["e2e/navigation.spec.ts", "e2e/screen-contract.spec.ts"] }
+  ]
+}

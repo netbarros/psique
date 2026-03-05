@@ -4,9 +4,63 @@
 
 ---
 
+## 🔄 Atualização de Continuidade — Fase 22 v3.2 (2026-03-05)
+
+### Status consolidado
+- Reconciliação enterprise E2E concluída (MF-00..MF-11).
+- `AGENTS.md` atualizado para **v3.2** com melhores práticas operacionais + matriz de correlatos.
+- `CLAUDE.md` definido como agente parceiro oficial, delegado às regras canônicas de `AGENTS.md`.
+- `docs/stitch/*` confirmado como fonte canônica; `files/*` como espelho automático sem edição manual.
+- Rotas canônicas de paciente em `/portal/*`; rotas curtas legadas com redirect permanente `308`.
+- Runtime Next 16 consolidado com `proxy.ts` (sem `middleware.ts`).
+- Auditoria backend enterprise adicionada com orquestrador dedicado e report em baseline.
+
+### Gates atuais (G1..G12)
+1. `npm run lint` → **PASS**
+2. `npm run typecheck` → **PASS**
+3. `npm run contract:manifest:check` → **PASS** (`28 screens`)
+4. `npm run contract:non-screen:check` → **PASS** (`28 api paths`)
+5. `npm run docs:sync:check` → **PASS** (`0 drift`)
+6. `npm run lint:colors` → **PASS** (`allowlist aplicada`)
+7. `npm run build` → **PASS**
+8. `npm run test:unit` → **PASS**
+9. `npm run test:api` → **PASS**
+10. `npm run test:e2e` → **PASS** (`204 passed`)
+11. `npm run test:visual` → **PASS** (`9 passed`)
+12. `npm run backend:audit` → **PASS**
+
+### Gates de coordenação backend↔layout
+- `npm run docs:watch:snapshot` → **PASS** (baseline de docs atualizado)
+- `npm run docs:watch:check` → **PASS** (`0 changes`)
+- `npm run supabase:preflight:write` → **PASS** (`4/4 checks`)
+
+### Correlatos obrigatórios (resumo)
+- Governança de espelho: `scripts/sync-stitch-mirror.mjs` + `npm run docs:sync:*`
+- Monitor de coordenação com agente parceiro: `scripts/track-docs-updates.mjs` + `npm run docs:watch:*`
+- Contrato canônico: `docs/stitch/CANONICAL_MANIFEST.json` + schema em `docs/stitch/schema/`
+- Catálogo não-visual: `docs/stitch/NON_SCREEN_ROUTES.json`
+- Catálogo E2E gerado: `e2e/contracts/screen-catalog.generated.ts`
+- Contrato backend↔frontend: `docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md`
+- Checklist de PR para agente de layout: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`
+- Preflight de dados Supabase (antes de enforce de unicidade): `scripts/supabase-preflight.mjs`
+- CI bloqueante: `.github/workflows/{backend-audit,lint,typecheck,build,unit,api,e2e,visual,docs-sync-check}.yml`
+- Orquestrador de auditoria backend: `scripts/backend-audit-orchestrator.mjs`
+- Baseline de auditoria backend: `docs/baselines/mf23_backend_audit/report.json`
+
+### Artefatos-chave da Fase 22
+- Plano atualizado: `docs/implementation_plan.md` (Fase 22).
+- Baseline reconciliação: `docs/baselines/mf21_reconcile/*`.
+- Handoff final: `docs/handoffs/HANDOFF-FASE22-RECONCILIACAO-E2E.md`.
+- Contrato backend↔frontend (agente parceiro): `docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md`.
+- Checklist operacional de integração: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`.
+- Playbook saneamento pré-migração Supabase: `supabase/playbooks/20260305_preflight_dedupe_playbook.sql`.
+- README raiz atualizado com governança operacional.
+
+---
+
 ## Contexto do Projeto
 
-Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS clínico para psicanalistas brasileiros, construído em **Next.js 16.1.6 (latest) + TypeScript strict + Supabase + Tailwind v4+Enterprise Luxury Minimalist (Dark Theme)** usando Tailwind CSS v4, Framer Motion e Supabase (sem valores mockados)\*\*.
+Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS clínico para psicanalistas brasileiros, construído em **Next.js 16.1.6 (latest) + TypeScript strict + Supabase + Tailwind v4+Enterprise Luxury Minimalist (Dark Theme)** usando Tailwind CSS v4, motion preferencialmente via CSS/Tailwind (Framer Motion opcional) e Supabase (sem valores mockados)\*\*.
 
 **Projeto localizado em:** `c:\psique\psique`
 **Documentação master:** `c:\psique\psique\docs\PSIQUE_CURSOR_MASTER_PROMPT.md`
@@ -36,15 +90,67 @@ Você está continuando o desenvolvimento da plataforma **PSIQUE** — um SaaS c
 | Fase 15 — Patient UI Redesign              | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE15.md`                              |
 | Fase 16 — Public Booking UI Redesign       | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE16.md`                              |
 | Fase 17 — Audits & E2E Validation          | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE17.md`                              |
+| Fase 18 — Layout Standardization Zero Gaps | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE18.md`                              |
+| Fase 19 — Governança Stitch-First          | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE19.md`                              |
+| Fase 20 — Stitch Rollout + E2E 3 Viewports | ✅ TSC_PASSED | `docs/handoffs/HANDOFF-FASE20.md`                              |
 
 **Leia todos os handoffs antes de começar.** Eles contêm os detalhes exatos de cada arquivo criado.
+
+### 🔎 Rastreabilidade — Fase 18
+
+- Plano anexado: `docs/implementation_plan.md` (seção **Fase 18** no final).
+- Handoff da fase: `docs/handoffs/HANDOFF-FASE18.md`.
+- Escopo técnico executado:
+  - remoção de `style={{...}}` em `app/` + `components/`,
+  - eliminação de tokens legados em TSX (`--ff`, `--fs`, `--ivory`, `--mint`, `--gold`, `--card`, `--bg`),
+  - implementação do checkout Stripe real no webhook Telegram (`book_slot_*`) com botão URL.
+- Resultado do gate:
+  - `TSC_PASSED`,
+  - `npm run build` OK,
+  - Playwright (`auth/navigation/booking`) OK,
+  - auditoria UI desktop/mobile com `trace + video + screenshot` e HTML report dedicado (`playwright-report/fase18-ui/index.html`),
+  - resíduos `e2e_` = 0.
+
+### Resumo técnico da execução (Fase 18)
+
+1. **Telegram checkout real em produção**
+   - `lib/telegram.ts` agora aceita botões inline com `url` e `callback_data`.
+   - `app/api/telegram/webhook/route.ts` deixou de usar placeholder e passou a:
+     - resolver appointment/patient/therapist,
+     - reusar sessão Stripe válida quando aplicável,
+     - criar sessão nova quando necessário,
+     - persistir `stripe_session_id`,
+     - responder no Telegram com URL navegável de pagamento.
+
+2. **Padronização visual enterprise sem inline object styles**
+   - ondas A/B/C executadas nos arquivos críticos do dashboard, patient portal, shell e componentes base.
+   - estilos dinâmicos migrados para classes Tailwind + mapeamentos por estado.
+
+3. **Governança de qualidade**
+   - lacunas estáticas zeradas:
+     - `style={{...}}` = 0
+     - tokens legados em TSX = 0
+     - `TODO|FIXME|HACK` em `app/components/lib` = 0
+
+4. **Remediação visual enterprise pós-auditoria**
+   - reforço sistêmico de UX/UI aplicado em:
+     - `app/globals.css`
+     - `components/ui/EnterpriseCard.tsx`
+     - `components/dashboard/DashboardShell.tsx`
+     - `app/dashboard/page.tsx`
+     - `app/dashboard/agenda/page.tsx`
+     - `app/dashboard/configuracoes/page.tsx`
+     - `app/auth/login/page.tsx`
+   - novo contrato E2E de layout:
+     - `e2e/layout.enterprise.spec.ts`
+     - checks autenticados ativáveis via `E2E_THERAPIST_EMAIL` + `E2E_THERAPIST_PASSWORD`
 
 ### Arquivos principais já implementados
 
 ```
 app/
   layout.tsx                    ← root layout com <Toast /> Sonner global
-  page.tsx                      ← redirect para /auth/login
+  page.tsx                      ← landing pública Stitch (S11 + S12)
   globals.css                   ← design tokens PSIQUE (mint/gold/ivory/dark)
   auth/
     login/page.tsx              ← login + register + magic link + OAuth + CRP + role toggle (therapist/patient)
@@ -113,7 +219,7 @@ lib/
   utils.ts  logger.ts  ratelimit.ts
   pdf/session-report.tsx      ← React-PDF template A4 com stats + sessões + financeiro
 
-middleware.ts                   ← Supabase SSR auth guard
+proxy.ts                        ← auth guard e canonicalização de rotas legadas
 supabase/migrations/
   20240301000001_initial.sql    ← 11 tabelas + 13 RLS policies + rollback
   20260304000002_patient_profile_policy.sql ← policy RLS patient_own_profile (SELECT próprio perfil)
@@ -140,15 +246,15 @@ app/loading.tsx                 ← root loading spinner
 
 ## Regras INVIOLÁVEIS
 
-1. **Sempre rodar `cmd /c "cd c:\psique\psique && npx tsc --noEmit && echo TSC_PASSED || echo TSC_FAILED"`** ao fim de cada fase antes de gerar o handoff
-2. **Só gerar handoff após TSC_PASSED** — nunca antes
-3. **Usar `as unknown as`** para type casts de joins Supabase (não `as` direto — causa TS2352)
-4. **Todos os componentes client com `"use client"`** no topo; server components sem diretiva
-5. **Usar `useId()`** em vez de `Math.random()` para IDs em componentes React
-6. **Stripe API version:** `"2026-02-25.clover"` (stripe@20.4.0 instalado)
-7. **Tolerância zero a erros e gaps** — cobrir edge cases, loading states, auth guards, ZERO hardcore keys.
-8. **UX/UI Enterprise Rule:** Animações fluidas (`framer-motion`), design minimalista premium, uso de fontes sem-serifa legíveis (Geist, Inter). Livre-se da estilização bruta / fontes clássicas.
-9. **Atualizar este CONTINUIDADE-PROMPT.md** ao fim de cada fase
+1. **Sempre rodar `npm run verify:ci` antes de declarar conclusão** (sem sucesso completo, sem “done”).
+2. **`docs/stitch/*` é canônico e `files/*` é espelho**: nunca editar manualmente `files/*`.
+3. **Toda mudança em docs canônicas exige `npm run docs:sync:write` + `npm run docs:sync:check`.**
+4. **Paciente canônico em `/portal/*`**; manter legado curto com `308` (`/agendar`, `/apoio`, `/chat`, `/sessoes`).
+5. **Manter enforcement em `proxy.ts`** para auth/roteamento crítico.
+6. **Usar scripts oficiais de gate** (`lint`, `typecheck`, contratos, testes), sem validação parcial ad-hoc.
+7. **Respeitar contrato visual/tokens do AGENTS v3.1** e linter de cores (`npm run lint:colors`).
+8. **Só gerar handoff com evidência fresca** (resumo de saída dos comandos principais).
+9. **Atualizar este CONTINUIDADE-PROMPT.md e o handoff da fase** a cada mudança de governança.
 
 ---
 
@@ -156,7 +262,7 @@ app/loading.tsx                 ← root loading spinner
 
 | Tecnologia     | Versão                                |
 | -------------- | ------------------------------------- |
-| Next.js        | 15 (App Router)                       |
+| Next.js        | 16.1.6 (App Router)                   |
 | TypeScript     | strict: true                          |
 | Tailwind       | v4                                    |
 | Supabase       | @supabase/supabase-js + @supabase/ssr |
@@ -330,3 +436,87 @@ npx supabase db reset && npx supabase db push
 - Formulários padronizados com o uso de `bg-[var(--color-surface)]`, brilhos sutis (`shadow-[0_4px_24px...]`) e inputs dark com focus da marca.
 - Limpeza integral de style maps obsoletos nas landing pages dos terapeutas.
 - Criado `docs/handoffs/HANDOFF-FASE16.md`.
+
+---
+
+## 🔎 Rastreabilidade — Fase 19 (Governança Stitch-First)
+
+### Status
+- Fase 19 concluída como fase de documentação/governança.
+- Sem alterações de runtime/API/UI nesta fase.
+
+### Artefatos criados
+- Raiz:
+  - `AGENTS.md` (canônico)
+  - `Agent.md` (ponte)
+  - `CLAUDE.md`
+  - `GEMINI.md`
+- `docs/stitch/`:
+  - `README.md`
+  - `SCREEN_REGISTRY.md`
+  - `CANONICAL_MANIFEST.json`
+  - `DESIGN_TOKENS.md`
+  - `COMPONENT_LIBRARY.md`
+  - `LAYOUT_PATTERNS.md`
+  - `IMPLEMENTATION_BACKLOG.md`
+  - `NEXT_SESSION_E2E_INPUT.md`
+
+### Ordem de leitura automática (qualquer IA)
+1. `docs/stitch/README.md`
+2. `docs/stitch/SCREEN_REGISTRY.md`
+3. `docs/stitch/DESIGN_TOKENS.md`
+4. `docs/stitch/COMPONENT_LIBRARY.md`
+5. `docs/stitch/IMPLEMENTATION_BACKLOG.md`
+6. `docs/implementation_plan.md`
+
+### Regras de governança (trava anti-regressão)
+1. `stitch/**` é fonte visual primária.
+2. Fidelidade mobile obrigatória.
+3. Desktop derivado de forma sistematizada.
+4. Proibido em TSX:
+   - `style={{...}}`
+   - tokens legados `--ff`, `--fs`, `--ivory`, `--mint`, `--gold`, `--card`, `--bg`.
+5. Proibido inventar tela fora do Stitch quando houver referência.
+
+### Resumo técnico
+- Catálogo Stitch 14/14 consolidado em dois formatos:
+  - humano (`SCREEN_REGISTRY.md`)
+  - machine-readable (`CANONICAL_MANIFEST.json`).
+- Contratos de tokens, componentes e layout definidos para execução futura sem decisões abertas.
+- Input de E2E microvalidado pronto para próxima sessão.
+
+---
+
+## 🔎 Rastreabilidade — Fase 20 (Implementação Stitch + E2E)
+
+### Status
+- Fase 20 concluída.
+- Implementação de runtime/UI executada para rotas públicas Stitch faltantes.
+
+### Entregas de implementação
+1. Novas rotas públicas:
+   - `/` (S11 + S12)
+   - `/pricing` (S13)
+   - `/checkout/secure` (S14)
+2. Tipografia canônica no layout raiz:
+   - Display: `Cormorant Garamond`
+   - Body: `Instrument Sans`
+3. E2E ampliado com cobertura Stitch e micro-gates:
+   - `e2e/stitch.coverage.spec.ts`
+   - ajustes em `e2e/navigation.spec.ts` e `e2e/layout.enterprise.spec.ts`
+4. Matriz de viewport ativa no Playwright:
+   - `mobile-390x844`
+   - `tablet-768x1024`
+   - `desktop-1440x900`
+
+### Validação final da fase
+1. `npx tsc --noEmit` ✅
+2. `npm run build` ✅
+3. Playwright (auth/navigation/booking/layout/stitch) ✅
+   - `81 passed`
+   - `0 skipped`
+   - `0 failed`
+
+### Artefatos
+- `playwright-report/index.html`
+- `test-results/**` com `trace.zip`, `video.webm` e screenshot por cenário.

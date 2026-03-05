@@ -1,0 +1,427 @@
+[
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\CANONICAL_MANIFEST.json",
+    "checksum": "96d3710b175b7d4c6979cb079eb5fb02acb0361c1e02998b2b5977cdd2594340"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\COMPONENT_LIBRARY.md",
+    "checksum": "b373f81d172ea5d2641c20c8d1020a7990d3dc873a69385c332be28a546671fb"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\DESIGN_TOKENS.md",
+    "checksum": "4333235bf9ddde86aae4a22fa780907f1cead6a58491c9c8544f09e203fa0ef1"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\IMPLEMENTATION_BACKLOG.md",
+    "checksum": "ff3cece6e979a44e9716743f1e49bc248088d6bf56632b3118dccf8b9e9c1171"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\LAYOUT_PATTERNS.md",
+    "checksum": "c2e4eb9c2c065de4291caf7f02c754a844c8b1ec84794457a2822db2bb1b2435"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\NEXT_SESSION_E2E_INPUT.md",
+    "checksum": "21446274209e45cd3e24e9de73ebef2ba03d4bd6a6cb774de3834b4eda2f37fc"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\NON_SCREEN_ROUTES.json",
+    "checksum": "9c0c1317a95c5900cd2dfb188550122291f3d3a3107c08daa2105cae0371f1b5"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\README.md",
+    "checksum": "eb810d2e01ed8aecfd25ec74f03d638a87df9b15a5224529edecda06e7791241"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\SCREEN_REGISTRY.md",
+    "checksum": "46fbf243e818625a7260646079db17072a4393ad2b038894215c6f033e22a65a"
+  },
+  {
+    "group": "docs_stitch",
+    "file": "docs\\stitch\\schema\\canonical-manifest.schema.json",
+    "checksum": "00c6161f6b0619bb422142f745be80a11c5ee046154be193cfa40008b432e372"
+  },
+  {
+    "group": "files",
+    "file": "files\\AGENTS.md",
+    "checksum": "4f7c08a243b3124acf9e9f9b338095ab8b69ab969aa03e5b5b6d17520b5587f0"
+  },
+  {
+    "group": "files",
+    "file": "files\\Agent.md",
+    "checksum": "715e7fec980ba6a064aa8fa024ac1e9154082bc04ab80436ee8c797a4d249338"
+  },
+  {
+    "group": "files",
+    "file": "files\\CANONICAL_MANIFEST.json",
+    "checksum": "eabaaf82b39bb9b4cf1cb35f2cdc9476f3351f7b98faa80b8e89d62dff78730a"
+  },
+  {
+    "group": "files",
+    "file": "files\\CLAUDE.md",
+    "checksum": "532f223a153a57944eeaab15dbb6f312c040233d6a5fdedf588f8f9484203752"
+  },
+  {
+    "group": "files",
+    "file": "files\\COMPONENT_LIBRARY.md",
+    "checksum": "19a1f3e84aaa3525c55e1c541febdf9d2316f76d4b3d0e913801f8de1b8d35eb"
+  },
+  {
+    "group": "files",
+    "file": "files\\DESIGN_TOKENS.md",
+    "checksum": "c61f225314b3248d403954b3b57ca245c457b74160e66a036dbe659fc6b55d5c"
+  },
+  {
+    "group": "files",
+    "file": "files\\GEMINI.md",
+    "checksum": "9fc330f56e1c054c137367264f9419392cf8b5ac8c3947b53830ec9451d145ba"
+  },
+  {
+    "group": "files",
+    "file": "files\\IMPLEMENTATION_BACKLOG.md",
+    "checksum": "bdc05d5601d3ce66198150b89cae4fafc3932fbb80c2dfeda4d0a49c57795cce"
+  },
+  {
+    "group": "files",
+    "file": "files\\LAYOUT_PATTERNS.md",
+    "checksum": "26f4e6e8e4f927ea2dbef09c27964ccc39957c7281b8ab2f1f35aae7206ce478"
+  },
+  {
+    "group": "files",
+    "file": "files\\NEXT_SESSION_E2E_INPUT.md",
+    "checksum": "372b64ba6c63516018d14be3311f5b985da0cadc37b1d2fd1820956a5b32dab1"
+  },
+  {
+    "group": "files",
+    "file": "files\\README.md",
+    "checksum": "eb810d2e01ed8aecfd25ec74f03d638a87df9b15a5224529edecda06e7791241"
+  },
+  {
+    "group": "files",
+    "file": "files\\SCREEN_REGISTRY.md",
+    "checksum": "008eb6a027d9b769db7029a2b921fbdd53ba26443b23b36b2809004b95dd9d3e"
+  },
+  {
+    "group": "e2e_contracts",
+    "file": "e2e\\contracts\\screen-catalog.generated.ts",
+    "checksum": "5ce9cb5e670dbeee7dc816fda26b1705c54e4d0cd80e714a802be43bddfb2222"
+  },
+  {
+    "group": "e2e_contracts",
+    "file": "e2e\\contracts\\screen-catalog.ts",
+    "checksum": "f95066b0d330a81fe97612b414545a3ec1d1a1639dac2e895434f2424a9189f3"
+  },
+  {
+    "group": "e2e_contracts",
+    "file": "e2e\\contracts\\screen-contract.ts",
+    "checksum": "e8fe7d049a68c24bc48544f980018e6287b44111c6433e022f5abe8ba837ae54"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\(patient)\\agendar\\page.tsx",
+    "checksum": "b5b33df803f3340d3226bcc189b3078cf8ef8f6d6c331a3978ab5d8813c872ff"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\(patient)\\apoio\\page.tsx",
+    "checksum": "a1d0d1ae783adab89790d66e3b841c6cc193f1dfbb8a6a2197aa947841e2be2e"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\(patient)\\chat\\page.tsx",
+    "checksum": "195ea710030d967df5cbc89b6b5c9d0d16e569a9d8b1a4066c5b886756f3417a"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\(patient)\\page.tsx",
+    "checksum": "e6290d47a7ebad87f6a7f3befa2db786c12c9600e55257013fa30876695ef310"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\(patient)\\sessoes\\page.tsx",
+    "checksum": "ed6b2821c6477153fa9e7ecbbd40e849214e8073b0ca1d66c1c12a219392b313"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\auth\\forgot-password\\page.tsx",
+    "checksum": "40ee9091727c7823ce366d5e1d9a808f735c35601c21d49cd73d5b8ff91de100"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\auth\\login\\page.tsx",
+    "checksum": "0a4e59473d091d7432da817592ec34dae2cf09de5da1a45f8da46cf6901b3d4d"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\auth\\register\\page.tsx",
+    "checksum": "bc480c6e881ea871aa84a50b0869d3b59559ce133ed50590ae5ceb02b70e36c5"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\auth\\register\\patient\\page.tsx",
+    "checksum": "06768e6af61e73780928ee2802d5f62beb60f98a16fd51d4d135926f83696b58"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\auth\\reset-password\\page.tsx",
+    "checksum": "7a7e9dc7a522507119983ac0698ff663c0c9c609f421c6a172e9187436d1e8ab"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\booking\\[slug]\\page.tsx",
+    "checksum": "343eedd5c5777817af6d0859284fb0b3b5f4a49930e66097ef95804691468c62"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\booking\\[slug]\\sucesso\\page.tsx",
+    "checksum": "1448042e85f7535401d79f192b9f2dea8ffb5e8e5a00c3724e37069cf926fadf"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\checkout\\secure\\page.tsx",
+    "checksum": "9ac90e689d2dcf28bea48342e8b5fe3c17dabad376298b48385ce5ca1d8295e0"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\agenda\\page.tsx",
+    "checksum": "58c366e7fa9c0e762eaaab9db8cb7c0279f3aecf2a2526542d36e23d615ee5c8"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\configuracoes\\integracoes\\page.tsx",
+    "checksum": "493ed1bed773af8a247514d8d404229b60909894cf02af294a0c784d21fbb970"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\configuracoes\\page.tsx",
+    "checksum": "4825ad5abe8db953eca272014339b54840427df34d767a6eec837eb2c81d325e"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\configuracoes\\perfil\\page.tsx",
+    "checksum": "c2e6c85cf98b3d5d5b769b218c69da1281374953305f24b1ca6ba96af4b0398e"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\consulta\\[roomId]\\page.tsx",
+    "checksum": "f4ef5176d6536106c6867e090ef25ceaf98b357a11bad7669a1925e5a1e7c9c7"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\financeiro\\page.tsx",
+    "checksum": "60a03e0394e12815583db86004ebb1aaba3ce224df2681def25621aec28f5272"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\ia\\page.tsx",
+    "checksum": "fa7b925cccceac9f0fb8fc31e9449257080e4a9bc267464437b4c02652ba61c5"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\onboarding\\page.tsx",
+    "checksum": "bba837f70a5d1bc9c66c629269028d2415a207601ee2d0a99816af5a86a01837"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\pacientes\\[id]\\page.tsx",
+    "checksum": "68c5f177541180207145bdbaf9e2bcbe4d1056da23615a7f536f79fbb1d2885a"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\pacientes\\page.tsx",
+    "checksum": "ab72e06ba0b25264a07ec20c8811ef2b6884b9d3dc269a5bac0a02872d94d55b"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\page.tsx",
+    "checksum": "ee926ade0947c02d767a85817d760c4951e225a79b60c88b19b112cbf68db07f"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\dashboard\\telegram\\page.tsx",
+    "checksum": "95a72481797a0c3f7f8aaebb2d0e85404d53445771d788af7cdcd94130a35d28"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\page.tsx",
+    "checksum": "7a0e279ea13f65c95c76f43f9f12b525c4d204fa3b940b793485f822ff7e2f46"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\portal\\agendar\\page.tsx",
+    "checksum": "7ffeb3f8ca1121e77f8e13581a5f3e6ca356b510e45b37fa7d5f1923fddd7f66"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\portal\\apoio\\page.tsx",
+    "checksum": "f23756a6e77a86767b552d3cb272b56351709a216f29fc4121d09ba7fb8a9d8d"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\portal\\chat\\page.tsx",
+    "checksum": "16c304cbcd687183e5c250a8e7bc30386f675183063658cf3735976c01d94327"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\portal\\page.tsx",
+    "checksum": "d25a5c5b3e392f65861fb5682cf7ac44de9ec89e1ff34eb0a86d453b629097f6"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\portal\\sessoes\\page.tsx",
+    "checksum": "9a621e0bb68852a42df200d7e759b2a22ea6a352f828d11f771d8f1eafcd2176"
+  },
+  {
+    "group": "app_pages",
+    "file": "app\\pricing\\page.tsx",
+    "checksum": "6d225fe07711feca9a823ced951963fc1a1e529c94acd6599d7b074960b2f350"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\ai\\chat\\route.ts",
+    "checksum": "d9b987163f5c8caa7c458df7cdf184b632cf41387abeebe64eb15bf11a1632c2"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\ai\\insights\\route.ts",
+    "checksum": "f6df11f91aae6b62c0a5993ad3752d522b68366636a743ed60cecd595b36393b"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\ai\\summarize\\route.ts",
+    "checksum": "dc3b31f6da264f04e7a56ed007c0dd6ca49d6e0749c4b2a86554e0a5b475e6f5"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\ai\\transcribe\\route.ts",
+    "checksum": "264e9c68987033d370be5a3391b6a689f7a0fafe275f1a2cb944c09ebd4afb12"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\appointments\\[id]\\cancel\\route.ts",
+    "checksum": "82c1de58e61d84d50f6021b94e2aa6d057e1b9d450080ae810cff8d8e990a88c"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\appointments\\[id]\\reschedule\\route.ts",
+    "checksum": "e5caf8f6bb5503bb6c500d6ec37d1703568d1d798e1ddadc22c017509d276c83"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\audit\\events\\route.ts",
+    "checksum": "6a724cba9842f8ee198199e3c4873849bf5f3a6ec7c505a2d4c574dfded87101"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\auth\\mfa\\enroll\\route.ts",
+    "checksum": "a2cc87ae9352b483c88eba556888f53eb446a76b8820682082070c0ad08805dd"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\auth\\mfa\\unenroll\\route.ts",
+    "checksum": "7b82d2165c9742a1f7696b48ac5ef0f1c17218183e46fa946eb9b4ae0dcfb87a"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\auth\\mfa\\verify\\route.ts",
+    "checksum": "16957bac61d2d5b2f36f6c1577a27c834615c037ceafbe10a7b12056a420ffe2"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\auth\\patient\\bootstrap\\route.ts",
+    "checksum": "8ab2d6d1104aa650b921272c9eddab99a105297cde815f7363ec472069bf77af"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\booking\\checkout\\route.ts",
+    "checksum": "0bcec062ecb91d6ee82a3a3b74aab555f6548b0b05603c33e75f535e75a64f5a"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\cron\\reminders\\route.ts",
+    "checksum": "e5ec17a194606cae877870fe99e42b2223d9111639966511b620f68896bceb47"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\patient\\appointments\\checkout\\route.ts",
+    "checksum": "5924c4ebc58a6101cb08f1cc933200020817fc848646acb702de2258d547070b"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\patient\\chat\\messages\\route.ts",
+    "checksum": "5baba06afb9068e0b5e1be51addb9630f263ce6ddc3fbc71a448171dcdd38871"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\patient\\chat\\threads\\[id]\\messages\\route.ts",
+    "checksum": "c25096ab2a4fb6db36331c26cf033f46581737e07a16bbce6444ebcce2a9d3da"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\patient\\chat\\threads\\route.ts",
+    "checksum": "586e2ee83ebab510aebcea3f42bb4d00efa429ae8ace7ccc0ca8be3e1ef3637c"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\patient\\journal\\route.ts",
+    "checksum": "3e1d366a706fc20c923a8583f944a621d8523b5075d3b8f37a86a8b56b065cd2"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\patient\\mood\\route.ts",
+    "checksum": "959c9885dad5e8737aad8a8f239fcec6fe25bd2e91413bd1d34971c81de63b17"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\reports\\sessions\\route.ts",
+    "checksum": "b3cb51436b245020c88113bdbdbb21ab1fcc4663dcd72e98b02f9552e96d3fa9"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\sessions\\[id]\\close\\route.ts",
+    "checksum": "7ccec297313fb2dcc10852462efe52e5b7665960467586ccc8e3650a1643c428"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\settings\\profile\\route.ts",
+    "checksum": "91b72105ad7915b58b1571eac04163ddc772802fe58108aa9991919f589d629c"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\settings\\security\\route.ts",
+    "checksum": "c51c9df71760dcfe387ce82355f58e98edd1acad9f608687b943d7daecaad06d"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\subscriptions\\route.ts",
+    "checksum": "ec80ba7f5f7dec33c8b7ceaa73fbc0699605c4b5cbc4163fb815ba21bc3fbfd5"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\telegram\\webhook\\route.ts",
+    "checksum": "08cd523a7057b3d946895685e59c068e681f7c44fd726da554d5910428297b92"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\video\\room\\route.ts",
+    "checksum": "4b2bf8217fbded0d1962eba97861bdf351f39481dfddd48a83662a09a0a99973"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\webhooks\\stripe\\route.ts",
+    "checksum": "d2cb946c5166fbd52808a87b2b1d8ffc047f4c9af382bcef31e3970aeabd4cb2"
+  },
+  {
+    "group": "api_routes",
+    "file": "app\\api\\webhooks\\supabase\\route.ts",
+    "checksum": "830c0b5054a9880b67790c4f1f17e75b7a31b811c81a151d9fcccf6d7722f5e7"
+  }
+]

@@ -1,0 +1,115 @@
+{
+  "app": {
+    "[project]/app/(patient)/agendar/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/(patient)/apoio/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/(patient)/chat/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/(patient)/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/(patient)/sessoes/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/_not-found/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/auth/login/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/booking/[slug]/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/booking/[slug]/sucesso/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/checkout/secure/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/agenda/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/configuracoes/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/consulta/[roomId]/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/financeiro/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/ia/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/onboarding/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/pacientes/[id]/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/pacientes/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/dashboard/telegram/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/portal/agendar/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/portal/apoio/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/portal/chat/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/portal/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/portal/sessoes/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ],
+    "[project]/app/pricing/page": [
+      "static/media/f06bf9da926bae75-s.p.c68a79fb.woff2",
+      "static/media/01e4147cff8141ee-s.p.7787e134.woff2"
+    ]
+  },
+  "appUsingSizeAdjust": true,
+  "pages": {},
+  "pagesUsingSizeAdjust": false
+}

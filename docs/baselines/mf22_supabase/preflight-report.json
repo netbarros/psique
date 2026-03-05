@@ -1,0 +1,39 @@
+{
+  "generatedAt": "2026-03-05T02:51:44.881Z",
+  "summary": {
+    "total": 4,
+    "passed": 4,
+    "failed": 0,
+    "criticalFailed": 0
+  },
+  "checks": [
+    {
+      "id": "therapists_user_id_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate therapists.user_id found",
+      "samples": []
+    },
+    {
+      "id": "patients_user_id_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate patients.user_id found",
+      "samples": []
+    },
+    {
+      "id": "patients_therapist_email_ci_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate (therapist_id,email_ci) found in patients",
+      "samples": []
+    },
+    {
+      "id": "appointments_active_slot_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate active appointment slots found",
+      "samples": []
+    }
+  ]
+}

@@ -20,12 +20,12 @@ export default async function DashboardLayout({
   // Get therapist profile
   const { data: therapist } = await supabase
     .from("therapists")
-    .select("id, name, crp, slug, onboarding_completed, ai_model, telegram_bot_username")
+    .select("id, name, crp, slug, onboarding_completed, ai_model, telegram_bot_username, openrouter_key_hash")
     .eq("user_id", user.id)
     .single();
 
   return (
-    <div style={{ display: "flex", height: "100vh", overflow: "hidden", background: "var(--bg)" }}>
+    <div className="flex h-screen overflow-hidden bg-bg-base">
       <DashboardShell therapist={therapist} user={user}>
         {children}
       </DashboardShell>

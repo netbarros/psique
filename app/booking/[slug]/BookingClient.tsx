@@ -71,21 +71,15 @@ export default function BookingClient({
 
       const times: Array<{ time: string; iso: string; booked: boolean }> = [];
       for (const slot of slotsByDay[dow]) {
-        const generated = generateTimeSlots(
-          slot.start_time,
-          slot.end_time,
-          sessionDuration
-        );
+        const generated = generateTimeSlots(slot.start_time, slot.end_time, sessionDuration);
         for (const t of generated) {
           const [h, m] = t.split(":").map(Number);
           const slotDate = new Date(d);
           slotDate.setHours(h, m, 0, 0);
           const iso = slotDate.toISOString();
-
           const isBooked = bookedTimes.some(
             (b) => Math.abs(new Date(b).getTime() - slotDate.getTime()) < 3600000
           );
-
           times.push({ time: t, iso, booked: isBooked });
         }
       }
@@ -148,14 +142,10 @@ export default function BookingClient({
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        throw new Error(
-          (err as { error?: string }).error ?? `Erro ${res.status}`
-        );
+        throw new Error((err as { error?: string }).error ?? `Erro ${res.status}`);
       }
 
       const json = (await res.json()) as { data: { checkoutUrl: string } };
-
-      // Redirect to Stripe checkout
       window.location.href = json.data.checkoutUrl;
     } catch (e) {
       setError(e instanceof Error ? e.message : "Erro ao processar agendamento");
@@ -177,166 +167,85 @@ export default function BookingClient({
       })
     : "";
 
-  const inputStyle: React.CSSProperties = {
-    width: "100%",
-    padding: "12px 16px",
-    borderRadius: 12,
-    background: "var(--card2)",
-    border: "1px solid var(--border2)",
-    color: "var(--text)",
-    fontFamily: "var(--fs)",
-    fontSize: 14,
-    outline: "none",
-  };
+  /* ─── Canonical token inputClassName — stitch S02 dark_core ─── */
+  const inputClassName =
+    "w-full rounded-xl border border-border-subtle bg-bg-elevated px-4 py-3 text-sm text-text-primary outline-none transition focus:border-brand focus:ring-1 focus:ring-brand placeholder:text-text-muted";
 
   return (
     <div>
-      {/* Step indicator */}
-      <div
-        style={{
-          display: "flex",
-          gap: 8,
-          marginBottom: 24,
-          alignItems: "center",
-        }}
-      >
+      {/* ── Step indicator ── */}
+      <div className="mb-6 flex items-center gap-2">
         {[
           { n: 1, label: "Horário" },
           { n: 2, label: "Dados" },
           { n: 3, label: "Pagamento" },
-        ].map((s, i, arr) => (
-          <div key={s.n} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div
-              style={{
-                width: 28,
-                height: 28,
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 12,
-                fontWeight: 600,
-                background:
-                  (s.n === 1 && step === "select") ||
-                  (s.n === 2 && step === "form") ||
-                  (s.n === 3 && step === "processing")
-                    ? "var(--mint)"
-                    : "var(--card)",
-                color:
-                  (s.n === 1 && step === "select") ||
-                  (s.n === 2 && step === "form") ||
-                  (s.n === 3 && step === "processing")
-                    ? "#060E09"
-                    : "var(--ivoryDD)",
-                border: "1px solid var(--border)",
-              }}
-            >
-              {s.n}
-            </div>
-            <span
-              style={{
-                fontSize: 13,
-                color: "var(--ivoryDD)",
-              }}
-            >
-              {s.label}
-            </span>
-            {i < arr.length - 1 && (
+        ].map((s, i, arr) => {
+          const isActive =
+            (s.n === 1 && step === "select") ||
+            (s.n === 2 && step === "form") ||
+            (s.n === 3 && step === "processing");
+          return (
+            <div key={s.n} className="flex items-center gap-2">
               <div
-                style={{
-                  width: 32,
-                  height: 1,
-                  background: "var(--border)",
-                }}
-              />
-            )}
-          </div>
-        ))}
+                className={`flex h-7 w-7 items-center justify-center rounded-full border text-[12px] font-semibold transition-colors duration-300 ${
+                  isActive
+                    ? "border-brand bg-brand text-bg-base"
+                    : "border-border-subtle bg-surface text-text-muted"
+                }`}
+              >
+                {s.n}
+              </div>
+              <span
+                className={`text-[13px] ${
+                  isActive ? "font-medium text-text-primary" : "text-text-muted"
+                }`}
+              >
+                {s.label}
+              </span>
+              {i < arr.length - 1 && <div className="h-px w-8 bg-border-subtle" />}
+            </div>
+          );
+        })}
       </div>
 
       {/* Error */}
       {error && (
-        <div
-          style={{
-            padding: "12px 16px",
-            background: "rgba(184,84,80,.1)",
-            border: "1px solid rgba(184,84,80,.3)",
-            borderRadius: 12,
-            color: "var(--red)",
-            fontSize: 13,
-            marginBottom: 16,
-          }}
-        >
-          ❌ {error}
+        <div className="mb-4 flex items-center gap-2 rounded-xl border border-error/30 bg-error/10 px-4 py-3 text-[13px] text-error">
+          <span>❌</span> {error}
         </div>
       )}
 
-      {/* Step 1: Select slot */}
+      {/* ── Step 1: Select slot — stitch S02 3-col grid ── */}
       {(step === "select" || step === "form") && (
-        <div
-          style={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            borderRadius: 20,
-            padding: "28px",
-            marginBottom: 20,
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--ff)",
-              fontSize: 24,
-              fontWeight: 300,
-              color: "var(--ivory)",
-              marginBottom: 20,
-            }}
-          >
+        <div className="mb-5 rounded-2xl border border-border-subtle bg-surface/40 p-7 backdrop-blur-md">
+          <h2 className="mb-5 font-display text-2xl font-light text-text-primary">
             Escolha o horário
           </h2>
+          <p className="mb-4 text-[12px] text-text-muted">
+            Selecione o melhor horário para você. O próximo passo leva menos de 1 minuto.
+          </p>
 
           {daysWithSlots.length === 0 ? (
-            <div
-              style={{
-                textAlign: "center",
-                padding: "32px",
-                color: "var(--ivoryDD)",
-              }}
-            >
+            <div className="py-8 text-center text-text-muted">
               Não há horários disponíveis no momento.
             </div>
           ) : (
             <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: 18,
-                maxHeight: step === "form" ? 320 : undefined,
-                overflowY: step === "form" ? "auto" : undefined,
-              }}
+              className={`flex flex-col gap-5 ${
+                step === "form" ? "max-h-[320px] overflow-y-auto pr-2" : ""
+              }`}
             >
               {daysWithSlots.map((day) => (
                 <div key={day.label}>
-                  <div
-                    style={{
-                      fontSize: 13,
-                      color: "var(--ivoryD)",
-                      fontWeight: 500,
-                      marginBottom: 8,
-                    }}
-                  >
+                  <div className="mb-2.5 text-[13px] font-medium text-text-secondary">
                     {DAYS[day.dayOfWeek]} ·{" "}
                     {day.date.toLocaleDateString("pt-BR", {
                       day: "2-digit",
                       month: "2-digit",
                     })}
                   </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      flexWrap: "wrap",
-                      gap: 8,
-                    }}
-                  >
+                  {/* 3-col slot grid — stitch S02 */}
+                  <div className="grid grid-cols-3 gap-2.5">
                     {day.times.map((t) => {
                       const isSelected = selectedSlot === t.iso;
                       return (
@@ -345,33 +254,13 @@ export default function BookingClient({
                           type="button"
                           disabled={t.booked}
                           onClick={() => handleSlotClick(t.iso, t.booked)}
-                          style={{
-                            padding: "10px 18px",
-                            borderRadius: 10,
-                            fontSize: 14,
-                            fontWeight: 500,
-                            background: isSelected
-                              ? "var(--mint)"
+                          className={`rounded-xl border py-2.5 text-[14px] font-medium transition-all duration-200 ${
+                            isSelected
+                              ? "border-brand bg-brand text-bg-base shadow-[0_0_10px_rgba(82,183,136,0.2)]"
                               : t.booked
-                                ? "var(--bg3)"
-                                : "rgba(82,183,136,.08)",
-                            color: isSelected
-                              ? "#060E09"
-                              : t.booked
-                                ? "var(--ivoryDD)"
-                                : "var(--mint)",
-                            border: isSelected
-                              ? "2px solid var(--mint)"
-                              : t.booked
-                                ? "1px solid var(--border)"
-                                : "1px solid rgba(82,183,136,.3)",
-                            cursor: t.booked ? "not-allowed" : "pointer",
-                            opacity: t.booked ? 0.4 : 1,
-                            textDecoration: t.booked
-                              ? "line-through"
-                              : "none",
-                            transition: "all .15s var(--ease-out)",
-                          }}
+                              ? "cursor-not-allowed border-border-subtle bg-surface opacity-40 line-through"
+                              : "border-border-subtle bg-surface text-text-primary hover:border-brand hover:text-brand"
+                          }`}
                         >
                           {t.time}
                         </button>
@@ -385,64 +274,34 @@ export default function BookingClient({
         </div>
       )}
 
-      {/* Step 2: Form */}
+      {/* ── Step 2: Form ── */}
       {step === "form" && selectedSlot && (
-        <div
-          style={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            borderRadius: 20,
-            padding: "28px",
-            animation: "fadeUp .25s var(--ease-out)",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--ff)",
-              fontSize: 24,
-              fontWeight: 300,
-              color: "var(--ivory)",
-              marginBottom: 6,
-            }}
-          >
+        <div className="animate-[fadeUp_.25s_ease-out_both] rounded-2xl border border-border-subtle bg-surface/50 p-7 backdrop-blur-md">
+          <h2 className="mb-1.5 font-display text-2xl font-light text-text-primary">
             Seus dados
           </h2>
-          <p style={{ fontSize: 13, color: "var(--ivoryDD)", marginBottom: 20 }}>
-            Sessão com <span style={{ color: "var(--blue)" }}>{therapistName}</span> em{" "}
-            <span style={{ color: "var(--gold)" }}>
+          <p className="mb-5 text-[13px] text-text-muted">
+            Sessão com{" "}
+            <span className="text-info">{therapistName}</span> em{" "}
+            <span className="text-gold">
               {selectedDate} às {selectedTime}
             </span>
           </p>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 12,
-            }}
-          >
+          <div className="flex flex-col gap-3">
             <div>
               <label
                 htmlFor={`${formId}-name`}
-                style={{
-                  fontSize: 11,
-                  color: "var(--ivoryDD)",
-                  textTransform: "uppercase",
-                  letterSpacing: ".08em",
-                  display: "block",
-                  marginBottom: 6,
-                }}
+                className="mb-1.5 block text-[11px] uppercase tracking-[0.08em] text-text-muted"
               >
                 Nome completo *
               </label>
               <input
                 id={`${formId}-name`}
-                style={inputStyle}
+                className={inputClassName}
                 placeholder="Seu nome"
                 value={form.name}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, name: e.target.value }))
-                }
+                onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))}
                 aria-label="Nome completo"
               />
             </div>
@@ -450,26 +309,17 @@ export default function BookingClient({
             <div>
               <label
                 htmlFor={`${formId}-email`}
-                style={{
-                  fontSize: 11,
-                  color: "var(--ivoryDD)",
-                  textTransform: "uppercase",
-                  letterSpacing: ".08em",
-                  display: "block",
-                  marginBottom: 6,
-                }}
+                className="mb-1.5 block text-[11px] uppercase tracking-[0.08em] text-text-muted"
               >
                 Email *
               </label>
               <input
                 id={`${formId}-email`}
-                style={inputStyle}
+                className={inputClassName}
                 placeholder="seu@email.com"
                 type="email"
                 value={form.email}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, email: e.target.value }))
-                }
+                onChange={(e) => setForm((f) => ({ ...f, email: e.target.value }))}
                 aria-label="Email"
               />
             </div>
@@ -477,25 +327,16 @@ export default function BookingClient({
             <div>
               <label
                 htmlFor={`${formId}-phone`}
-                style={{
-                  fontSize: 11,
-                  color: "var(--ivoryDD)",
-                  textTransform: "uppercase",
-                  letterSpacing: ".08em",
-                  display: "block",
-                  marginBottom: 6,
-                }}
+                className="mb-1.5 block text-[11px] uppercase tracking-[0.08em] text-text-muted"
               >
                 Telefone (opcional)
               </label>
               <input
                 id={`${formId}-phone`}
-                style={inputStyle}
+                className={inputClassName}
                 placeholder="(11) 99999-0000"
                 value={form.phone}
-                onChange={(e) =>
-                  setForm((f) => ({ ...f, phone: e.target.value }))
-                }
+                onChange={(e) => setForm((f) => ({ ...f, phone: e.target.value }))}
                 aria-label="Telefone"
               />
             </div>
@@ -503,20 +344,13 @@ export default function BookingClient({
             <div>
               <label
                 htmlFor={`${formId}-cpf`}
-                style={{
-                  fontSize: 11,
-                  color: "var(--ivoryDD)",
-                  textTransform: "uppercase",
-                  letterSpacing: ".08em",
-                  display: "block",
-                  marginBottom: 6,
-                }}
+                className="mb-1.5 block text-[11px] uppercase tracking-[0.08em] text-text-muted"
               >
                 CPF (opcional)
               </label>
               <input
                 id={`${formId}-cpf`}
-                style={inputStyle}
+                className={inputClassName}
                 placeholder="000.000.000-00"
                 value={form.cpf ? formatCPF(form.cpf) : ""}
                 onChange={(e) => {
@@ -529,101 +363,38 @@ export default function BookingClient({
             </div>
           </div>
 
-          {/* Summary & submit */}
-          <div
-            style={{
-              marginTop: 20,
-              padding: "16px 20px",
-              background: "var(--bg2)",
-              borderRadius: 14,
-              border: "1px solid var(--border)",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <div>
-              <div style={{ fontSize: 11, color: "var(--ivoryDD)", marginBottom: 4 }}>
-                Valor da sessão
-              </div>
-              <div
-                style={{
-                  fontFamily: "var(--ff)",
-                  fontSize: 28,
-                  fontWeight: 200,
-                  color: "var(--gold)",
-                }}
-              >
+          {/* Summary & submit — stitch S02 sticky-like bottom summary */}
+          <div className="mt-5 flex flex-col items-center justify-between gap-4 rounded-xl border border-border-subtle bg-surface-hover/30 p-4 sm:flex-row sm:items-start">
+            <div className="text-center sm:text-left">
+              <div className="mb-1 text-[11px] text-text-muted">Valor da sessão</div>
+              <div className="font-display text-[28px] font-light text-gold">
                 R$ {sessionPrice.toFixed(2)}
               </div>
             </div>
+            {/* Stitch S02: bg-brand, text-bg-base, glow shadow */}
             <button
               type="button"
               onClick={handleSubmit}
-              style={{
-                padding: "14px 32px",
-                background: "var(--mint)",
-                color: "#060E09",
-                borderRadius: 12,
-                border: "none",
-                fontSize: 15,
-                fontWeight: 600,
-                cursor: "pointer",
-                boxShadow: "0 4px 24px rgba(82,183,136,.25)",
-                transition: "all .2s",
-              }}
+              className="w-full rounded-xl bg-brand px-8 py-3.5 text-[15px] font-semibold text-bg-base shadow-[0_4px_20px_rgba(82,183,136,0.25)] transition-all duration-300 hover:scale-[1.02] hover:bg-brand-hover hover:shadow-[0_4px_32px_rgba(82,183,136,0.4)] sm:w-auto"
             >
-              Ir para Pagamento →
+              Confirmar &amp; Pagar →
             </button>
           </div>
 
-          <div
-            style={{
-              marginTop: 12,
-              fontSize: 11,
-              color: "var(--ivoryDD)",
-              textAlign: "center",
-            }}
-          >
+          <div className="mt-3 text-center text-[11px] font-light tracking-wide text-text-muted">
             🔒 Pagamento seguro via Stripe · Dados protegidos por LGPD
           </div>
         </div>
       )}
 
-      {/* Step 3: Processing */}
+      {/* ── Step 3: Processing ── */}
       {step === "processing" && (
-        <div
-          style={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            borderRadius: 20,
-            padding: "60px 28px",
-            textAlign: "center",
-          }}
-        >
-          <div
-            style={{
-              width: 48,
-              height: 48,
-              border: "3px solid var(--border)",
-              borderTopColor: "var(--mint)",
-              borderRadius: "50%",
-              margin: "0 auto 20px",
-              animation: "spin 1s linear infinite",
-            }}
-          />
-          <div
-            style={{
-              fontFamily: "var(--ff)",
-              fontSize: 22,
-              fontWeight: 300,
-              color: "var(--ivory)",
-              marginBottom: 8,
-            }}
-          >
+        <div className="rounded-2xl border border-border-subtle bg-surface/50 p-[60px_28px] text-center backdrop-blur-md">
+          <div className="mx-auto mb-5 h-12 w-12 animate-spin rounded-full border-4 border-border-subtle border-t-brand" />
+          <div className="mb-2 font-display text-[22px] font-light text-text-primary">
             Redirecionando para pagamento...
           </div>
-          <div style={{ fontSize: 13, color: "var(--ivoryDD)" }}>
+          <div className="text-[13px] text-text-muted">
             Você será redirecionado ao Stripe em instantes.
           </div>
         </div>
@@ -632,11 +403,7 @@ export default function BookingClient({
   );
 }
 
-function generateTimeSlots(
-  start: string,
-  end: string,
-  durationMin: number
-): string[] {
+function generateTimeSlots(start: string, end: string, durationMin: number): string[] {
   const slots: string[] = [];
   const [sh, sm] = start.split(":").map(Number);
   const [eh, em] = end.split(":").map(Number);

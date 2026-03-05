@@ -1,0 +1,352 @@
+{
+  "version": 3,
+  "pages404": true,
+  "appType": "app",
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "priority": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(self)"
+        },
+        {
+          "key": "Strict-Transport-Security",
+          "value": "max-age=63072000; includeSubDomains; preload"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://api.qrserver.com; connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://openrouter.ai https://api.daily.co https://api.telegram.org https://api.stripe.com https://sentry.io https://*.sentry.io; frame-src https://js.stripe.com https://*.daily.co; media-src 'self' blob: https://*.supabase.co"
+        }
+      ],
+      "regex": "^(?:/(.*))(?:/)?$"
+    }
+  ],
+  "rewrites": {
+    "beforeFiles": [],
+    "afterFiles": [],
+    "fallback": []
+  },
+  "dynamicRoutes": [
+    {
+      "page": "/api/appointments/[id]/cancel",
+      "regex": "^/api/appointments/([^/]+?)/cancel(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/appointments/(?<nxtPid>[^/]+?)/cancel(?:/)?$"
+    },
+    {
+      "page": "/api/appointments/[id]/reschedule",
+      "regex": "^/api/appointments/([^/]+?)/reschedule(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/api/appointments/(?<nxtPid>[^/]+?)/reschedule(?:/)?$"
+    },
+    {
+      "page": "/booking/[slug]",
+      "regex": "^/booking/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/booking/(?<nxtPslug>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/booking/[slug]/sucesso",
+      "regex": "^/booking/([^/]+?)/sucesso(?:/)?$",
+      "routeKeys": {
+        "nxtPslug": "nxtPslug"
+      },
+      "namedRegex": "^/booking/(?<nxtPslug>[^/]+?)/sucesso(?:/)?$"
+    },
+    {
+      "page": "/dashboard/consulta/[roomId]",
+      "regex": "^/dashboard/consulta/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtProomId": "nxtProomId"
+      },
+      "namedRegex": "^/dashboard/consulta/(?<nxtProomId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/dashboard/pacientes/[id]",
+      "regex": "^/dashboard/pacientes/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPid": "nxtPid"
+      },
+      "namedRegex": "^/dashboard/pacientes/(?<nxtPid>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_global-error",
+      "regex": "^/_global\\-error(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_global\\-error(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/agendar",
+      "regex": "^/agendar(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/agendar(?:/)?$"
+    },
+    {
+      "page": "/api/ai/chat",
+      "regex": "^/api/ai/chat(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/ai/chat(?:/)?$"
+    },
+    {
+      "page": "/api/ai/insights",
+      "regex": "^/api/ai/insights(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/ai/insights(?:/)?$"
+    },
+    {
+      "page": "/api/ai/summarize",
+      "regex": "^/api/ai/summarize(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/ai/summarize(?:/)?$"
+    },
+    {
+      "page": "/api/auth/mfa/enroll",
+      "regex": "^/api/auth/mfa/enroll(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/mfa/enroll(?:/)?$"
+    },
+    {
+      "page": "/api/auth/mfa/unenroll",
+      "regex": "^/api/auth/mfa/unenroll(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/mfa/unenroll(?:/)?$"
+    },
+    {
+      "page": "/api/auth/mfa/verify",
+      "regex": "^/api/auth/mfa/verify(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/auth/mfa/verify(?:/)?$"
+    },
+    {
+      "page": "/api/booking/checkout",
+      "regex": "^/api/booking/checkout(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/booking/checkout(?:/)?$"
+    },
+    {
+      "page": "/api/cron/reminders",
+      "regex": "^/api/cron/reminders(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/cron/reminders(?:/)?$"
+    },
+    {
+      "page": "/api/reports/sessions",
+      "regex": "^/api/reports/sessions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/reports/sessions(?:/)?$"
+    },
+    {
+      "page": "/api/subscriptions",
+      "regex": "^/api/subscriptions(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/subscriptions(?:/)?$"
+    },
+    {
+      "page": "/api/telegram/webhook",
+      "regex": "^/api/telegram/webhook(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/telegram/webhook(?:/)?$"
+    },
+    {
+      "page": "/api/video/room",
+      "regex": "^/api/video/room(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/video/room(?:/)?$"
+    },
+    {
+      "page": "/api/webhooks/stripe",
+      "regex": "^/api/webhooks/stripe(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/api/webhooks/stripe(?:/)?$"
+    },
+    {
+      "page": "/apoio",
+      "regex": "^/apoio(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/apoio(?:/)?$"
+    },
+    {
+      "page": "/auth/callback",
+      "regex": "^/auth/callback(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/callback(?:/)?$"
+    },
+    {
+      "page": "/auth/login",
+      "regex": "^/auth/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/auth/login(?:/)?$"
+    },
+    {
+      "page": "/chat",
+      "regex": "^/chat(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/chat(?:/)?$"
+    },
+    {
+      "page": "/checkout/secure",
+      "regex": "^/checkout/secure(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/checkout/secure(?:/)?$"
+    },
+    {
+      "page": "/dashboard",
+      "regex": "^/dashboard(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard(?:/)?$"
+    },
+    {
+      "page": "/dashboard/agenda",
+      "regex": "^/dashboard/agenda(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/agenda(?:/)?$"
+    },
+    {
+      "page": "/dashboard/configuracoes",
+      "regex": "^/dashboard/configuracoes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/configuracoes(?:/)?$"
+    },
+    {
+      "page": "/dashboard/financeiro",
+      "regex": "^/dashboard/financeiro(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/financeiro(?:/)?$"
+    },
+    {
+      "page": "/dashboard/ia",
+      "regex": "^/dashboard/ia(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/ia(?:/)?$"
+    },
+    {
+      "page": "/dashboard/onboarding",
+      "regex": "^/dashboard/onboarding(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/onboarding(?:/)?$"
+    },
+    {
+      "page": "/dashboard/pacientes",
+      "regex": "^/dashboard/pacientes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/pacientes(?:/)?$"
+    },
+    {
+      "page": "/dashboard/telegram",
+      "regex": "^/dashboard/telegram(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/dashboard/telegram(?:/)?$"
+    },
+    {
+      "page": "/favicon.ico",
+      "regex": "^/favicon\\.ico(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/favicon\\.ico(?:/)?$"
+    },
+    {
+      "page": "/portal",
+      "regex": "^/portal(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal(?:/)?$"
+    },
+    {
+      "page": "/portal/agendar",
+      "regex": "^/portal/agendar(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal/agendar(?:/)?$"
+    },
+    {
+      "page": "/portal/apoio",
+      "regex": "^/portal/apoio(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal/apoio(?:/)?$"
+    },
+    {
+      "page": "/portal/chat",
+      "regex": "^/portal/chat(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal/chat(?:/)?$"
+    },
+    {
+      "page": "/portal/sessoes",
+      "regex": "^/portal/sessoes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/portal/sessoes(?:/)?$"
+    },
+    {
+      "page": "/pricing",
+      "regex": "^/pricing(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pricing(?:/)?$"
+    },
+    {
+      "page": "/sessoes",
+      "regex": "^/sessoes(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/sessoes(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "rsc",
+    "varyHeader": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch",
+    "prefetchHeader": "next-router-prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSegmentHeader": "next-router-segment-prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments",
+    "clientParamParsing": false,
+    "dynamicRSCPrerender": false
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  }
+}

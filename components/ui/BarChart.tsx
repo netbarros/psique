@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 interface DataPoint {
   label: string;
   value: number;
@@ -16,7 +18,7 @@ export function BarChart({
   data,
   width = 300,
   height = 140,
-  defaultColor = "var(--mint)",
+  defaultColor = "var(--color-brand)",
   className,
 }: BarChartProps) {
   if (!data.length) return null;
@@ -36,10 +38,9 @@ export function BarChart({
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      className={className}
+      className={cn("h-auto w-full", className)}
       role="img"
       aria-label="Gráfico de barras"
-      style={{ width: "100%", height: "auto" }}
     >
       {/* Y axis ticks */}
       {yTicks.map((t) => {
@@ -49,14 +50,14 @@ export function BarChart({
             <line
               x1={pad.l} x2={pad.l + W}
               y1={yPos} y2={yPos}
-              stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,3"
+              stroke="var(--color-border-subtle)" strokeWidth="0.5" strokeDasharray="2,3"
             />
             <text
               x={pad.l - 4} y={yPos + 3}
               textAnchor="end"
               fontSize="7"
-              fill="var(--ivoryDD)"
-              fontFamily="var(--fs)"
+              fill="var(--color-text-muted)"
+              fontFamily="var(--font-sans)"
             >
               {Math.round(max * t)}
             </text>
@@ -89,8 +90,8 @@ export function BarChart({
               x={bX + bW / 2} y={height - 10}
               textAnchor="middle"
               fontSize="7.5"
-              fill="var(--ivoryDD)"
-              fontFamily="var(--fs)"
+              fill="var(--color-text-muted)"
+              fontFamily="var(--font-sans)"
             >
               {d.label}
             </text>

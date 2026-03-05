@@ -2,11 +2,21 @@ import type { NextConfig } from "next";
 import { withSentryConfig } from "@sentry/nextjs";
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      { source: "/agendar", destination: "/portal/agendar", permanent: true },
+      { source: "/apoio", destination: "/portal/apoio", permanent: true },
+      { source: "/chat", destination: "/portal/chat", permanent: true },
+      { source: "/sessoes", destination: "/portal/sessoes", permanent: true },
+    ];
+  },
   images: {
     remotePatterns: [
       { protocol: "https", hostname: "*.supabase.co" },
       { protocol: "https", hostname: "*.supabase.in" },
       { protocol: "https", hostname: "api.qrserver.com" },
+      { protocol: "https", hostname: "api.dicebear.com" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
     ],
   },
   async headers() {
@@ -41,7 +51,7 @@ const nextConfig: NextConfig = {
               "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://js.stripe.com https://maps.googleapis.com",
               "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
               "font-src 'self' https://fonts.gstatic.com",
-              "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://api.qrserver.com",
+              "img-src 'self' data: blob: https://*.supabase.co https://*.supabase.in https://api.qrserver.com https://api.dicebear.com https://lh3.googleusercontent.com",
               "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co https://openrouter.ai https://api.daily.co https://api.telegram.org https://api.stripe.com https://sentry.io https://*.sentry.io",
               "frame-src https://js.stripe.com https://*.daily.co",
               "media-src 'self' blob: https://*.supabase.co",
@@ -64,6 +74,4 @@ export default withSentryConfig(nextConfig, {
 
   // Upload source maps on build
   widenClientFileUpload: true,
-  hideSourceMaps: true,
 });
-

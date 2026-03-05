@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 interface DataPoint {
   label: string;
   value: number;
@@ -16,7 +18,7 @@ export function LineChart({
   data,
   width = 300,
   height = 100,
-  color = "var(--mint)",
+  color = "var(--color-brand)",
   filled = true,
   className,
 }: LineChartProps) {
@@ -41,10 +43,9 @@ export function LineChart({
   return (
     <svg
       viewBox={`0 0 ${width} ${height}`}
-      className={className}
+      className={cn("h-auto w-full", className)}
       role="img"
       aria-label="Gráfico de linha"
-      style={{ width: "100%", height: "auto" }}
     >
       {/* Grid lines */}
       {[0, 0.5, 1].map((t) => (
@@ -52,7 +53,7 @@ export function LineChart({
           key={t}
           x1={pad.l} x2={pad.l + W}
           y1={pad.t + H * (1 - t)} y2={pad.t + H * (1 - t)}
-          stroke="var(--border)" strokeWidth="0.5" strokeDasharray="2,3"
+          stroke="var(--color-border-subtle)" strokeWidth="0.5" strokeDasharray="2,3"
         />
       ))}
 
@@ -86,8 +87,8 @@ export function LineChart({
               x={x(i)} y={height - 6}
               textAnchor="middle"
               fontSize="8"
-              fill="var(--ivoryDD)"
-              fontFamily="var(--fs)"
+              fill="var(--color-text-muted)"
+              fontFamily="var(--font-sans)"
             >
               {d.label}
             </text>

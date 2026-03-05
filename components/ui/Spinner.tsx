@@ -14,9 +14,9 @@ const SIZES = {
 };
 
 const COLORS = {
-  mint:  "border-[rgba(82,183,136,.2)] border-t-[var(--mint)]",
-  gold:  "border-[rgba(196,163,90,.2)] border-t-[var(--gold)]",
-  ivory: "border-[rgba(237,231,217,.2)] border-t-[var(--ivory)]",
+  mint:  "border-[rgba(82,183,136,.2)] border-t-brand",
+  gold:  "border-[rgba(196,163,90,.2)] border-t-[var(--color-gold)]",
+  ivory: "border-[rgba(248,250,252,.2)] border-t-[var(--tw-text-primary)]",
 };
 
 export function Spinner({ size = "md", color = "mint", className }: SpinnerProps) {

@@ -1,0 +1,79 @@
+{
+  "generatedAt": "2026-03-05T01:36:27.716Z",
+  "baseline": "mf21_reconcile",
+  "totalFindings": 9,
+  "findings": [
+    {
+      "id": "mirror_checksum_CANONICAL_MANIFEST.json",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Checksum mismatch between docs/stitch and files for CANONICAL_MANIFEST.json",
+      "expected": "docs\\stitch\\CANONICAL_MANIFEST.json",
+      "actual": "files\\CANONICAL_MANIFEST.json"
+    },
+    {
+      "id": "mirror_checksum_COMPONENT_LIBRARY.md",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Checksum mismatch between docs/stitch and files for COMPONENT_LIBRARY.md",
+      "expected": "docs\\stitch\\COMPONENT_LIBRARY.md",
+      "actual": "files\\COMPONENT_LIBRARY.md"
+    },
+    {
+      "id": "mirror_checksum_DESIGN_TOKENS.md",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Checksum mismatch between docs/stitch and files for DESIGN_TOKENS.md",
+      "expected": "docs\\stitch\\DESIGN_TOKENS.md",
+      "actual": "files\\DESIGN_TOKENS.md"
+    },
+    {
+      "id": "mirror_checksum_IMPLEMENTATION_BACKLOG.md",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Checksum mismatch between docs/stitch and files for IMPLEMENTATION_BACKLOG.md",
+      "expected": "docs\\stitch\\IMPLEMENTATION_BACKLOG.md",
+      "actual": "files\\IMPLEMENTATION_BACKLOG.md"
+    },
+    {
+      "id": "mirror_checksum_LAYOUT_PATTERNS.md",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Checksum mismatch between docs/stitch and files for LAYOUT_PATTERNS.md",
+      "expected": "docs\\stitch\\LAYOUT_PATTERNS.md",
+      "actual": "files\\LAYOUT_PATTERNS.md"
+    },
+    {
+      "id": "mirror_checksum_NEXT_SESSION_E2E_INPUT.md",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Checksum mismatch between docs/stitch and files for NEXT_SESSION_E2E_INPUT.md",
+      "expected": "docs\\stitch\\NEXT_SESSION_E2E_INPUT.md",
+      "actual": "files\\NEXT_SESSION_E2E_INPUT.md"
+    },
+    {
+      "id": "mirror_missing_NON_SCREEN_ROUTES.json",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Missing mirrored file in files/: NON_SCREEN_ROUTES.json",
+      "expected": "docs\\stitch\\NON_SCREEN_ROUTES.json",
+      "actual": null
+    },
+    {
+      "id": "mirror_checksum_SCREEN_REGISTRY.md",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Checksum mismatch between docs/stitch and files for SCREEN_REGISTRY.md",
+      "expected": "docs\\stitch\\SCREEN_REGISTRY.md",
+      "actual": "files\\SCREEN_REGISTRY.md"
+    },
+    {
+      "id": "mirror_missing_canonical-manifest.schema.json",
+      "severity": "critical",
+      "category": "docs_mirror",
+      "description": "Missing mirrored file in files/: canonical-manifest.schema.json",
+      "expected": "docs\\stitch\\schema\\canonical-manifest.schema.json",
+      "actual": null
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "version": 3,
+  "middleware": {
+    "/": {
+      "files": [
+        "server/edge/chunks/node_modules_@sentry_core_build_esm_caacc7c8._.js",
+        "server/edge/chunks/node_modules_@sentry_opentelemetry_build_esm_index_50c4bb05.js",
+        "server/edge/chunks/node_modules_@sentry_vercel-edge_build_esm_index_97d7ed9c.js",
+        "server/edge/chunks/node_modules_2cf85f53._.js",
+        "server/edge/chunks/[root-of-the-server]__6257d8ec._.js",
+        "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_9d6c9a92.js",
+        "server/edge/chunks/node_modules_next_dist_4c6d306c._.js",
+        "server/edge/chunks/node_modules_@opentelemetry_api_build_esm_4557a825._.js",
+        "server/edge/chunks/node_modules_@supabase_auth-js_dist_module_33c852e9._.js",
+        "server/edge/chunks/node_modules_f76aabff._.js",
+        "server/edge/chunks/[root-of-the-server]__f2b15f93._.js",
+        "server/edge/chunks/turbopack-node_modules_next_dist_esm_build_templates_edge-wrapper_d8790a6d.js"
+      ],
+      "name": "middleware",
+      "page": "/",
+      "matchers": [
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!_next\\/static|_next\\/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*))(\\\\.json)?[\\/#\\?]?$",
+          "originalSource": "/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)"
+        }
+      ],
+      "wasm": [],
+      "assets": [],
+      "env": {
+        "__NEXT_BUILD_ID": "development",
+        "NEXT_SERVER_ACTIONS_ENCRYPTION_KEY": "b143d1IKovvgUQpChcOhsSnu2sMTN7Y71980r6XJLRk=",
+        "__NEXT_PREVIEW_MODE_ID": "0212c0b268c54c55a03ace5bfb174b30",
+        "__NEXT_PREVIEW_MODE_ENCRYPTION_KEY": "12fb900c2b6f9abb4b879c78c883fe5a52fe64bed9a8368bdca3aaabb5a6f5c0",
+        "__NEXT_PREVIEW_MODE_SIGNING_KEY": "1312831790f412f1db5afe62aec044f523c09cb178a24d0407599f0bf17bc3fb"
+      }
+    }
+  },
+  "sortedMiddleware": [
+    "/"
+  ],
+  "functions": {}
+}

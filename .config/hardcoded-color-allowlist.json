@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-03-05T03:42:02.723Z",
+  "policy": "No new hardcoded hex color utility classes outside allowlist baseline.",
+  "allowlist": [
+    "app\\auth\\forgot-password\\page.tsx::text-[#060E09]",
+    "app\\auth\\register\\page.tsx::bg-[#080F0B]",
+    "app\\auth\\register\\page.tsx::text-[#EDE7D9]",
+    "app\\auth\\register\\patient\\page.tsx::bg-[#4A8FA8]",
+    "app\\auth\\register\\patient\\page.tsx::border-[#4A8FA8]",
+    "app\\auth\\register\\patient\\page.tsx::border-[#E2E8F0]",
+    "app\\auth\\register\\patient\\page.tsx::text-[#4A8FA8]",
+    "app\\auth\\reset-password\\page.tsx::text-[#060E09]",
+    "app\\booking\\[slug]\\page.tsx::text-[#fbbf24]",
+    "app\\booking\\[slug]\\sucesso\\page.tsx::bg-[#080f0b]",
+    "app\\booking\\[slug]\\sucesso\\page.tsx::bg-[#3fa874]",
+    "app\\dashboard\\pacientes\\[id]\\page.tsx::bg-[#b85450]",
+    "app\\dashboard\\pacientes\\[id]\\page.tsx::border-[#b85450]",
+    "app\\dashboard\\pacientes\\[id]\\page.tsx::text-[#b85450]",
+    "app\\global-error.tsx::text-[#060E09]",
+    "app\\not-found.tsx::text-[#060E09]",
+    "app\\page.tsx::bg-[#2AABEE]",
+    "app\\page.tsx::border-[#2AABEE]",
+    "app\\page.tsx::text-[#2AABEE]",
+    "components\\dashboard\\DashboardShell.tsx::bg-[#2AABEE]",
+    "components\\dashboard\\DashboardShell.tsx::border-[#2AABEE]",
+    "components\\dashboard\\DashboardShell.tsx::text-[#2AABEE]",
+    "components\\dashboard\\PatientDetailTabs.tsx::bg-[#a78bfa]",
+    "components\\dashboard\\PatientDetailTabs.tsx::border-[#a78bfa]",
+    "components\\dashboard\\PatientDetailTabs.tsx::text-[#a78bfa]",
+    "components\\ui\\Badge.tsx::text-[#a78bfa]"
+  ]
+}

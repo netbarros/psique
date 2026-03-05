@@ -1,0 +1,606 @@
+{
+  "version": "3.0.0",
+  "generated_at": "2026-03-04T00:00:00-03:00",
+  "source_of_truth": "AGENTS.md v3.0 + stitch/**",
+  "themes": [
+    "dark_core",
+    "dark_theater",
+    "light_onboard",
+    "light_patient"
+  ],
+  "screens": [
+    {
+      "id": "S01",
+      "source_type": "stitch",
+      "title": "Therapist Dashboard",
+      "theme": "dark_core",
+      "route": "/dashboard",
+      "folder": "psique_cursor_master_prompt.md_1",
+      "html_path": "stitch/psique_cursor_master_prompt.md_1/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_1/screen.png",
+      "source_file": "app/dashboard/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S02",
+      "source_type": "stitch",
+      "title": "Public Booking Page",
+      "theme": "dark_core",
+      "route": "/booking/[slug]",
+      "folder": "psique_cursor_master_prompt.md_2",
+      "html_path": "stitch/psique_cursor_master_prompt.md_2/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_2/screen.png",
+      "source_file": "app/booking/[slug]/page.tsx",
+      "status": "mapped",
+      "routePattern": "/booking/[slug]",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S03",
+      "source_type": "stitch",
+      "title": "Clinical Session Video",
+      "theme": "dark_theater",
+      "route": "/dashboard/consulta/[roomId]",
+      "folder": "psique_cursor_master_prompt.md_3",
+      "html_path": "stitch/psique_cursor_master_prompt.md_3/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_3/screen.png",
+      "source_file": "app/dashboard/consulta/[roomId]/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard/consulta/[roomId]",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S04",
+      "source_type": "stitch",
+      "title": "Patient Clinical Profile",
+      "theme": "dark_core",
+      "route": "/dashboard/pacientes/[id]",
+      "folder": "psique_cursor_master_prompt.md_4",
+      "html_path": "stitch/psique_cursor_master_prompt.md_4/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_4/screen.png",
+      "source_file": "app/dashboard/pacientes/[id]/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard/pacientes/[id]",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S05",
+      "source_type": "stitch",
+      "title": "AI Clinical Assistant",
+      "theme": "dark_core",
+      "route": "/dashboard/ia",
+      "folder": "psique_cursor_master_prompt.md_5",
+      "html_path": "stitch/psique_cursor_master_prompt.md_5/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_5/screen.png",
+      "source_file": "app/dashboard/ia/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard/ia",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S06",
+      "source_type": "stitch",
+      "title": "Financial Intelligence",
+      "theme": "dark_core",
+      "route": "/dashboard/financeiro",
+      "folder": "psique_cursor_master_prompt.md_6",
+      "html_path": "stitch/psique_cursor_master_prompt.md_6/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_6/screen.png",
+      "source_file": "app/dashboard/financeiro/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard/financeiro",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S07",
+      "source_type": "stitch",
+      "title": "Telegram Hub",
+      "theme": "dark_core",
+      "route": "/dashboard/telegram",
+      "folder": "psique_cursor_master_prompt.md_7",
+      "html_path": "stitch/psique_cursor_master_prompt.md_7/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_7/screen.png",
+      "source_file": "app/dashboard/telegram/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard/telegram",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S08",
+      "source_type": "stitch",
+      "title": "Therapist Onboarding Wizard",
+      "theme": "light_onboard",
+      "route": "/dashboard/onboarding",
+      "folder": "psique_cursor_master_prompt.md_8",
+      "html_path": "stitch/psique_cursor_master_prompt.md_8/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_8/screen.png",
+      "source_file": "app/dashboard/onboarding/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard/onboarding",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S09",
+      "source_type": "stitch",
+      "title": "Segurança & LGPD",
+      "theme": "dark_core",
+      "route": "/dashboard/configuracoes",
+      "folder": "psique_cursor_master_prompt.md_9",
+      "html_path": "stitch/psique_cursor_master_prompt.md_9/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_9/screen.png",
+      "source_file": "app/dashboard/configuracoes/page.tsx",
+      "status": "mapped",
+      "routePattern": "/dashboard/configuracoes",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S10",
+      "source_type": "stitch",
+      "title": "Patient Reflection Portal",
+      "theme": "light_patient",
+      "route": [
+        "/portal",
+        "/portal/apoio"
+      ],
+      "folder": "psique_cursor_master_prompt.md_10",
+      "html_path": "stitch/psique_cursor_master_prompt.md_10/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_10/screen.png",
+      "source_file": "app/portal/page.tsx",
+      "status": "mapped",
+      "routePattern": "/portal",
+      "aliases": [
+        "/portal/apoio",
+        "/apoio"
+      ],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S11",
+      "source_type": "stitch",
+      "title": "Landing Hero",
+      "theme": "dark_core",
+      "route": "/",
+      "folder": "psique_cursor_master_prompt.md_11",
+      "html_path": "stitch/psique_cursor_master_prompt.md_11/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_11/screen.png",
+      "source_file": "app/page.tsx",
+      "status": "mapped",
+      "routePattern": "/",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S12",
+      "source_type": "stitch",
+      "title": "Landing Features & Value",
+      "theme": "dark_core",
+      "route": "/",
+      "folder": "psique_cursor_master_prompt.md_12",
+      "html_path": "stitch/psique_cursor_master_prompt.md_12/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_12/screen.png",
+      "source_file": "app/page.tsx",
+      "status": "mapped",
+      "routePattern": "/",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S13",
+      "source_type": "stitch",
+      "title": "Pricing Plans",
+      "theme": "dark_core",
+      "route": "/pricing",
+      "folder": "psique_cursor_master_prompt.md_13",
+      "html_path": "stitch/psique_cursor_master_prompt.md_13/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_13/screen.png",
+      "source_file": "app/pricing/page.tsx",
+      "status": "mapped",
+      "routePattern": "/pricing",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S14",
+      "source_type": "stitch",
+      "title": "Secure Checkout",
+      "theme": "dark_core",
+      "route": "/checkout/secure",
+      "folder": "psique_cursor_master_prompt.md_14",
+      "html_path": "stitch/psique_cursor_master_prompt.md_14/code.html",
+      "image_path": "stitch/psique_cursor_master_prompt.md_14/screen.png",
+      "source_file": "app/checkout/secure/page.tsx",
+      "status": "mapped",
+      "routePattern": "/checkout/secure",
+      "aliases": [],
+      "coverageLevel": "L2",
+      "evidenceRequired": [
+        "route-contract",
+        "flow-critical",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S15",
+      "source_type": "derived",
+      "title": "Login Dual Role",
+      "theme": "dark_core",
+      "route": "/auth/login",
+      "source_file": "app/auth/login/page.tsx",
+      "status": "mapped",
+      "routePattern": "/auth/login",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S16",
+      "source_type": "derived",
+      "title": "Register Therapist",
+      "theme": "light_onboard",
+      "route": "/auth/register",
+      "source_file": "app/auth/register/page.tsx",
+      "derives_from": [
+        "S08"
+      ],
+      "status": "mapped",
+      "routePattern": "/auth/register",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S17",
+      "source_type": "derived",
+      "title": "Register Patient",
+      "theme": "light_patient",
+      "route": "/auth/register/patient",
+      "source_file": "app/auth/register/patient/page.tsx",
+      "derives_from": [
+        "S10"
+      ],
+      "status": "mapped",
+      "routePattern": "/auth/register/patient",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S18",
+      "source_type": "derived",
+      "title": "Forgot Password",
+      "theme": "dark_core",
+      "route": "/auth/forgot-password",
+      "source_file": "app/auth/forgot-password/page.tsx",
+      "status": "mapped",
+      "routePattern": "/auth/forgot-password",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S19",
+      "source_type": "derived",
+      "title": "Agenda Semanal",
+      "theme": "dark_core",
+      "route": "/dashboard/agenda",
+      "source_file": "app/dashboard/agenda/page.tsx",
+      "derives_from": [
+        "S01",
+        "S04"
+      ],
+      "status": "mapped",
+      "routePattern": "/dashboard/agenda",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S20",
+      "source_type": "derived",
+      "title": "Lista de Pacientes",
+      "theme": "dark_core",
+      "route": "/dashboard/pacientes",
+      "source_file": "app/dashboard/pacientes/page.tsx",
+      "derives_from": [
+        "S04"
+      ],
+      "status": "mapped",
+      "routePattern": "/dashboard/pacientes",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S21",
+      "source_type": "derived",
+      "title": "Settings Perfil",
+      "theme": "dark_core",
+      "route": "/dashboard/configuracoes/perfil",
+      "source_file": "app/dashboard/configuracoes/perfil/page.tsx",
+      "derives_from": [
+        "S09"
+      ],
+      "status": "mapped",
+      "routePattern": "/dashboard/configuracoes/perfil",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S22",
+      "source_type": "derived",
+      "title": "Settings Integrações",
+      "theme": "dark_core",
+      "route": "/dashboard/configuracoes/integracoes",
+      "source_file": "app/dashboard/configuracoes/integracoes/page.tsx",
+      "derives_from": [
+        "S09"
+      ],
+      "status": "mapped",
+      "routePattern": "/dashboard/configuracoes/integracoes",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S23",
+      "source_type": "derived",
+      "title": "Patient Self-Booking",
+      "theme": "light_patient",
+      "route": "/portal/agendar",
+      "source_file": "app/portal/agendar/page.tsx",
+      "derives_from": [
+        "S02",
+        "S10"
+      ],
+      "status": "mapped",
+      "routePattern": "/portal/agendar",
+      "aliases": [
+        "/agendar"
+      ],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S24",
+      "source_type": "derived",
+      "title": "Patient Sessions History",
+      "theme": "light_patient",
+      "route": "/portal/sessoes",
+      "source_file": "app/portal/sessoes/page.tsx",
+      "derives_from": [
+        "S10"
+      ],
+      "status": "mapped",
+      "routePattern": "/portal/sessoes",
+      "aliases": [
+        "/sessoes"
+      ],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S25",
+      "source_type": "derived",
+      "title": "Patient AI Chat",
+      "theme": "light_patient",
+      "route": "/portal/chat",
+      "source_file": "app/portal/chat/page.tsx",
+      "derives_from": [
+        "S05",
+        "S10"
+      ],
+      "status": "mapped",
+      "routePattern": "/portal/chat",
+      "aliases": [
+        "/chat"
+      ],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S26",
+      "source_type": "derived",
+      "title": "Booking Confirmation",
+      "theme": "dark_core",
+      "route": "/booking/[slug]/sucesso",
+      "source_file": "app/booking/[slug]/sucesso/page.tsx",
+      "derives_from": [
+        "S14"
+      ],
+      "status": "mapped",
+      "routePattern": "/booking/[slug]/sucesso",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S27",
+      "source_type": "derived",
+      "title": "Global Loading",
+      "theme": "dark_core",
+      "route": "__component__:app/loading.tsx",
+      "source_file": "app/loading.tsx",
+      "status": "mapped",
+      "routePattern": "__component__:app/loading.tsx",
+      "aliases": [],
+      "coverageLevel": "L3",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot",
+        "visual-snapshot"
+      ]
+    },
+    {
+      "id": "S28",
+      "source_type": "derived",
+      "title": "Not Found / Global Error",
+      "theme": "dark_core",
+      "route": [
+        "app/not-found.tsx",
+        "app/global-error.tsx"
+      ],
+      "source_file": "app/not-found.tsx | app/global-error.tsx",
+      "status": "mapped",
+      "routePattern": "/_mf00r_not_found_probe",
+      "aliases": [],
+      "coverageLevel": "L3",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot",
+        "visual-snapshot"
+      ]
+    }
+  ],
+  "rules": {
+    "no_inline_style": true,
+    "no_legacy_tokens_tsx": true,
+    "required_fonts": [
+      "Cormorant Garamond",
+      "Instrument Sans"
+    ],
+    "mobile_fidelity": "required"
+  },
+  "schema_version": "4.0.0",
+  "schema_path": "docs/stitch/schema/canonical-manifest.schema.json"
+}

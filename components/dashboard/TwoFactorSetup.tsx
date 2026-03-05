@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useId } from "react";
+import { useCallback, useId, useState } from "react";
 
 type MFAStep = "idle" | "enrolling" | "verifying" | "enabled";
 
@@ -100,245 +100,124 @@ export default function TwoFactorSetup({
     }
   }, [initialFactors, factorId]);
 
+  const isEnabled = step === "enabled";
+
   return (
     <div>
-      {/* Status */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "12px 0",
-          borderBottom: "1px solid var(--border)",
-        }}
-      >
+      <div className="flex items-center justify-between border-b border-border-subtle py-3">
         <div>
-          <div style={{ fontSize: 14, color: "var(--ivory)", fontWeight: 500 }}>
+          <div className="text-[14px] font-medium text-text-primary">
             Autenticação 2FA (TOTP)
           </div>
-          <div style={{ fontSize: 11, color: "var(--ivoryDD)", marginTop: 2 }}>
-            {step === "enabled"
+          <div className="mt-0.5 text-[11px] text-text-muted">
+            {isEnabled
               ? "Proteja sua conta com verificação em dois fatores"
               : "Adicione uma camada extra de segurança"}
           </div>
         </div>
+
         <span
-          style={{
-            fontSize: 11,
-            padding: "3px 10px",
-            borderRadius: 20,
-            background:
-              step === "enabled"
-                ? "rgba(82,183,136,.12)"
-                : "rgba(184,84,80,.12)",
-            color: step === "enabled" ? "var(--mint)" : "var(--red)",
-            border:
-              step === "enabled"
-                ? "1px solid rgba(82,183,136,.3)"
-                : "1px solid rgba(184,84,80,.3)",
-            display: "inline-flex",
-            alignItems: "center",
-            gap: 5,
-          }}
+          className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-0.5 text-[11px] font-medium ${
+            isEnabled
+              ? "border-[rgba(82,183,136,.3)] bg-[rgba(82,183,136,.12)] text-brand"
+              : "border-error/30 bg-error/12 text-error"
+          }`}
         >
           <span
-            style={{
-              width: 5,
-              height: 5,
-              borderRadius: "50%",
-              background: step === "enabled" ? "var(--mint)" : "var(--red)",
-              display: "inline-block",
-            }}
+            className={`h-[5px] w-[5px] rounded-full ${
+              isEnabled ? "bg-brand" : "bg-error"
+            }`}
           />
-          {step === "enabled" ? "Ativo" : "Inativo"}
+          {isEnabled ? "Ativo" : "Inativo"}
         </span>
       </div>
 
-      {/* Error */}
       {error && (
-        <div
-          style={{
-            marginTop: 12,
-            padding: "10px 14px",
-            background: "rgba(184,84,80,.1)",
-            border: "1px solid rgba(184,84,80,.3)",
-            borderRadius: 10,
-            color: "var(--red)",
-            fontSize: 12,
-          }}
-        >
+        <div className="mt-3 rounded-lg border border-error/30 bg-error/10 px-3.5 py-2.5 text-[12px] text-error">
           ❌ {error}
         </div>
       )}
 
-      {/* Idle: show enable button */}
       {step === "idle" && (
-        <div style={{ marginTop: 14 }}>
+        <div className="mt-4">
           <button
             type="button"
             onClick={startEnroll}
             disabled={loading}
-            style={{
-              padding: "10px 22px",
-              borderRadius: 10,
-              fontSize: 13,
-              fontWeight: 600,
-              background: "var(--mint)",
-              color: "#060E09",
-              border: "none",
-              cursor: loading ? "not-allowed" : "pointer",
-              opacity: loading ? 0.7 : 1,
-            }}
+            className={`rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-colors ${
+              loading
+                ? "cursor-not-allowed border border-border-subtle bg-surface text-text-muted"
+                : "bg-brand text-bg-base hover:bg-brand-hover"
+            }`}
           >
             {loading ? "Gerando..." : "🔐 Ativar 2FA"}
           </button>
         </div>
       )}
 
-      {/* Enrolling: show QR + secret + code input */}
       {step === "enrolling" && qrUrl && (
-        <div
-          style={{
-            marginTop: 14,
-            padding: "20px 24px",
-            background: "var(--bg2)",
-            borderRadius: 14,
-            border: "1px solid var(--border)",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 14,
-              color: "var(--ivory)",
-              fontWeight: 500,
-              marginBottom: 12,
-            }}
-          >
+        <div className="mt-4 rounded-2xl border border-border-subtle bg-bg-elevated p-5">
+          <div className="mb-3 text-[14px] font-medium text-text-primary">
             1. Escaneie o QR Code no seu app autenticador
           </div>
 
-          <div
-            style={{
-              display: "flex",
-              gap: 20,
-              alignItems: "flex-start",
-              marginBottom: 16,
-            }}
-          >
-            {/* QR placeholder — rendered as an img from TOTP URI */}
-            <div
-              style={{
-                width: 160,
-                height: 160,
-                borderRadius: 12,
-                background: "#fff",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                flexShrink: 0,
-              }}
-            >
+          <div className="mb-4 flex flex-col gap-4 lg:flex-row lg:items-start">
+            <div className="flex h-[160px] w-[160px] items-center justify-center rounded-xl bg-white p-1.5">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(qrUrl)}`}
+                src={`https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=${encodeURIComponent(
+                  qrUrl
+                )}`}
                 alt="QR Code para 2FA"
                 width={148}
                 height={148}
-                style={{ borderRadius: 8 }}
+                className="rounded-lg"
               />
             </div>
 
-            <div>
-              <div
-                style={{
-                  fontSize: 12,
-                  color: "var(--ivoryDD)",
-                  marginBottom: 6,
-                }}
-              >
+            <div className="flex-1">
+              <div className="mb-1.5 text-[12px] text-text-muted">
                 Ou digite a chave manualmente:
               </div>
-              <div
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: 12,
-                  color: "var(--gold)",
-                  background: "var(--card)",
-                  padding: "8px 12px",
-                  borderRadius: 8,
-                  border: "1px solid var(--border)",
-                  wordBreak: "break-all",
-                }}
-              >
+              <div className="break-all rounded-lg border border-border-subtle bg-surface px-3 py-2 font-mono text-[12px] text-gold">
                 {secret}
               </div>
-              <div
-                style={{
-                  fontSize: 11,
-                  color: "var(--ivoryDD)",
-                  marginTop: 8,
-                }}
-              >
+              <div className="mt-2 text-[11px] text-text-muted">
                 Compatível com Google Authenticator, Authy, 1Password, etc.
               </div>
             </div>
           </div>
 
-          <div
-            style={{
-              fontSize: 14,
-              color: "var(--ivory)",
-              fontWeight: 500,
-              marginBottom: 10,
-            }}
-          >
+          <div className="mb-2 text-[14px] font-medium text-text-primary">
             2. Digite o código de 6 dígitos
           </div>
 
-          <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
-            <label htmlFor={codeId} className="sr-only" style={{ position: "absolute", width: 1, height: 1, overflow: "hidden" }}>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <label htmlFor={codeId} className="sr-only">
               Código TOTP
             </label>
             <input
               id={codeId}
               type="text"
               value={code}
-              onChange={(e) => setCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+              onChange={(e) =>
+                setCode(e.target.value.replace(/\D/g, "").slice(0, 6))
+              }
               placeholder="000000"
               maxLength={6}
               autoComplete="one-time-code"
               inputMode="numeric"
-              style={{
-                width: 140,
-                padding: "10px 14px",
-                borderRadius: 10,
-                background: "var(--card2)",
-                border: "1px solid var(--border2)",
-                color: "var(--text)",
-                fontFamily: "monospace",
-                fontSize: 18,
-                letterSpacing: 6,
-                textAlign: "center",
-                outline: "none",
-              }}
+              className="w-[150px] rounded-xl border border-border-strong bg-surface px-3 py-2.5 text-center font-mono text-[18px] tracking-[0.35em] text-text-primary outline-none transition-colors placeholder:tracking-normal placeholder:text-text-muted focus:border-brand"
             />
             <button
               type="button"
               onClick={verifyCode}
               disabled={loading || code.length !== 6}
-              style={{
-                padding: "10px 22px",
-                borderRadius: 10,
-                fontSize: 13,
-                fontWeight: 600,
-                background:
-                  loading || code.length !== 6 ? "var(--card2)" : "var(--mint)",
-                color:
-                  loading || code.length !== 6 ? "var(--ivoryDD)" : "#060E09",
-                border: "none",
-                cursor:
-                  loading || code.length !== 6 ? "not-allowed" : "pointer",
-              }}
+              className={`rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-colors ${
+                loading || code.length !== 6
+                  ? "cursor-not-allowed border border-border-subtle bg-surface text-text-muted"
+                  : "bg-brand text-bg-base hover:bg-brand-hover"
+              }`}
             >
               {loading ? "Verificando..." : "Verificar"}
             </button>
@@ -346,37 +225,22 @@ export default function TwoFactorSetup({
         </div>
       )}
 
-      {/* Enabled: show disable button */}
       {step === "enabled" && (
-        <div style={{ marginTop: 14 }}>
-          <div
-            style={{
-              padding: "12px 16px",
-              background: "rgba(82,183,136,.06)",
-              border: "1px solid rgba(82,183,136,.2)",
-              borderRadius: 12,
-              fontSize: 13,
-              color: "var(--ivoryD)",
-              marginBottom: 12,
-            }}
-          >
+        <div className="mt-4">
+          <div className="mb-3 rounded-xl border border-[rgba(82,183,136,.2)] bg-[rgba(82,183,136,.06)] px-4 py-3 text-[13px] text-text-secondary">
             ✅ Autenticação em dois fatores está ativa. Você precisará do código
             do app autenticador ao fazer login.
           </div>
+
           <button
             type="button"
             onClick={unenroll}
             disabled={loading}
-            style={{
-              padding: "8px 18px",
-              borderRadius: 8,
-              fontSize: 12,
-              background: "transparent",
-              color: "var(--red)",
-              border: "1px solid rgba(184,84,80,.3)",
-              cursor: loading ? "not-allowed" : "pointer",
-              opacity: loading ? 0.7 : 1,
-            }}
+            className={`rounded-lg border px-4 py-2 text-[12px] font-medium transition-colors ${
+              loading
+                ? "cursor-not-allowed border-border-subtle bg-surface text-text-muted"
+                : "border-error/30 text-error hover:bg-error/10"
+            }`}
           >
             {loading ? "Desativando..." : "Desativar 2FA"}
           </button>

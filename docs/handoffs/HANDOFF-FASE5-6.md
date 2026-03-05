@@ -3,6 +3,8 @@
 **Data:** 2026-03-03  
 **Status:** ✅ Fases concluídas e validadas (TSC_PASSED — 0 erros TypeScript)
 
+> Atualização 2026-03-04 (Fase 21 v3.0): gaps históricos de `api/ai/transcribe` e `api/webhooks/supabase` foram resolvidos.
+
 ---
 
 ## O que foi entregue

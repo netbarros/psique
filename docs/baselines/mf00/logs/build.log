@@ -1,0 +1,73 @@
+
+> psique@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  · clientTraceMetadata
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+✓ Compiled successfully in 6.1s
+  Running next.config.js provided runAfterProductionCompile ...
+✓ Completed runAfterProductionCompile in 575ms
+  Running TypeScript ...
+  Collecting page data using 23 workers ...
+  Generating static pages using 23 workers (0/38) ...
+  Generating static pages using 23 workers (9/38) 
+  Generating static pages using 23 workers (18/38) 
+  Generating static pages using 23 workers (28/38) 
+✓ Generating static pages using 23 workers (38/38) in 637.6ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ƒ /agendar
+├ ƒ /api/ai/chat
+├ ƒ /api/ai/insights
+├ ƒ /api/ai/summarize
+├ ƒ /api/appointments/[id]/cancel
+├ ƒ /api/appointments/[id]/reschedule
+├ ƒ /api/auth/mfa/enroll
+├ ƒ /api/auth/mfa/unenroll
+├ ƒ /api/auth/mfa/verify
+├ ƒ /api/booking/checkout
+├ ƒ /api/cron/reminders
+├ ƒ /api/reports/sessions
+├ ƒ /api/subscriptions
+├ ƒ /api/telegram/webhook
+├ ƒ /api/video/room
+├ ƒ /api/webhooks/stripe
+├ ƒ /apoio
+├ ƒ /auth/callback
+├ ○ /auth/login
+├ ƒ /booking/[slug]
+├ ƒ /booking/[slug]/sucesso
+├ ƒ /chat
+├ ○ /checkout/secure
+├ ƒ /dashboard
+├ ƒ /dashboard/agenda
+├ ƒ /dashboard/configuracoes
+├ ƒ /dashboard/consulta/[roomId]
+├ ƒ /dashboard/financeiro
+├ ƒ /dashboard/ia
+├ ƒ /dashboard/onboarding
+├ ƒ /dashboard/pacientes
+├ ƒ /dashboard/pacientes/[id]
+├ ƒ /dashboard/telegram
+├ ƒ /portal
+├ ƒ /portal/agendar
+├ ƒ /portal/apoio
+├ ƒ /portal/chat
+├ ƒ /portal/sessoes
+├ ○ /pricing
+└ ƒ /sessoes
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

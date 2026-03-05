@@ -1,11 +1,28 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { chatWithContext } from "@/lib/openrouter";
 import { getAIRatelimiter } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
+import { parseJsonBody } from "@/lib/api/request-validation";
+import { sanitizeOpenRouterApiKeyCandidate } from "@/lib/api/openrouter-key";
+import { classifyAIError } from "@/lib/api/ai-error";
+
+const postSchema = z.object({
+  messages: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().trim().min(1).max(4000),
+      })
+    )
+    .min(1)
+    .max(20),
+});
 
 export async function POST(req: NextRequest) {
+  const route = "/api/ai/chat";
   const supabase = await createClient();
   const {
     data: { user },
@@ -13,6 +30,7 @@ export async function POST(req: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
+    logger.warn("[AI Chat] Unauthorized request", { route });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -20,25 +38,25 @@ export async function POST(req: NextRequest) {
   const limiter = getAIRatelimiter();
   const { success } = await limiter.limit(user.id);
   if (!success) {
+    logger.warn("[AI Chat] Rate limit exceeded", { route, userId: user.id });
     return NextResponse.json(
       { error: "Limite de requisições atingido. Aguarde um momento." },
       { status: 429 }
     );
   }
 
-  const body = (await req.json()) as {
-    messages: Array<{ role: "user" | "assistant"; content: string }>;
-  };
-
-  if (!body.messages || body.messages.length === 0) {
-    return NextResponse.json(
-      { error: "messages is required" },
-      { status: 400 }
-    );
+  const parsed = await parseJsonBody({
+    route,
+    request: req,
+    schema: postSchema,
+    context: { userId: user.id },
+  });
+  if (!parsed.ok) {
+    return parsed.response;
   }
 
   // Limit to last 10 messages for context window
-  const recentMessages = body.messages.slice(-10);
+  const recentMessages = parsed.data.messages.slice(-10);
 
   try {
     // Find patient record for context
@@ -60,22 +78,29 @@ export async function POST(req: NextRequest) {
       // Fetch therapist model preference
       const { data: therapist } = await supabase
         .from("therapists")
-        .select("ai_model")
+        .select("ai_model, openrouter_key_hash")
         .eq("id", p.therapist_id)
         .single();
 
-      const model = (therapist as unknown as { ai_model: string | null })
-        ?.ai_model;
+      const settings = therapist as unknown as {
+        ai_model: string | null;
+        openrouter_key_hash: string | null;
+      } | null;
+      const model = settings?.ai_model ?? undefined;
+      const apiKey = sanitizeOpenRouterApiKeyCandidate(settings?.openrouter_key_hash);
 
       patientContext = `Paciente: ${p.name}. Este é um chat de apoio emocional para o paciente. Não compartilhe informações clínicas privadas. Foque em bem-estar, técnicas de mindfulness, reflexão e apoio. Nunca faça diagnósticos. Responda sempre em português brasileiro.`;
 
       const reply = await chatWithContext({
         messages: recentMessages,
         patientContext,
-        model: model ?? undefined,
+        model,
+        apiKey,
       });
 
       logger.info("[AI Chat] Patient chat completed", {
+        route,
+        requestId: parsed.requestId,
         patientId: p.id,
         messageCount: recentMessages.length,
       });
@@ -86,9 +111,22 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Fallback if no patient record found
+    // Fallback if no patient record found (therapist self-chat)
+    const { data: therapistByUser } = await supabase
+      .from("therapists")
+      .select("ai_model, openrouter_key_hash")
+      .eq("user_id", user.id)
+      .single();
+
+    const fallbackSettings = therapistByUser as unknown as {
+      ai_model: string | null;
+      openrouter_key_hash: string | null;
+    } | null;
+
     const reply = await chatWithContext({
       messages: recentMessages,
+      model: fallbackSettings?.ai_model ?? undefined,
+      apiKey: sanitizeOpenRouterApiKeyCandidate(fallbackSettings?.openrouter_key_hash),
     });
 
     return NextResponse.json({
@@ -96,10 +134,19 @@ export async function POST(req: NextRequest) {
       data: { reply },
     });
   } catch (error) {
-    logger.error("[AI Chat] Error", { error: String(error) });
+    const classified = classifyAIError(error);
+    logger.error("[AI Chat] Error", {
+      route,
+      requestId: parsed.requestId,
+      userId: user.id,
+      error: String(error),
+      errorCode: classified.code,
+      errorStatus: classified.status,
+      providerStatus: classified.providerStatus ?? null,
+    });
     return NextResponse.json(
-      { error: "Erro interno ao processar sua mensagem" },
-      { status: 500 }
+      { error: classified.message, code: classified.code },
+      { status: classified.status }
     );
   }
 }

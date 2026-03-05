@@ -1,0 +1,42 @@
+name: verify-backend
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: https://example.supabase.co
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: test-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: test-service-role-key
+      NEXT_PUBLIC_APP_URL: http://127.0.0.1:45999
+      STRIPE_SECRET_KEY: sk_test_000000000000000000000000
+      STRIPE_WEBHOOK_SECRET: whsec_test
+      OPENROUTER_API_KEY: test-openrouter
+      TELEGRAM_WEBHOOK_SECRET: test-telegram-webhook
+      SUPABASE_WEBHOOK_SECRET: test-supabase-webhook
+      CRON_SECRET: test-cron-secret
+      SUPABASE_PREFLIGHT_SKIP_RUNTIME: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Verify backend gate
+        run: npm run verify:backend

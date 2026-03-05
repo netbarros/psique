@@ -1,0 +1,44 @@
+
+> psique@0.1.0 build
+> next build
+
+▲ Next.js 16.1.6 (Turbopack)
+- Environments: .env.local
+- Experiments (use with caution):
+  · clientTraceMetadata
+
+⚠ The "middleware" file convention is deprecated. Please use "proxy" instead. Learn more: https://nextjs.org/docs/messages/middleware-to-proxy
+  Creating an optimized production build ...
+Turbopack build encountered 1 warnings:
+./app/api/webhooks/stripe/route.ts:11:14
+Next.js can't recognize the exported `config` field in route. Page config in `config` is deprecated and ignored, use individual exports instead.
+[0m [90m  9 |[39m [36mimport[39m type [33mStripe[39m [36mfrom[39m [32m"stripe"[39m[33m;[39m
+ [90m 10 |[39m
+[31m[1m>[22m[39m[90m 11 |[39m [36mexport[39m [36mconst[39m config [33m=[39m { api[33m:[39m { bodyParser[33m:[39m [36mfalse[39m } }[33m;[39m
+ [90m    |[39m              [31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m[31m[1m^[22m[39m
+ [90m 12 |[39m
+ [90m 13 |[39m [36mexport[39m [36masync[39m [36mfunction[39m [33mPOST[39m(req[33m:[39m [33mNextRequest[39m) {
+ [90m 14 |[39m   [36mconst[39m body [33m=[39m [36mawait[39m req[33m.[39mtext()[33m;[39m[0m
+
+The exported configuration object in a source file needs to have a very specific format from which some properties can be statically parsed at compiled-time.
+
+https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+
+
+✓ Compiled successfully in 3.6s
+  Running next.config.js provided runAfterProductionCompile ...
+✓ Completed runAfterProductionCompile in 551ms
+  Running TypeScript ...
+Failed to compile.
+
+./next.config.ts:67:3
+Type error: Object literal may only specify known properties, but 'hideSourceMaps' does not exist in type 'SentryBuildOptions'. Did you mean to write 'sourcemaps'?
+
+[0m [90m 65 |[39m   [90m// Upload source maps on build[39m
+ [90m 66 |[39m   widenClientFileUpload[33m:[39m [36mtrue[39m[33m,[39m
+[31m[1m>[22m[39m[90m 67 |[39m   hideSourceMaps[33m:[39m [36mtrue[39m[33m,[39m
+ [90m    |[39m   [31m[1m^[22m[39m
+ [90m 68 |[39m })[33m;[39m
+ [90m 69 |[39m
+ [90m 70 |[39m[0m
+Next.js build worker exited with code: 1 and signal: null

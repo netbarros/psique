@@ -1,0 +1,2271 @@
+{
+  "generatedAt": "2026-03-05T03:14:08.775Z",
+  "summary": {
+    "totalFiles": 452,
+    "added": 1,
+    "changed": 4,
+    "removed": 0
+  },
+  "files": [
+    {
+      "file": "docs/baselines/mf00/BASELINE_TECHNICAL.md",
+      "mtimeMs": 1772643380382,
+      "size": 503
+    },
+    {
+      "file": "docs/baselines/mf00/BASELINE_VISUAL.md",
+      "mtimeMs": 1772643270919,
+      "size": 2461
+    },
+    {
+      "file": "docs/baselines/mf00/baseline-visual.json",
+      "mtimeMs": 1772643099092,
+      "size": 36527
+    },
+    {
+      "file": "docs/baselines/mf00/logs/build.log",
+      "mtimeMs": 1772643364995,
+      "size": 2028
+    },
+    {
+      "file": "docs/baselines/mf00/logs/playwright.log",
+      "mtimeMs": 1772643191747,
+      "size": 13497
+    },
+    {
+      "file": "docs/baselines/mf00/logs/tsc.log",
+      "mtimeMs": 1772643116266,
+      "size": 0
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/005a79deee981af4845f5092711879bef3e508c3.png",
+      "mtimeMs": 1772643307078,
+      "size": 52204
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0128d330d7c0646907faa23931880eeaab7c1d8f.zip",
+      "mtimeMs": 1772643307983,
+      "size": 337156
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/021e27b6351f44d445daea131b7cf4d8e1fbd376.webm",
+      "mtimeMs": 1772643308753,
+      "size": 94381
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0301100ac233ec870942e82c39048859e270f277.webm",
+      "mtimeMs": 1772643306663,
+      "size": 102577
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/037ec05bf62704d532740f120ee6cb5e2dc516f5.png",
+      "mtimeMs": 1772643307007,
+      "size": 2739
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/03a6c9279c4c5c45c883fceb4343b928af7159cd.zip",
+      "mtimeMs": 1772643307670,
+      "size": 205719
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/03e454d6bb16995cb245549f7b9dbb5dc53ca746.webm",
+      "mtimeMs": 1772643306914,
+      "size": 43747
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/061d59e8d5ea813e3b97ac4b677dd774a08a6b7e.zip",
+      "mtimeMs": 1772643307734,
+      "size": 181598
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/07819092e74ba8d8f99ef5b0b4839171ad446677.zip",
+      "mtimeMs": 1772643308398,
+      "size": 179934
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/07be9899ac57f77675d88f20180415ec51b1bd1a.webm",
+      "mtimeMs": 1772643306729,
+      "size": 38384
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/08129b06e49bb54a8f8e5612a8de5f96e9a35974.png",
+      "mtimeMs": 1772643307450,
+      "size": 6298
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0837c1e7b16d6bbe9d99f671df5e65a78adfbc6d.zip",
+      "mtimeMs": 1772643308376,
+      "size": 199587
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0a25fbd78666bdf42b60aa8b0439ce3df34bc8b6.zip",
+      "mtimeMs": 1772643308854,
+      "size": 227482
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0a2e0259f7a394d8b04013733a62baf7e2ddfc9d.webm",
+      "mtimeMs": 1772643308816,
+      "size": 17500
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0a4d189ec8ceb336fb223b9c9b7a368cf0c3c104.zip",
+      "mtimeMs": 1772643308139,
+      "size": 159310
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0d4a15279307c5b186332c51ed65c13e92f582dc.zip",
+      "mtimeMs": 1772643308250,
+      "size": 3855
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0ea56c3b45214717915b942e21caefae6b802516.zip",
+      "mtimeMs": 1772643308803,
+      "size": 454227
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0f22c21d47a6bc1711ff1ad5dba3a26dcf8f5c29.webm",
+      "mtimeMs": 1772643307527,
+      "size": 2042
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/0f975c1bbec84ca8d8f13de5103e6d428c1b6ea4.zip",
+      "mtimeMs": 1772643307240,
+      "size": 598662
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/10a137ff5a4d5b221a4318349cfdfa6a3ad40a77.webm",
+      "mtimeMs": 1772643307492,
+      "size": 99720
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/144153f6231aaaa586a75e306637368d2a394a3f.zip",
+      "mtimeMs": 1772643308015,
+      "size": 234677
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/151a540e88d6c52d45b18ec9b4cb76e02d6ad1bd.webm",
+      "mtimeMs": 1772643306595,
+      "size": 4447
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/16a304cc6aadb44009fcecc45043de9760d6f661.webm",
+      "mtimeMs": 1772643307018,
+      "size": 4447
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/178c2fa45a8c887b4992faace45b09c2cdc0e787.zip",
+      "mtimeMs": 1772643307362,
+      "size": 205493
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/180e6aff7f2263a0ea96990602f8edd4f188de6c.webm",
+      "mtimeMs": 1772643307867,
+      "size": 14261
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/182d6cef2dfa7da5d9f537543f374fae267a9708.webm",
+      "mtimeMs": 1772643306649,
+      "size": 4447
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/18c0f75f12057f217d3e3426ffccf209b6f17f5b.png",
+      "mtimeMs": 1772643308647,
+      "size": 57704
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/191d2dacfbcefc2163b87a023532227da3a95704.png",
+      "mtimeMs": 1772643306703,
+      "size": 8131
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/1a09f8fa4ed552e8a8cf4ff46a0afc6b1de0be9f.zip",
+      "mtimeMs": 1772643306924,
+      "size": 189819
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/1b39ac04b24ffbd63299f589e8f81e0c0213ae81.zip",
+      "mtimeMs": 1772643308562,
+      "size": 338275
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/1b6195b361fdf4997d4c39e3f9911923a1139adc.webm",
+      "mtimeMs": 1772643307374,
+      "size": 99706
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/1b94ab6b939135794dd344e1c2a207b9add75334.webm",
+      "mtimeMs": 1772643308714,
+      "size": 26089
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/1ea9d4ac9ae811cf0c25d5509bf4e081be59430c.zip",
+      "mtimeMs": 1772643307479,
+      "size": 203278
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/2072edeb1afce499cdebf370bd337cb4ab8b4b37.zip",
+      "mtimeMs": 1772643306524,
+      "size": 181570
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/21a276e473d552f8dba839bd2bf16bddf4e3e2e7.zip",
+      "mtimeMs": 1772643307294,
+      "size": 183316
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/21ad2cbdbaddbe7f2bc0349f7d5f79e3b85b7758.zip",
+      "mtimeMs": 1772643307196,
+      "size": 4806
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/22d52c7d1b59ece6f62ad25978b026c69326ba70.zip",
+      "mtimeMs": 1772643307723,
+      "size": 148605
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/2325495eb738a55800bb031baed2b656b0551bf0.zip",
+      "mtimeMs": 1772643307693,
+      "size": 183464
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/2392ceb6d34c741ce99f73fde69022ec019afe0e.webm",
+      "mtimeMs": 1772643307438,
+      "size": 34302
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/23c01eb23e59e60d9e5d8d5665ef02190b0b90cc.webm",
+      "mtimeMs": 1772643307639,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/23eea3fe46fd089948cb6df6abe2fa09fb480c15.zip",
+      "mtimeMs": 1772643307748,
+      "size": 218245
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/25edc17da65e72c89fc0001fc1718e2382962f15.webm",
+      "mtimeMs": 1772643307972,
+      "size": 49386
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/26b94a31123c6a2cc7d9e82ea91f058b14e0fb08.webm",
+      "mtimeMs": 1772643307684,
+      "size": 18103
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/276ab468d99b864433e28e933f3ee06f051537d8.png",
+      "mtimeMs": 1772643308578,
+      "size": 30359
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/27ba149114034a308b3863b78fed16c5574220ce.zip",
+      "mtimeMs": 1772643306569,
+      "size": 193359
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/29764709776e15a50c1f2f7089741db35b37b9fd.zip",
+      "mtimeMs": 1772643307212,
+      "size": 188972
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/2c00388ae5c4d881e51481e3ac1c0a154da30516.webm",
+      "mtimeMs": 1772643308309,
+      "size": 49631
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/2e7550ee5178681cf2e2efb3f6fbf4037650857d.png",
+      "mtimeMs": 1772643306752,
+      "size": 25708
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/2f20add87b1733e0bdae644faf88b51b8795d3e5.png",
+      "mtimeMs": 1772643307264,
+      "size": 5918
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/2f76d1c49dabcd6be5518dd7d4c8e7e9451bef44.webm",
+      "mtimeMs": 1772643306559,
+      "size": 38384
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/319212a92dc14c05c61f8a3fb8ac3e92ded95eaa.zip",
+      "mtimeMs": 1772643306546,
+      "size": 193399
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/33eb7203242d744078dff91246bb346b42aa7658.webm",
+      "mtimeMs": 1772643308424,
+      "size": 81494
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/3539620bb7d55959e34308ae89954d2eaf5716ed.webm",
+      "mtimeMs": 1772643308516,
+      "size": 100783
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/35d71795d4057beef2da4efc0f07cc20a2962062.png",
+      "mtimeMs": 1772643306945,
+      "size": 5850
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/3bb1bd177a585a84c96fc7bf6554417f0aad96d7.webm",
+      "mtimeMs": 1772643306776,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/3e353072063a3513658edcc60c81d78386a68afd.zip",
+      "mtimeMs": 1772643307796,
+      "size": 480330
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/3e38f7c7ab118aeefa01c77bb8ca0e990efe533f.webm",
+      "mtimeMs": 1772643308186,
+      "size": 39552
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/3ee4583e9d9ef434534b2b76de23b67bf1ac174b.webm",
+      "mtimeMs": 1772643307315,
+      "size": 97922
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/3f5bf5e293263e89e51c9a8d08ef5b47348ad6f3.zip",
+      "mtimeMs": 1772643308005,
+      "size": 232753
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/415b75a09948ab6c1691c483476693b0d38b4b1e.zip",
+      "mtimeMs": 1772643306845,
+      "size": 205466
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/4246dccd9f52a0e6460e7267044e9b7fc105d496.zip",
+      "mtimeMs": 1772643307025,
+      "size": 4805
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/43723a4fccb8496b2f5a9cfde710dbd09429e9cd.zip",
+      "mtimeMs": 1772643307876,
+      "size": 171904
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/43b909e21447cee4256054a2f3679b3797ca0189.webm",
+      "mtimeMs": 1772643307462,
+      "size": 82598
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/44a7eb36b8ccafca0c103fa7f60c2f66cc93fa72.webm",
+      "mtimeMs": 1772643308728,
+      "size": 81871
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/46d268abd9c4fdab4b2e8308bc4a264f47d0d010.webm",
+      "mtimeMs": 1772643307780,
+      "size": 48412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/4852923f662b9f32df5fa37dea3aa024f472a73a.zip",
+      "mtimeMs": 1772643307039,
+      "size": 680073
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/48caba3e738b36714d5d98070c6c2ac0e9ff7c2f.webm",
+      "mtimeMs": 1772643307353,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/49368302ee38c8ded36589e8041a3c35c5bc0d16.png",
+      "mtimeMs": 1772643308263,
+      "size": 30745
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/4bc51402ba05f497d21f625d21b91d6b632192b2.zip",
+      "mtimeMs": 1772643306634,
+      "size": 450626
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/4c2f1eb8b5215f691f7c4df1cdff8915283fa415.webm",
+      "mtimeMs": 1772643308591,
+      "size": 2193
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/4e13ca25b1477da11e5c511a52f6d0437e78fd13.png",
+      "mtimeMs": 1772643306621,
+      "size": 142235
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/4fd77c2f1fd35b89703d0576d69e4d690aa638d5.webm",
+      "mtimeMs": 1772643307177,
+      "size": 8143
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/526235482ebb7e58d36d954c783246dfe287a5cb.zip",
+      "mtimeMs": 1772643308024,
+      "size": 254333
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/5485fd73b1c9d735dadc503e53df06aeadb9193e.webm",
+      "mtimeMs": 1772643306537,
+      "size": 38968
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/561d16ba2394e992ed685b17a7cd6f23e975e714.zip",
+      "mtimeMs": 1772643308085,
+      "size": 234630
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/562a5e485e23ad450101e99cb255071c7d48509b.zip",
+      "mtimeMs": 1772643308619,
+      "size": 731226
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/598f601e00f2994f15994dbd1849ee07f6388520.webm",
+      "mtimeMs": 1772643307052,
+      "size": 33454
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/5990f66147e607ade8f94c999abe512e29890250.webm",
+      "mtimeMs": 1772643307656,
+      "size": 11730
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/5a3954a3c027e894da6f19981b9a056fa08ace72.zip",
+      "mtimeMs": 1772643306974,
+      "size": 193382
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/5c782d13a7c41b7f752f8c82ef37d2d0af626c79.zip",
+      "mtimeMs": 1772643307107,
+      "size": 189690
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/5d7c1905bc82168228a181012843b55256969105.png",
+      "mtimeMs": 1772643307253,
+      "size": 89031
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/6113e57392d07b476ac1310bc7617a1d14844fdb.zip",
+      "mtimeMs": 1772643307470,
+      "size": 230142
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/6196acf21dfa71f1cd6d94b0d4a41a3f421fdda2.webm",
+      "mtimeMs": 1772643308636,
+      "size": 38968
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/63f34af6e950dba6c46d68b65b9270c47c5cda5b.zip",
+      "mtimeMs": 1772643306821,
+      "size": 153094
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/65e1b876944799044613acfb7381f968b956ceb3.webm",
+      "mtimeMs": 1772643306479,
+      "size": 38384
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/6626ea8c21b023e1ca84e74ae4a41d19f87bfb9e.webm",
+      "mtimeMs": 1772643308333,
+      "size": 110783
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/674c68305f3f9a2310a2ee9e102b87eadd485b38.webm",
+      "mtimeMs": 1772643306506,
+      "size": 128244
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/68d4e93c6b502218ad6f7c6ea4c3bba0cc2a1bf7.png",
+      "mtimeMs": 1772643306937,
+      "size": 11096
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/69bd01c82dacf0c51673fc7f247187a938b8e27f.zip",
+      "mtimeMs": 1772643308295,
+      "size": 254379
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/6cd015ce89cac9416b32ccbc2045ba43b597aa15.webm",
+      "mtimeMs": 1772643306956,
+      "size": 2042
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/6cfe2a9fb85dd57cde68f652f6750eaa42898b06.zip",
+      "mtimeMs": 1772643307909,
+      "size": 254364
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/6e37c5a7341a0a207a26b361aec5ef21b4add127.zip",
+      "mtimeMs": 1772643308035,
+      "size": 234638
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/6f9ef716e4bf6c21fe48d14b4f8531f7b42e45bc.zip",
+      "mtimeMs": 1772643308491,
+      "size": 191578
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/702c223104abc893b21384baca97bb1daedfcfd6.zip",
+      "mtimeMs": 1772643306966,
+      "size": 193427
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/73abfa960d1647a59462fa90bbf5fb6b3a6411d6.webm",
+      "mtimeMs": 1772643307561,
+      "size": 61191
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/745fdd50eb5984ce4719693d563da2ff0438651b.zip",
+      "mtimeMs": 1772643306580,
+      "size": 153043
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/75344beff680a54c5d53d8c4c8d5d6a3accef81f.webm",
+      "mtimeMs": 1772643306986,
+      "size": 19471
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/756d50209b14036ea0e6d1685b30c9012098f7bc.webm",
+      "mtimeMs": 1772643307417,
+      "size": 38384
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/759715e264b460ab9279cb2cad1177c9167cb4c7.zip",
+      "mtimeMs": 1772643308195,
+      "size": 180950
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/78201dc5150a940a6dbad2f07d2078a5d8fb3c81.webm",
+      "mtimeMs": 1772643307407,
+      "size": 48412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/78dfaf757f4e643b3ad308ca174a70d5fb4f2012.png",
+      "mtimeMs": 1772643307165,
+      "size": 242634
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/795c3b9e259501633766149375c27ee1d10435ba.zip",
+      "mtimeMs": 1772643308155,
+      "size": 4730
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/7b26dfbacef811d78293f3ae650b20658d28d6b5.zip",
+      "mtimeMs": 1772643308832,
+      "size": 735770
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/7b3bb3e3147b5395f41590bc99b63011d36c61b4.zip",
+      "mtimeMs": 1772643307088,
+      "size": 392660
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/7b740843220f2d6996345c42bace6a56a70e8c7a.webm",
+      "mtimeMs": 1772643307099,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/7db9758db205c81c708cf95689ef39544c00b37b.webm",
+      "mtimeMs": 1772643308792,
+      "size": 25289
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/7f18f5e842fd7afd20e0edf4f8f94c989043cada.webm",
+      "mtimeMs": 1772643308230,
+      "size": 28581
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/824e00472d1eaecfe5803e39f621c67ca46477df.webm",
+      "mtimeMs": 1772643308765,
+      "size": 38968
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/8598598b098582610eca25f6c269985cf9fdc0b3.zip",
+      "mtimeMs": 1772643307285,
+      "size": 193490
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/8639f0afe2c552b29912f09a487b244edc89c029.zip",
+      "mtimeMs": 1772643307899,
+      "size": 4778
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/868066c13ba1ed66de715fe2c472e5b884f011dc.zip",
+      "mtimeMs": 1772643307960,
+      "size": 252480
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/880c403f4af851a7175f9e06fab159688315b28b.zip",
+      "mtimeMs": 1772643308067,
+      "size": 226316
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/88e03a924c5f3aac1c3718f7a7f134e78cd07b7e.webm",
+      "mtimeMs": 1772643306835,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/8c19db3a7bc9e07915fafd327d6dffba37d323f1.png",
+      "mtimeMs": 1772643308116,
+      "size": 8912
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/8dd102fdc0c1f3c5b3d9a1c4e8f64481c6414ec3.zip",
+      "mtimeMs": 1772643307514,
+      "size": 252883
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/8e7634b7ae8a3ae92eefbdee93dafc2f59e4ce57.webm",
+      "mtimeMs": 1772643308845,
+      "size": 49631
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/8f62e17385857213ebaa578a516ff9a95ce21a89.webm",
+      "mtimeMs": 1772643308673,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/90dd58e6b5dc0dc16e4251249206bcf351e730b1.webm",
+      "mtimeMs": 1772643307190,
+      "size": 11709
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/91db347e576195b27b589eb30e0bea5a53e2a045.zip",
+      "mtimeMs": 1772643307950,
+      "size": 662866
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/94a422acbdf745f3435c41192085b411d4376aba.png",
+      "mtimeMs": 1772643308739,
+      "size": 63491
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/96a1a7958ae6f43e047f2def78eb1573f9e78c83.zip",
+      "mtimeMs": 1772643308058,
+      "size": 513348
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9769ff3d98f6f846164623ea53f9ab12e9e561f5.webm",
+      "mtimeMs": 1772643308699,
+      "size": 49024
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/984ad7e6520f04c17d6d35f3b62703034c5626f6.webm",
+      "mtimeMs": 1772643307842,
+      "size": 49024
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9ad1346915b5aaa991dac80b36eb1830c40b1b40.webm",
+      "mtimeMs": 1772643308529,
+      "size": 41806
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9adf18dce3015e406489cfba6caf18c43b7dc317.webm",
+      "mtimeMs": 1772643307341,
+      "size": 68173
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9b0b331ad93b4105ea070e22c18c11e1f22792af.zip",
+      "mtimeMs": 1772643307713,
+      "size": 254276
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9b4f98a40c86c9a090219d65e5d7c0065acd6571.zip",
+      "mtimeMs": 1772643306901,
+      "size": 189811
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9e43f31798fac896590fe01980e48f080e60f644.webm",
+      "mtimeMs": 1772643306871,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9e988214b7a93b793656180e207afdb71556680a.png",
+      "mtimeMs": 1772643308603,
+      "size": 55826
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9f75d440e5f012edf972b5dc12d1a609b91cf09f.zip",
+      "mtimeMs": 1772643308685,
+      "size": 380890
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/9fd8081123ac8accf254bdc61176bc19e8aa1e03.png",
+      "mtimeMs": 1772643306677,
+      "size": 110144
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a0754c380d4ebc987a51ae395ae7a0b197523f21.png",
+      "mtimeMs": 1772643308869,
+      "size": 61993
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a0fec2058b8ee40e12422c8de18bf10573b0831c.png",
+      "mtimeMs": 1772643307573,
+      "size": 28857
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a2832045b6cad29b4e07a428e8a83e8051a10037.webm",
+      "mtimeMs": 1772643308320,
+      "size": 38968
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a4a6ec2fd8cb563f26c42838a23a7f1f1207d261.zip",
+      "mtimeMs": 1772643307624,
+      "size": 184481
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a602bd17155b93ccf317c9e11b2997684f0d68de.zip",
+      "mtimeMs": 1772643308890,
+      "size": 347903
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a6d94e99c45f57804707ad51018e7add4ecc2395.zip",
+      "mtimeMs": 1772643307276,
+      "size": 153856
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a74e4317d87bb3a65a3590b285162ecdebf71bce.webm",
+      "mtimeMs": 1772643307395,
+      "size": 49024
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a7efef217ab4cfcd39f89f271e5011f5ce7466a5.png",
+      "mtimeMs": 1772643307225,
+      "size": 27302
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a8793078f27e06af2fceb80ce58347964077f43c.png",
+      "mtimeMs": 1772643308243,
+      "size": 233445
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/a953077f04a4dbd3caa7f171ee9b62b6561954d1.zip",
+      "mtimeMs": 1772643307303,
+      "size": 204009
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/aa6610136d50f3338822f717b217518854611dd5.webm",
+      "mtimeMs": 1772643307613,
+      "size": 38384
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/abc0957fb4ec318b91aa81a44de9da2d1337a9e5.png",
+      "mtimeMs": 1772643307384,
+      "size": 32789
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ac8af558f79dfb7a75c4151e2af841a04550d95e.webm",
+      "mtimeMs": 1772643308168,
+      "size": 2158
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ad360ae944dd93268e3fe20459b5c7de1299ab83.webm",
+      "mtimeMs": 1772643306764,
+      "size": 19366
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ad7185856b90f7960c8c4ff2c17968ac2fb9e82f.webm",
+      "mtimeMs": 1772643307923,
+      "size": 49024
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/b2e928dcb05555f941aacdbd72206d7f1781064e.zip",
+      "mtimeMs": 1772643308902,
+      "size": 281311
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/b3aefd3a6b90f2641ea3815f19f6cb52b31eb8d6.zip",
+      "mtimeMs": 1772643307536,
+      "size": 234909
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/b3d55ca38a93b49a95f4447f60903f7128afa863.webm",
+      "mtimeMs": 1772643306492,
+      "size": 38384
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/b50004fce5170422d6dedbd014e0366b1359eeb9.webm",
+      "mtimeMs": 1772643306858,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/b7fb42a7142584f4d8a3784b689f75668292e3b2.zip",
+      "mtimeMs": 1772643306786,
+      "size": 203851
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/b828af81310f97f3fe398a73149ef028243ad118.webm",
+      "mtimeMs": 1772643307826,
+      "size": 48412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/b9b2913c08c1a4adf4fc63ac245ee91c7d9ae6fe.webm",
+      "mtimeMs": 1772643308459,
+      "size": 14261
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/bb427df3b1c2689fcfd1325682ba0b3e2ba5f4e8.zip",
+      "mtimeMs": 1772643306515,
+      "size": 193354
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/bbf70c7a02a5d69b5d3069a5c383e38696e041d4.zip",
+      "mtimeMs": 1772643307703,
+      "size": 254471
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/be3ddd763d5fa186294f17a9b907161e91dfa6d7.webm",
+      "mtimeMs": 1772643306893,
+      "size": 43747
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/bf1a1dd773dfc346a7c9232e4b373852d2e90ae8.webm",
+      "mtimeMs": 1772643308550,
+      "size": 113096
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/c167f64c50d25d22dbfad38fedd20c129734d445.webm",
+      "mtimeMs": 1772643308661,
+      "size": 50062
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/c3c675b6da07dfd0ec51249a13f5fdcdda3a63b4.webm",
+      "mtimeMs": 1772643307131,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/c9c4ee71da56b8b535b559c8e8f6fd8fb4856776.zip",
+      "mtimeMs": 1772643306738,
+      "size": 181545
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ca58a6591e9201d0a338654d82d5417754fbef37.webm",
+      "mtimeMs": 1772643308285,
+      "size": 6174
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ca9cdfc6c3134c4561831bed5e1ecb03efe6deba.zip",
+      "mtimeMs": 1772643308174,
+      "size": 3831
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/cbb0aaa8b0a6a09b95ca7bdaa19eedc2ab0e74b6.webm",
+      "mtimeMs": 1772643308880,
+      "size": 34655
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/cca36c3fdeb2373778b2dd4317884f863bf6bc29.webm",
+      "mtimeMs": 1772643306717,
+      "size": 37800
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/cce20b3df68f455e31cf46ae845affec0d9d60a1.webm",
+      "mtimeMs": 1772643306800,
+      "size": 54230
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/cdd711d5a2f793e74ef584adb86787dbbbcdd8d5.webm",
+      "mtimeMs": 1772643308389,
+      "size": 39552
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/cdeca59642164c30db99b598892f7e55a8832cff.webm",
+      "mtimeMs": 1772643307934,
+      "size": 48412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d080fa74522bcae717562c50e68e119419dd0289.webm",
+      "mtimeMs": 1772643308208,
+      "size": 49024
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d116531502dd2d123484b9ae638dd83aa373b8f4.png",
+      "mtimeMs": 1772643306998,
+      "size": 27137
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d1eefccafa6eb238c04f974aee527464b1d5f741.webm",
+      "mtimeMs": 1772643308482,
+      "size": 26518
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d37db7a83e6d890d90ede54c0bd2354446a05b7b.webm",
+      "mtimeMs": 1772643306608,
+      "size": 43129
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d3ab538a23c03a8374630caa81a07dda160374e9.webm",
+      "mtimeMs": 1772643307996,
+      "size": 48412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d454fa8ef39a891ea5dbce7dffe4f11223b549bc.zip",
+      "mtimeMs": 1772643307594,
+      "size": 626996
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d4c71ee4f36138bd8993064f3c36c223ec22ba43.zip",
+      "mtimeMs": 1772643308368,
+      "size": 895462
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d4e7b5fc2a131b49a47af2bfd66969ae110e79f2.zip",
+      "mtimeMs": 1772643307148,
+      "size": 4767
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d7de4b7f0064114a0802d9534894622e8733a398.zip",
+      "mtimeMs": 1772643307204,
+      "size": 4794
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d87321ebbfb2e246d0c8dda6e6afefa2689a29f3.webm",
+      "mtimeMs": 1772643308472,
+      "size": 2158
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/d8b977da062e39db97efc70d39f85b563fe756c1.png",
+      "mtimeMs": 1772643308411,
+      "size": 117237
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/dea86a5c82619548db0575d5d694e114a5f71bc4.webm",
+      "mtimeMs": 1772643308128,
+      "size": 16921
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/e0f90002a81d1db537b6fe43c9dea0943e3aa0ca.webm",
+      "mtimeMs": 1772643307811,
+      "size": 48412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/e1187efe8d4dc4d10629e1ac167fc336e8cf581b.webm",
+      "mtimeMs": 1772643308504,
+      "size": 81228
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/e2849b67c9be79f790386a912843eb3e089bd91e.zip",
+      "mtimeMs": 1772643308437,
+      "size": 428426
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/e6ec70da01c35751036e76ca44ce1ab2090639dd.png",
+      "mtimeMs": 1772643308275,
+      "size": 9516
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/e8d506517bfd1b2a43d129c2207f013afcd96c81.webm",
+      "mtimeMs": 1772643307503,
+      "size": 43747
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/e90a2645450e5cbcab40ea25fcc46c02a8e0b0bf.zip",
+      "mtimeMs": 1772643308538,
+      "size": 180075
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/e950148b339c5b744c1a7a8f5fa874a2461994f3.zip",
+      "mtimeMs": 1772643307141,
+      "size": 205481
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ea61144a1442badfb2b38bd79d06a7ac0ddbc3b4.zip",
+      "mtimeMs": 1772643308095,
+      "size": 199755
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ecd77a6c16bfb2b19df9d2bdb7e2dde42978be6f.webm",
+      "mtimeMs": 1772643307854,
+      "size": 48412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ed9d92f24f83a50dc960d7c4fddc9de1d76032ac.zip",
+      "mtimeMs": 1772643308075,
+      "size": 140678
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ee2f68dccc2548657b4adc0cb9474645ce746d75.zip",
+      "mtimeMs": 1772643307885,
+      "size": 193416
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/ee47896a498c32898c2fe83d47c689972714421e.zip",
+      "mtimeMs": 1772643307891,
+      "size": 4769
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/efaf54a09f47a39d13fa741ec3c2833a3c27cab1.zip",
+      "mtimeMs": 1772643306812,
+      "size": 369295
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/efb1fad2c95614e8ad38d87b2dfab0dbd17bb524.zip",
+      "mtimeMs": 1772643308044,
+      "size": 254320
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f004db9e284b45c76770313a27f0cbda877d01fa.png",
+      "mtimeMs": 1772643308146,
+      "size": 4459
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f314711a297a4e0811e6c782ae0378845680f6a4.webm",
+      "mtimeMs": 1772643307428,
+      "size": 38384
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f428a615760a555b9337a0fcac1b0b0a709d5016.zip",
+      "mtimeMs": 1772643308448,
+      "size": 277822
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f53f96aea5c43c6e5e180aa3921d18c9d910b6ae.webm",
+      "mtimeMs": 1772643307066,
+      "size": 42518
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f59288f154903cf394c8f674d8785c7423031459.webm",
+      "mtimeMs": 1772643307548,
+      "size": 2042
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f7ca082e91bfaca3644e138bde1a1ed548a0337b.zip",
+      "mtimeMs": 1772643308217,
+      "size": 254412
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f7de70a8276ff864d77c1eaa13ca77f7f84ff9ff.zip",
+      "mtimeMs": 1772643307763,
+      "size": 205478
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f8eb7904209b06aa2069bc7ef6e913e25986dc8e.webm",
+      "mtimeMs": 1772643308779,
+      "size": 66630
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f92670e6613ecc05f6f3824d4d46dc36c9a81e05.zip",
+      "mtimeMs": 1772643306881,
+      "size": 189631
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/f97e5940bedac0e900a3742a25434846386728e4.zip",
+      "mtimeMs": 1772643307329,
+      "size": 528007
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/fc43a77b02ee00d9c443bf7d519a75ad901e5eaf.zip",
+      "mtimeMs": 1772643308103,
+      "size": 170752
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/fce3f123cbc61c36366d1d5b83beff8dc97e2454.zip",
+      "mtimeMs": 1772643308351,
+      "size": 897865
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/fd9ecf9e49149bbad6caf31c1321dbd350976ad0.webm",
+      "mtimeMs": 1772643306691,
+      "size": 106630
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/data/fe7c9384a13bc31330bca6f53dd8988109a22af7.zip",
+      "mtimeMs": 1772643307118,
+      "size": 205550
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/index.html",
+      "mtimeMs": 1772643305982,
+      "size": 588896
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/assets/codeMirrorModule-a5XoALAZ.js",
+      "mtimeMs": 1772643306167,
+      "size": 313023
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/assets/defaultSettingsView-CJSZINFr.js",
+      "mtimeMs": 1772643306320,
+      "size": 640870
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/codeMirrorModule.DYBRYzYX.css",
+      "mtimeMs": 1772643306327,
+      "size": 6421
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/codicon.DCmgc-ay.ttf",
+      "mtimeMs": 1772643306341,
+      "size": 80340
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/defaultSettingsView.7ch9cixO.css",
+      "mtimeMs": 1772643306369,
+      "size": 110370
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/index.BDwrLSGN.js",
+      "mtimeMs": 1772643306377,
+      "size": 6492
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/index.BVu7tZDe.css",
+      "mtimeMs": 1772643306383,
+      "size": 1893
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/index.html",
+      "mtimeMs": 1772643306391,
+      "size": 2283
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/manifest.webmanifest",
+      "mtimeMs": 1772643305996,
+      "size": 429
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/playwright-logo.svg",
+      "mtimeMs": 1772643306354,
+      "size": 5033
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/snapshot.html",
+      "mtimeMs": 1772643306400,
+      "size": 935
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/sw.bundle.js",
+      "mtimeMs": 1772643306054,
+      "size": 95179
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/uiMode.Btcz36p_.css",
+      "mtimeMs": 1772643306361,
+      "size": 60239
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/uiMode.CQJ9SCIQ.js",
+      "mtimeMs": 1772643306439,
+      "size": 37370
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/uiMode.html",
+      "mtimeMs": 1772643306457,
+      "size": 647
+    },
+    {
+      "file": "docs/baselines/mf00/playwright-report-baseline/trace/xtermModule.DYP7pi_n.css",
+      "mtimeMs": 1772643306447,
+      "size": 4150
+    },
+    {
+      "file": "docs/baselines/mf00/README.md",
+      "mtimeMs": 1772643319384,
+      "size": 1037
+    },
+    {
+      "file": "docs/baselines/mf00/route-scope.json",
+      "mtimeMs": 1772642657458,
+      "size": 6671
+    },
+    {
+      "file": "docs/baselines/mf00/SCOPE_LOCK.md",
+      "mtimeMs": 1772643247376,
+      "size": 1059
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/patient/L03__portal__agendar.png",
+      "mtimeMs": 1772643095045,
+      "size": 519319
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/patient/L04__portal__sessoes.png",
+      "mtimeMs": 1772643097069,
+      "size": 473945
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/patient/L05__portal__chat.png",
+      "mtimeMs": 1772643099024,
+      "size": 216937
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/patient/S10A__portal.png",
+      "mtimeMs": 1772643090538,
+      "size": 503283
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/patient/S10B__portal__apoio.png",
+      "mtimeMs": 1772643092605,
+      "size": 576454
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/public/L06__auth__login.png",
+      "mtimeMs": 1772643070342,
+      "size": 61993
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/public/L07__booking__test-terapeuta__sucesso.png",
+      "mtimeMs": 1772643071012,
+      "size": 67899
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/public/L08___mf00_not_found_probe_route.png",
+      "mtimeMs": 1772643071674,
+      "size": 32789
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/public/S02__booking__test-terapeuta.png",
+      "mtimeMs": 1772643067693,
+      "size": 115782
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/public/S11S12__root.png",
+      "mtimeMs": 1772643068440,
+      "size": 242634
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/public/S13__pricing.png",
+      "mtimeMs": 1772643069121,
+      "size": 117237
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/public/S14__checkout__secure.png",
+      "mtimeMs": 1772643069744,
+      "size": 57704
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/L01__dashboard__agenda.png",
+      "mtimeMs": 1772643085448,
+      "size": 415965
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/L02__dashboard__pacientes.png",
+      "mtimeMs": 1772643087227,
+      "size": 642707
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S01__dashboard.png",
+      "mtimeMs": 1772643074230,
+      "size": 655065
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S03__dashboard__consulta__room-stitch-check.png",
+      "mtimeMs": 1772643075565,
+      "size": 310912
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S04__dashboard__pacientes__11111111-1111-1111-1111-111111111111.png",
+      "mtimeMs": 1772643077436,
+      "size": 629948
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S05__dashboard__ia.png",
+      "mtimeMs": 1772643078682,
+      "size": 619488
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S06__dashboard__financeiro.png",
+      "mtimeMs": 1772643080121,
+      "size": 620917
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S07__dashboard__telegram.png",
+      "mtimeMs": 1772643081531,
+      "size": 700908
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S08__dashboard__onboarding.png",
+      "mtimeMs": 1772643082601,
+      "size": 76113
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/desktop-1440x900/therapist/S09__dashboard__configuracoes.png",
+      "mtimeMs": 1772643083886,
+      "size": 707237
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/patient/L03__portal__agendar.png",
+      "mtimeMs": 1772643029174,
+      "size": 102660
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/patient/L04__portal__sessoes.png",
+      "mtimeMs": 1772643031307,
+      "size": 102385
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/patient/L05__portal__chat.png",
+      "mtimeMs": 1772643033488,
+      "size": 87922
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/patient/S10A__portal.png",
+      "mtimeMs": 1772643024644,
+      "size": 111026
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/patient/S10B__portal__apoio.png",
+      "mtimeMs": 1772643026786,
+      "size": 135844
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/public/L06__auth__login.png",
+      "mtimeMs": 1772643005133,
+      "size": 25708
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/public/L07__booking__test-terapeuta__sucesso.png",
+      "mtimeMs": 1772643005789,
+      "size": 56826
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/public/L08___mf00_not_found_probe_route.png",
+      "mtimeMs": 1772643006401,
+      "size": 27302
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/public/S02__booking__test-terapeuta.png",
+      "mtimeMs": 1772643002544,
+      "size": 116882
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/public/S11S12__root.png",
+      "mtimeMs": 1772643003254,
+      "size": 220180
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/public/S13__pricing.png",
+      "mtimeMs": 1772643003941,
+      "size": 90911
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/public/S14__checkout__secure.png",
+      "mtimeMs": 1772643004570,
+      "size": 52204
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/L01__dashboard__agenda.png",
+      "mtimeMs": 1772643019618,
+      "size": 245738
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/L02__dashboard__pacientes.png",
+      "mtimeMs": 1772643021379,
+      "size": 264684
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S01__dashboard.png",
+      "mtimeMs": 1772643008830,
+      "size": 273843
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S03__dashboard__consulta__room-stitch-check.png",
+      "mtimeMs": 1772643010189,
+      "size": 141815
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S04__dashboard__pacientes__11111111-1111-1111-1111-111111111111.png",
+      "mtimeMs": 1772643011971,
+      "size": 254508
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S05__dashboard__ia.png",
+      "mtimeMs": 1772643013137,
+      "size": 241788
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S06__dashboard__financeiro.png",
+      "mtimeMs": 1772643014500,
+      "size": 244948
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S07__dashboard__telegram.png",
+      "mtimeMs": 1772643015891,
+      "size": 304779
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S08__dashboard__onboarding.png",
+      "mtimeMs": 1772643016971,
+      "size": 41451
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/mobile-390x844/therapist/S09__dashboard__configuracoes.png",
+      "mtimeMs": 1772643018175,
+      "size": 294487
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/patient/L03__portal__agendar.png",
+      "mtimeMs": 1772643062371,
+      "size": 332066
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/patient/L04__portal__sessoes.png",
+      "mtimeMs": 1772643064453,
+      "size": 319911
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/patient/L05__portal__chat.png",
+      "mtimeMs": 1772643066452,
+      "size": 113425
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/patient/S10A__portal.png",
+      "mtimeMs": 1772643057761,
+      "size": 303444
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/patient/S10B__portal__apoio.png",
+      "mtimeMs": 1772643059901,
+      "size": 379681
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/public/L06__auth__login.png",
+      "mtimeMs": 1772643037361,
+      "size": 28857
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/public/L07__booking__test-terapeuta__sucesso.png",
+      "mtimeMs": 1772643038053,
+      "size": 64103
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/public/L08___mf00_not_found_probe_route.png",
+      "mtimeMs": 1772643038680,
+      "size": 30745
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/public/S02__booking__test-terapeuta.png",
+      "mtimeMs": 1772643034757,
+      "size": 114425
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/public/S11S12__root.png",
+      "mtimeMs": 1772643035495,
+      "size": 233445
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/public/S13__pricing.png",
+      "mtimeMs": 1772643036187,
+      "size": 110144
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/public/S14__checkout__secure.png",
+      "mtimeMs": 1772643036799,
+      "size": 55826
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/L01__dashboard__agenda.png",
+      "mtimeMs": 1772643052683,
+      "size": 327504
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/L02__dashboard__pacientes.png",
+      "mtimeMs": 1772643054482,
+      "size": 469405
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S01__dashboard.png",
+      "mtimeMs": 1772643041187,
+      "size": 501100
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S03__dashboard__consulta__room-stitch-check.png",
+      "mtimeMs": 1772643042636,
+      "size": 260562
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S04__dashboard__pacientes__11111111-1111-1111-1111-111111111111.png",
+      "mtimeMs": 1772643044456,
+      "size": 474290
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S05__dashboard__ia.png",
+      "mtimeMs": 1772643045693,
+      "size": 464446
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S06__dashboard__financeiro.png",
+      "mtimeMs": 1772643047343,
+      "size": 466344
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S07__dashboard__telegram.png",
+      "mtimeMs": 1772643048797,
+      "size": 541519
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S08__dashboard__onboarding.png",
+      "mtimeMs": 1772643049879,
+      "size": 45048
+    },
+    {
+      "file": "docs/baselines/mf00/screenshots/tablet-768x1024/therapist/S09__dashboard__configuracoes.png",
+      "mtimeMs": 1772643051147,
+      "size": 515878
+    },
+    {
+      "file": "docs/baselines/mf00/seed-state.json",
+      "mtimeMs": 1772642875150,
+      "size": 530
+    },
+    {
+      "file": "docs/baselines/mf00/TRACEABILITY_MATRIX.md",
+      "mtimeMs": 1772643256938,
+      "size": 3587
+    },
+    {
+      "file": "docs/baselines/mf00r/BASELINE_TECHNICAL.md",
+      "mtimeMs": 1772646252740,
+      "size": 307
+    },
+    {
+      "file": "docs/baselines/mf00r/BASELINE_VISUAL.md",
+      "mtimeMs": 1772646246536,
+      "size": 768
+    },
+    {
+      "file": "docs/baselines/mf00r/baseline-visual.json",
+      "mtimeMs": 1772646111066,
+      "size": 44615
+    },
+    {
+      "file": "docs/baselines/mf00r/logs/build.log",
+      "mtimeMs": 1772646160915,
+      "size": 2281
+    },
+    {
+      "file": "docs/baselines/mf00r/logs/playwright.log",
+      "mtimeMs": 1772646205130,
+      "size": 29197
+    },
+    {
+      "file": "docs/baselines/mf00r/logs/tsc.log",
+      "mtimeMs": 1772646447040,
+      "size": 11
+    },
+    {
+      "file": "docs/baselines/mf00r/README.md",
+      "mtimeMs": 1772645153518,
+      "size": 705
+    },
+    {
+      "file": "docs/baselines/mf00r/route-scope-v3.json",
+      "mtimeMs": 1772645153514,
+      "size": 6253
+    },
+    {
+      "file": "docs/baselines/mf00r/SCOPE_LOCK.md",
+      "mtimeMs": 1772646258899,
+      "size": 544
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/patient/S10__portal.png",
+      "mtimeMs": 1772646104506,
+      "size": 499985
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/patient/S23__portal__agendar.png",
+      "mtimeMs": 1772646106887,
+      "size": 514712
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/patient/S24__portal__sessoes.png",
+      "mtimeMs": 1772646108978,
+      "size": 470806
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/patient/S25__portal__chat.png",
+      "mtimeMs": 1772646111002,
+      "size": 208935
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S02__booking__test-terapeuta.png",
+      "mtimeMs": 1772646076447,
+      "size": 117928
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S11__root.png",
+      "mtimeMs": 1772646077199,
+      "size": 219590
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S12__root.png",
+      "mtimeMs": 1772646077928,
+      "size": 219590
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S13__pricing.png",
+      "mtimeMs": 1772646078627,
+      "size": 118372
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S14__checkout__secure.png",
+      "mtimeMs": 1772646079253,
+      "size": 57648
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S15__auth__login.png",
+      "mtimeMs": 1772646079834,
+      "size": 61443
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S16__auth__register.png",
+      "mtimeMs": 1772646080466,
+      "size": 39147
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S17__auth__register__patient.png",
+      "mtimeMs": 1772646081102,
+      "size": 36416
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S18__auth__forgot-password.png",
+      "mtimeMs": 1772646081747,
+      "size": 22089
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S26__booking__test-terapeuta__sucesso.png",
+      "mtimeMs": 1772646082422,
+      "size": 68375
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/public/S28___mf00r_not_found_probe.png",
+      "mtimeMs": 1772646083066,
+      "size": 32833
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S01__dashboard.png",
+      "mtimeMs": 1772646085747,
+      "size": 539109
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S03__dashboard__consulta__room-stitch-check.png",
+      "mtimeMs": 1772646087078,
+      "size": 205459
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S04__dashboard__pacientes__11111111-1111-1111-1111-111111111111.png",
+      "mtimeMs": 1772646088889,
+      "size": 589978
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S05__dashboard__ia.png",
+      "mtimeMs": 1772646090122,
+      "size": 473951
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S06__dashboard__financeiro.png",
+      "mtimeMs": 1772646091553,
+      "size": 532489
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S07__dashboard__telegram.png",
+      "mtimeMs": 1772646093012,
+      "size": 543591
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S08__dashboard__onboarding.png",
+      "mtimeMs": 1772646094108,
+      "size": 75581
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S09__dashboard__configuracoes.png",
+      "mtimeMs": 1772646095379,
+      "size": 532696
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S19__dashboard__agenda.png",
+      "mtimeMs": 1772646096908,
+      "size": 296221
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S20__dashboard__pacientes.png",
+      "mtimeMs": 1772646098692,
+      "size": 510553
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S21__dashboard__configuracoes__perfil.png",
+      "mtimeMs": 1772646099907,
+      "size": 472846
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/desktop-1440x900/therapist/S22__dashboard__configuracoes__integracoes.png",
+      "mtimeMs": 1772646101240,
+      "size": 370019
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/patient/S10__portal.png",
+      "mtimeMs": 1772646033998,
+      "size": 104673
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/patient/S23__portal__agendar.png",
+      "mtimeMs": 1772646036246,
+      "size": 95884
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/patient/S24__portal__sessoes.png",
+      "mtimeMs": 1772646038146,
+      "size": 94963
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/patient/S25__portal__chat.png",
+      "mtimeMs": 1772646040180,
+      "size": 77202
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S02__booking__test-terapeuta.png",
+      "mtimeMs": 1772646004954,
+      "size": 121058
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S11__root.png",
+      "mtimeMs": 1772646005725,
+      "size": 199144
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S12__root.png",
+      "mtimeMs": 1772646006410,
+      "size": 199144
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S13__pricing.png",
+      "mtimeMs": 1772646007098,
+      "size": 92425
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S14__checkout__secure.png",
+      "mtimeMs": 1772646007710,
+      "size": 52121
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S15__auth__login.png",
+      "mtimeMs": 1772646008273,
+      "size": 25470
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S16__auth__register.png",
+      "mtimeMs": 1772646008893,
+      "size": 30362
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S17__auth__register__patient.png",
+      "mtimeMs": 1772646009508,
+      "size": 28557
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S18__auth__forgot-password.png",
+      "mtimeMs": 1772646010108,
+      "size": 18113
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S26__booking__test-terapeuta__sucesso.png",
+      "mtimeMs": 1772646010780,
+      "size": 56772
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/public/S28___mf00r_not_found_probe.png",
+      "mtimeMs": 1772646011410,
+      "size": 27335
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S01__dashboard.png",
+      "mtimeMs": 1772646016465,
+      "size": 149866
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S03__dashboard__consulta__room-stitch-check.png",
+      "mtimeMs": 1772646017759,
+      "size": 101932
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S04__dashboard__pacientes__11111111-1111-1111-1111-111111111111.png",
+      "mtimeMs": 1772646019504,
+      "size": 225989
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S05__dashboard__ia.png",
+      "mtimeMs": 1772646020612,
+      "size": 165936
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S06__dashboard__financeiro.png",
+      "mtimeMs": 1772646021894,
+      "size": 143988
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S07__dashboard__telegram.png",
+      "mtimeMs": 1772646023154,
+      "size": 181252
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S08__dashboard__onboarding.png",
+      "mtimeMs": 1772646024195,
+      "size": 41021
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S09__dashboard__configuracoes.png",
+      "mtimeMs": 1772646025281,
+      "size": 140409
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S19__dashboard__agenda.png",
+      "mtimeMs": 1772646026753,
+      "size": 139252
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S20__dashboard__pacientes.png",
+      "mtimeMs": 1772646028373,
+      "size": 149814
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S21__dashboard__configuracoes__perfil.png",
+      "mtimeMs": 1772646029465,
+      "size": 131248
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/mobile-390x844/therapist/S22__dashboard__configuracoes__integracoes.png",
+      "mtimeMs": 1772646030699,
+      "size": 118817
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/patient/S10__portal.png",
+      "mtimeMs": 1772646068759,
+      "size": 296110
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/patient/S23__portal__agendar.png",
+      "mtimeMs": 1772646071199,
+      "size": 323676
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/patient/S24__portal__sessoes.png",
+      "mtimeMs": 1772646073216,
+      "size": 311682
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/patient/S25__portal__chat.png",
+      "mtimeMs": 1772646075180,
+      "size": 107112
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S02__booking__test-terapeuta.png",
+      "mtimeMs": 1772646041384,
+      "size": 112284
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S11__root.png",
+      "mtimeMs": 1772646042114,
+      "size": 210317
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S12__root.png",
+      "mtimeMs": 1772646042812,
+      "size": 210317
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S13__pricing.png",
+      "mtimeMs": 1772646043461,
+      "size": 111106
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S14__checkout__secure.png",
+      "mtimeMs": 1772646044070,
+      "size": 55720
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S15__auth__login.png",
+      "mtimeMs": 1772646044651,
+      "size": 28583
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S16__auth__register.png",
+      "mtimeMs": 1772646045271,
+      "size": 37466
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S17__auth__register__patient.png",
+      "mtimeMs": 1772646045902,
+      "size": 34894
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S18__auth__forgot-password.png",
+      "mtimeMs": 1772646046517,
+      "size": 20637
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S26__booking__test-terapeuta__sucesso.png",
+      "mtimeMs": 1772646047196,
+      "size": 64954
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/public/S28___mf00r_not_found_probe.png",
+      "mtimeMs": 1772646047841,
+      "size": 30811
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S01__dashboard.png",
+      "mtimeMs": 1772646050574,
+      "size": 370890
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S03__dashboard__consulta__room-stitch-check.png",
+      "mtimeMs": 1772646051847,
+      "size": 152687
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S04__dashboard__pacientes__11111111-1111-1111-1111-111111111111.png",
+      "mtimeMs": 1772646053629,
+      "size": 449174
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S05__dashboard__ia.png",
+      "mtimeMs": 1772646054826,
+      "size": 362892
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S06__dashboard__financeiro.png",
+      "mtimeMs": 1772646056159,
+      "size": 389371
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S07__dashboard__telegram.png",
+      "mtimeMs": 1772646057606,
+      "size": 381383
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S08__dashboard__onboarding.png",
+      "mtimeMs": 1772646058674,
+      "size": 44593
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S09__dashboard__configuracoes.png",
+      "mtimeMs": 1772646059810,
+      "size": 222844
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S19__dashboard__agenda.png",
+      "mtimeMs": 1772646061260,
+      "size": 193837
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S20__dashboard__pacientes.png",
+      "mtimeMs": 1772646062952,
+      "size": 390098
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S21__dashboard__configuracoes__perfil.png",
+      "mtimeMs": 1772646064102,
+      "size": 344512
+    },
+    {
+      "file": "docs/baselines/mf00r/screenshots/tablet-768x1024/therapist/S22__dashboard__configuracoes__integracoes.png",
+      "mtimeMs": 1772646065414,
+      "size": 253322
+    },
+    {
+      "file": "docs/baselines/mf00r/seed-state.json",
+      "mtimeMs": 1772645982462,
+      "size": 530
+    },
+    {
+      "file": "docs/baselines/mf00r/TRACEABILITY_MATRIX.md",
+      "mtimeMs": 1772646390156,
+      "size": 4994
+    },
+    {
+      "file": "docs/baselines/mf21_reconcile/checksums.json",
+      "mtimeMs": 1772674587719,
+      "size": 14251
+    },
+    {
+      "file": "docs/baselines/mf21_reconcile/gap-register.json",
+      "mtimeMs": 1772674587721,
+      "size": 3038
+    },
+    {
+      "file": "docs/baselines/mf21_reconcile/inventory.json",
+      "mtimeMs": 1772674587720,
+      "size": 172
+    },
+    {
+      "file": "docs/baselines/mf22_supabase/preflight-report.json",
+      "mtimeMs": 1772679104886,
+      "size": 926
+    },
+    {
+      "file": "docs/baselines/mf23_backend_audit/report.json",
+      "mtimeMs": 1772680353832,
+      "size": 28973
+    },
+    {
+      "file": "docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md",
+      "mtimeMs": 1772680410445,
+      "size": 3195
+    },
+    {
+      "file": "docs/handoffs/CONTINUIDADE-PROMPT.md",
+      "mtimeMs": 1772680440953,
+      "size": 25692
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE1.md",
+      "mtimeMs": 1772584343355,
+      "size": 3069
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE10.md",
+      "mtimeMs": 1772587931245,
+      "size": 2787
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE11-12.md",
+      "mtimeMs": 1772589595241,
+      "size": 4146
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE12.md",
+      "mtimeMs": 1772590098772,
+      "size": 3371
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE13.md",
+      "mtimeMs": 1772604188241,
+      "size": 2471
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE14.md",
+      "mtimeMs": 1772604962122,
+      "size": 2970
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE15.md",
+      "mtimeMs": 1772603583780,
+      "size": 2485
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE16.md",
+      "mtimeMs": 1772605217330,
+      "size": 2397
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE17.md",
+      "mtimeMs": 1772617009611,
+      "size": 3142
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE18.md",
+      "mtimeMs": 1772633898514,
+      "size": 8834
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE19.md",
+      "mtimeMs": 1772640898307,
+      "size": 3268
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE2-3.md",
+      "mtimeMs": 1772646349884,
+      "size": 5581
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE20.md",
+      "mtimeMs": 1772654517069,
+      "size": 3438
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF00R.md",
+      "mtimeMs": 1772646327183,
+      "size": 470
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF01.md",
+      "mtimeMs": 1772646327186,
+      "size": 472
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF02.md",
+      "mtimeMs": 1772646327189,
+      "size": 318
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF03.md",
+      "mtimeMs": 1772646327193,
+      "size": 365
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF04.md",
+      "mtimeMs": 1772646327197,
+      "size": 318
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF05.md",
+      "mtimeMs": 1772646327200,
+      "size": 234
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF06.md",
+      "mtimeMs": 1772646327204,
+      "size": 188
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF07.md",
+      "mtimeMs": 1772646327207,
+      "size": 185
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF08.md",
+      "mtimeMs": 1772646327211,
+      "size": 228
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF09.md",
+      "mtimeMs": 1772646327215,
+      "size": 269
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF10.md",
+      "mtimeMs": 1772646327218,
+      "size": 343
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF11.md",
+      "mtimeMs": 1772654510336,
+      "size": 447
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE21-MF12.md",
+      "mtimeMs": 1772664805125,
+      "size": 2028
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE22-RECONCILIACAO-E2E.md",
+      "mtimeMs": 1772680430708,
+      "size": 6388
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE4.md",
+      "mtimeMs": 1772584664784,
+      "size": 3470
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE5-6.md",
+      "mtimeMs": 1772646355155,
+      "size": 6619
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE7-COMPLETE.md",
+      "mtimeMs": 1772586083314,
+      "size": 4378
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE7.md",
+      "mtimeMs": 1772584941592,
+      "size": 4023
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE8.md",
+      "mtimeMs": 1772586677023,
+      "size": 4065
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-FASE9.md",
+      "mtimeMs": 1772587050627,
+      "size": 3670
+    },
+    {
+      "file": "docs/handoffs/HANDOFF-MF00.md",
+      "mtimeMs": 1772677606217,
+      "size": 4477
+    },
+    {
+      "file": "docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md",
+      "mtimeMs": 1772680414175,
+      "size": 4235
+    },
+    {
+      "file": "docs/IMPLEMENTATION_BACKLOG.md",
+      "mtimeMs": 1772676661407,
+      "size": 26242
+    },
+    {
+      "file": "docs/implementation_plan-v1.md",
+      "mtimeMs": 1772677401368,
+      "size": 18502
+    },
+    {
+      "file": "docs/implementation_plan.md",
+      "mtimeMs": 1772676063427,
+      "size": 2674
+    },
+    {
+      "file": "docs/PSIQUE_CURSOR_MASTER_PROMPT.md",
+      "mtimeMs": 1772582144523,
+      "size": 42943
+    },
+    {
+      "file": "docs/PSIQUE_CURSOR_MASTER_PROMPT.zip",
+      "mtimeMs": 1772677292312,
+      "size": 89828
+    },
+    {
+      "file": "docs/psique-final.jsx",
+      "mtimeMs": 1772580796854,
+      "size": 138141
+    },
+    {
+      "file": "docs/stitch/CANONICAL_MANIFEST.json",
+      "mtimeMs": 1772674534243,
+      "size": 16794
+    },
+    {
+      "file": "docs/stitch/COMPONENT_LIBRARY.md",
+      "mtimeMs": 1772645020733,
+      "size": 1056
+    },
+    {
+      "file": "docs/stitch/DESIGN_TOKENS.md",
+      "mtimeMs": 1772645020730,
+      "size": 1506
+    },
+    {
+      "file": "docs/stitch/IMPLEMENTATION_BACKLOG.md",
+      "mtimeMs": 1772645020740,
+      "size": 963
+    },
+    {
+      "file": "docs/stitch/LAYOUT_PATTERNS.md",
+      "mtimeMs": 1772645020737,
+      "size": 778
+    },
+    {
+      "file": "docs/stitch/NEXT_SESSION_E2E_INPUT.md",
+      "mtimeMs": 1772639441423,
+      "size": 1916
+    },
+    {
+      "file": "docs/stitch/NON_SCREEN_ROUTES.json",
+      "mtimeMs": 1772674335362,
+      "size": 8197
+    },
+    {
+      "file": "docs/stitch/README.md",
+      "mtimeMs": 1772676074653,
+      "size": 2045
+    },
+    {
+      "file": "docs/stitch/schema/canonical-manifest.schema.json",
+      "mtimeMs": 1772674201169,
+      "size": 2805
+    },
+    {
+      "file": "docs/stitch/SCREEN_REGISTRY.md",
+      "mtimeMs": 1772645020727,
+      "size": 4019
+    },
+    {
+      "file": "docs/task-v1.md",
+      "mtimeMs": 1772677460959,
+      "size": 1931
+    }
+  ]
+}

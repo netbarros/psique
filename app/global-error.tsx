@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+
 export default function GlobalError({
   error,
   reset,
@@ -9,111 +11,41 @@ export default function GlobalError({
 }) {
   return (
     <html lang="pt-BR">
-      <body
-        style={{
-          minHeight: "100vh",
-          background: "#0e0e0b",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          padding: "40px 24px",
-          textAlign: "center",
-          fontFamily: "'Instrument Sans', sans-serif",
-          margin: 0,
-        }}
-      >
-        <div style={{ maxWidth: 420 }}>
-          <div
-            style={{
-              width: 90,
-              height: 90,
-              borderRadius: "50%",
-              background:
-                "radial-gradient(circle at 35% 35%, rgba(184,84,80,.3), rgba(184,84,80,.08))",
-              border: "2px solid rgba(184,84,80,.4)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontSize: 38,
-              margin: "0 auto 24px",
-              fontFamily: "'Cormorant Garant', serif",
-              fontWeight: 200,
-              color: "#b85450",
-            }}
-          >
+      <body className="m-0 bg-bg-base">
+        <main className="flex min-h-screen flex-col items-center justify-center px-4 text-center">
+          <p className="mb-3 inline-flex rounded-full border border-gold/35 bg-gold/10 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-gold">
+            Falha temporária
+          </p>
+          <p className="font-display text-[120px] font-bold leading-none text-gold/20">
             500
-          </div>
-          <h1
-            style={{
-              fontFamily: "'Cormorant Garant', serif",
-              fontSize: 32,
-              fontWeight: 200,
-              color: "#ede7d9",
-              marginBottom: 12,
-            }}
-          >
+          </p>
+          <h1 className="mt-2 font-display text-4xl text-text-primary">
             Erro interno
           </h1>
-          <p
-            style={{
-              fontSize: 14,
-              color: "#8a8070",
-              lineHeight: 1.7,
-              marginBottom: 8,
-            }}
-          >
-            Algo deu errado. Nossa equipe foi notificada e estamos trabalhando
-            para resolver.
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-text-secondary">
+            Algo inesperado aconteceu. Tente novamente agora ou retome a navegação pela tela inicial.
           </p>
-          {error.digest && (
-            <p
-              style={{
-                fontSize: 11,
-                color: "#8a8070",
-                fontFamily: "monospace",
-                marginBottom: 24,
-              }}
-            >
-              Ref: {error.digest}
-            </p>
-          )}
-          <div
-            style={{ display: "flex", gap: 12, justifyContent: "center" }}
-          >
+
+          {error.digest ? (
+            <p className="mt-2 font-mono text-xs text-text-muted">Ref: {error.digest}</p>
+          ) : null}
+
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
             <button
               type="button"
               onClick={reset}
-              style={{
-                padding: "12px 28px",
-                borderRadius: 12,
-                background: "#52b788",
-                color: "#060E09",
-                border: "none",
-                fontSize: 14,
-                fontWeight: 600,
-                cursor: "pointer",
-              }}
+              className="rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-[#060E09] transition-colors hover:bg-brand-hover"
             >
-              Tentar Novamente
+              Tentar novamente
             </button>
-            <a
+            <Link
               href="/"
-              style={{
-                padding: "12px 28px",
-                borderRadius: 12,
-                background: "#1a1a17",
-                border: "1px solid #1c2e20",
-                color: "#c8bfb0",
-                textDecoration: "none",
-                fontSize: 14,
-                display: "inline-flex",
-                alignItems: "center",
-              }}
+              className="rounded-xl border border-border-subtle bg-surface px-6 py-3 text-sm text-text-secondary transition-colors hover:bg-surface-hover"
             >
-              Voltar ao Início
-            </a>
+              Voltar ao início
+            </Link>
           </div>
-        </div>
+        </main>
       </body>
     </html>
   );

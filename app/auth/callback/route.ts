@@ -8,7 +8,7 @@ export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
   const type = searchParams.get("type"); // 'recovery' or undefined
-  const next = searchParams.get("next") ?? "/dashboard";
+  const next = searchParams.get("next");
 
   if (code) {
     const supabase = await createClient();
@@ -22,7 +22,46 @@ export async function GET(request: NextRequest) {
       return NextResponse.redirect(`${origin}/auth/reset-password`);
     }
 
-    // New user — create therapist profile
+    const userRole = (data.user?.user_metadata?.role as string | undefined) ?? "therapist";
+
+    // Patient bootstrap: attach auth user to existing patient row by email.
+    if (data.user && data.session && userRole === "patient") {
+      const admin = createAdminClient();
+
+      const { data: patientByUser } = await admin
+        .from("patients")
+        .select("id")
+        .eq("user_id", data.user.id)
+        .single();
+
+      if (!patientByUser && data.user.email) {
+        const { data: patientByEmail } = await admin
+          .from("patients")
+          .select("id")
+          .eq("email", data.user.email)
+          .is("user_id", null)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (patientByEmail) {
+          await admin
+            .from("patients")
+            .update({
+              user_id: data.user.id,
+              name:
+                data.user.user_metadata?.name ??
+                data.user.user_metadata?.full_name ??
+                undefined,
+            })
+            .eq("id", patientByEmail.id);
+        }
+      }
+
+      return NextResponse.redirect(`${origin}${next ?? "/portal"}`);
+    }
+
+    // Therapist bootstrap.
     if (data.user && data.session) {
       const admin = createAdminClient();
       const { data: existing } = await admin
@@ -51,7 +90,7 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    return NextResponse.redirect(`${origin}${next}`);
+    return NextResponse.redirect(`${origin}${next ?? "/dashboard"}`);
   }
 
   return NextResponse.redirect(`${origin}/auth/login?error=no_code`);

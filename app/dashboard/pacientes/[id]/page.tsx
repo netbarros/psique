@@ -1,80 +1,80 @@
 import { createClient } from "@/lib/supabase/server";
-import { redirect, notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import Link from "next/link";
 import type { Metadata } from "next";
-import type {
-  PatientRow,
-  MedicalRecordRow,
-  SessionRow,
-  PaymentRow,
-} from "@/types/database";
-import { PatientDetailTabs } from "@/components/dashboard/PatientDetailTabs";
+import type { MedicalRecordRow, PatientRow, PaymentRow, SessionRow } from "@/lib/database.types";
 import { formatDate } from "@/lib/utils";
+import { PatientProfileTabs } from "@/components/dashboard/PatientProfileTabs";
+import { EnterpriseCard, EnterpriseStat } from "@/components/ui/EnterpriseCard";
 
-export const metadata: Metadata = { title: "Detalhe do Paciente" };
-
-// ── Status config ─────────────────────────────────────────────────
-const STATUS_CONFIG: Record<
-  string,
-  { label: string; color: string; dot: string }
-> = {
-  new: { label: "Novo", color: "var(--blue)", dot: "#4A8FA8" },
-  active: { label: "Ativo", color: "var(--mint)", dot: "#52B788" },
-  inactive: { label: "Inativo", color: "var(--ivoryDD)", dot: "#8A8070" },
-  lead: { label: "Lead", color: "var(--gold)", dot: "#C4A35A" },
-  archived: { label: "Arquivado", color: "var(--ivoryDD)", dot: "#6A6060" },
-};
+export const metadata: Metadata = { title: "Perfil Clínico do Paciente" };
 
 function initials(name: string): string {
   const parts = name.trim().split(/\s+/);
-  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+  if (parts.length <= 1) return parts[0]?.slice(0, 2).toUpperCase() ?? "PT";
+  return `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
 }
 
-// ── Data fetching ─────────────────────────────────────────────────
+function calculateAge(birthDate: string | null): number | null {
+  if (!birthDate) return null;
+  const birth = new Date(birthDate);
+  const today = new Date();
+  let age = today.getFullYear() - birth.getFullYear();
+  const monthDiff = today.getMonth() - birth.getMonth();
+  if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+    age -= 1;
+  }
+  return age >= 0 ? age : null;
+}
+
+function resolvePaymentStatus(payments: PaymentRow[]): { label: string; tone: string } {
+  if (payments.some((payment) => payment.status === "pending")) {
+    return { label: "Pendente", tone: "text-amber-300" };
+  }
+  if (payments.some((payment) => payment.status === "paid")) {
+    return { label: "Em dia", tone: "text-brand" };
+  }
+  return { label: "Sem dados", tone: "text-text-muted" };
+}
+
 async function getPatientDetail(therapistId: string, patientId: string) {
   const supabase = await createClient();
 
-  const [patientResult, recordsResult, sessionsResult, paymentsResult] =
-    await Promise.all([
-      supabase
-        .from("patients")
-        .select("*")
-        .eq("id", patientId)
-        .eq("therapist_id", therapistId)
-        .single(),
-
-      supabase
-        .from("medical_records")
-        .select("*")
-        .eq("patient_id", patientId)
-        .eq("therapist_id", therapistId)
-        .order("created_at", { ascending: false }),
-
-      supabase
-        .from("sessions")
-        .select("*")
-        .eq("patient_id", patientId)
-        .eq("therapist_id", therapistId)
-        .order("created_at", { ascending: false }),
-
-      supabase
-        .from("payments")
-        .select("*")
-        .eq("patient_id", patientId)
-        .eq("therapist_id", therapistId)
-        .order("created_at", { ascending: false }),
-    ]);
+  const [patientResult, recordsResult, sessionsResult, paymentsResult] = await Promise.all([
+    supabase
+      .from("patients")
+      .select("*")
+      .eq("id", patientId)
+      .eq("therapist_id", therapistId)
+      .single(),
+    supabase
+      .from("medical_records")
+      .select("*")
+      .eq("patient_id", patientId)
+      .eq("therapist_id", therapistId)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("sessions")
+      .select("*")
+      .eq("patient_id", patientId)
+      .eq("therapist_id", therapistId)
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("payments")
+      .select("*")
+      .eq("patient_id", patientId)
+      .eq("therapist_id", therapistId)
+      .order("created_at", { ascending: false }),
+  ]);
 
   return {
-    patient: patientResult.data as unknown as PatientRow | null,
-    records: (recordsResult.data ?? []) as unknown as MedicalRecordRow[],
-    sessions: (sessionsResult.data ?? []) as unknown as SessionRow[],
-    payments: (paymentsResult.data ?? []) as unknown as PaymentRow[],
+    patient: (patientResult.data ?? null) as PatientRow | null,
+    records: (recordsResult.data ?? []) as MedicalRecordRow[],
+    sessions: (sessionsResult.data ?? []) as SessionRow[],
+    payments: (paymentsResult.data ?? []) as PaymentRow[],
   };
 }
 
-// ── Page ──────────────────────────────────────────────────────────
 export default async function PatientDetailPage({
   params,
 }: {
@@ -95,343 +95,146 @@ export default async function PatientDetailPage({
     .single();
   if (!therapist) redirect("/auth/login");
 
-  const { patient, records, sessions, payments } = await getPatientDetail(
-    therapist.id,
-    id
-  );
+  const { patient, records, sessions, payments } = await getPatientDetail(therapist.id, id);
   if (!patient) notFound();
 
-  const statusCfg = STATUS_CONFIG[patient.status] ?? STATUS_CONFIG.inactive;
+  const age = calculateAge(patient.birth_date);
+  const primaryTags = (patient.tags ?? []).slice(0, 2);
+  const riskFromTags = (patient.tags ?? []).find((tag) => /risco|risk/i.test(tag));
+  const riskFromAi = sessions.find((session) => (session.ai_risk_flags ?? []).length > 0)?.ai_risk_flags?.[0] ?? null;
+  const riskBadge = riskFromTags ?? riskFromAi;
+
+  const sessionsCount = sessions.length;
+  const lastSessionDate = sessions[0]?.created_at ?? null;
+  const paymentStatus = resolvePaymentStatus(payments);
 
   return (
-    <div style={{ padding: "32px 40px", maxWidth: 1200 }}>
-      {/* Back link */}
-      <Link
-        href="/dashboard/pacientes"
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          fontSize: 13,
-          color: "var(--ivoryDD)",
-          marginBottom: 20,
-          transition: "color .2s",
-        }}
-      >
-        ← Voltar para pacientes
-      </Link>
-
-      {/* Patient header */}
-      <div
-        style={{
-          display: "flex",
-          gap: 24,
-          alignItems: "flex-start",
-          marginBottom: 32,
-        }}
-      >
-        {/* Avatar */}
-        <div
-          style={{
-            width: 72,
-            height: 72,
-            borderRadius: "50%",
-            flexShrink: 0,
-            background:
-              "radial-gradient(circle at 35% 35%, rgba(82,183,136,.35), rgba(82,183,136,.15))",
-            border: "2px solid rgba(82,183,136,.45)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontFamily: "var(--ff)",
-            fontSize: 24,
-            color: "var(--mint)",
-            fontWeight: 300,
-          }}
-        >
-          {initials(patient.name)}
-        </div>
-
-        {/* Patient info */}
-        <div style={{ flex: 1 }}>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 12,
-              marginBottom: 6,
-            }}
+    <div className="mx-auto w-full max-w-5xl space-y-6 px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+      <header className="flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard/pacientes"
+            className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface text-text-secondary transition-colors hover:border-border-strong hover:text-text-primary"
+            aria-label="Voltar para lista de pacientes"
           >
-            <h1
-              style={{
-                fontFamily: "var(--ff)",
-                fontSize: 32,
-                fontWeight: 200,
-                color: "var(--ivory)",
-              }}
-            >
+            <span className="material-symbols-outlined text-[20px]">arrow_back</span>
+          </Link>
+          <div>
+            <h1 className="font-display text-2xl font-medium text-text-primary">
               {patient.name}
             </h1>
-            <span
-              style={{
-                fontSize: 11,
-                padding: "3px 10px",
-                borderRadius: 20,
-                background: `${statusCfg.dot}1A`,
-                color: statusCfg.color,
-                border: `1px solid ${statusCfg.dot}40`,
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 5,
-              }}
-            >
-              <span
-                style={{
-                  width: 5,
-                  height: 5,
-                  borderRadius: "50%",
-                  background: statusCfg.dot,
-                  display: "inline-block",
-                }}
-              />
-              {statusCfg.label}
-            </span>
+            <p className="flex items-center gap-1 text-xs text-text-muted">
+              <span className="h-2 w-2 rounded-full bg-brand" />
+              Active Patient
+            </p>
+          </div>
+        </div>
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface text-text-secondary transition-colors hover:border-border-strong hover:text-text-primary"
+          aria-label="Mais ações"
+        >
+          <span className="material-symbols-outlined text-[20px]">more_vert</span>
+        </button>
+      </header>
+
+      <EnterpriseCard className="p-5">
+        <div className="mb-5 flex items-start gap-4">
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-border-strong bg-bg-elevated font-display text-xl text-brand">
+            {initials(patient.name)}
           </div>
 
-          {/* Contact details */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 16,
-              fontSize: 13,
-              color: "var(--ivoryDD)",
-              marginBottom: 8,
-            }}
-          >
-            <span>✉ {patient.email}</span>
-            {patient.phone && <span>📞 {patient.phone}</span>}
-            {patient.telegram_username && (
-              <span style={{ color: "#54C5F8" }}>
-                @{patient.telegram_username}
-              </span>
-            )}
-          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h2 className="font-display text-2xl font-medium text-text-primary">
+                  {patient.name}
+                </h2>
+                <p className="mt-0.5 text-sm text-text-muted">
+                  {age ? `${age} anos` : "Idade não informada"} {patient.cpf ? `• CPF ${patient.cpf}` : ""}
+                </p>
+              </div>
+              <button
+                type="button"
+                className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-border-subtle bg-bg-elevated text-sky-300"
+                aria-label="Enviar mensagem"
+              >
+                <span className="material-symbols-outlined text-[16px]">send</span>
+              </button>
+            </div>
 
-          {/* Meta row */}
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: 16,
-              fontSize: 12,
-              color: "var(--ivoryDD)",
-            }}
-          >
-            {patient.birth_date && (
-              <span>🎂 {formatDate(patient.birth_date)}</span>
-            )}
-            {patient.cpf && <span>CPF: {patient.cpf}</span>}
-            <span>Desde {formatDate(patient.created_at)}</span>
-            {patient.gdpr_consent && (
-              <span style={{ color: "var(--mint)" }}>✓ LGPD consentido</span>
-            )}
-          </div>
-
-          {/* Tags */}
-          {patient.tags && patient.tags.length > 0 && (
-            <div
-              style={{
-                display: "flex",
-                gap: 6,
-                marginTop: 10,
-                flexWrap: "wrap",
-              }}
-            >
-              {patient.tags.map((tag) => (
-                <span
-                  key={tag}
-                  style={{
-                    fontSize: 11,
-                    padding: "2px 10px",
-                    borderRadius: 20,
-                    background: "var(--card2)",
-                    color: "var(--ivoryD)",
-                    border: "1px solid var(--border2)",
-                  }}
-                >
-                  {tag}
+            <div className="mt-3 flex flex-wrap gap-2">
+              {primaryTags.length > 0 ? (
+                primaryTags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="rounded-md border border-border-subtle bg-bg-elevated px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-text-secondary"
+                  >
+                    {tag}
+                  </span>
+                ))
+              ) : (
+                <span className="rounded-md border border-border-subtle bg-bg-elevated px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-text-secondary">
+                  Acompanhamento
                 </span>
-              ))}
-            </div>
-          )}
+              )}
 
-          {/* Mood */}
-          {patient.mood_score !== null && patient.mood_score !== undefined && (
-            <div
-              style={{
-                display: "flex",
-                gap: 4,
-                alignItems: "center",
-                marginTop: 10,
-              }}
-            >
-              <span
-                style={{ fontSize: 12, color: "var(--ivoryDD)", marginRight: 4 }}
-              >
-                Humor:
-              </span>
-              {[1, 2, 3, 4, 5].map((n) => (
-                <div
-                  key={n}
-                  style={{
-                    width: 8,
-                    height: 8,
-                    borderRadius: "50%",
-                    background:
-                      n <= (patient.mood_score ?? 0)
-                        ? "var(--mint)"
-                        : "var(--border2)",
-                  }}
-                />
-              ))}
-              <span
-                style={{
-                  fontSize: 11,
-                  color: "var(--ivoryDD)",
-                  marginLeft: 4,
-                }}
-              >
-                {patient.mood_score}/5
-              </span>
+              {riskBadge ? (
+                <span className="inline-flex items-center gap-1 rounded-md border border-error/35 bg-error/10 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-error">
+                  <span className="material-symbols-outlined text-[14px]">warning</span>
+                  {riskBadge}
+                </span>
+              ) : null}
             </div>
-          )}
+          </div>
         </div>
 
-        {/* Actions */}
-        <div style={{ display: "flex", gap: 8, flexShrink: 0 }}>
-          <button
-            type="button"
-            style={{
-              padding: "10px 20px",
-              background: "var(--card2)",
-              color: "var(--ivoryD)",
-              borderRadius: 12,
-              border: "1px solid var(--border2)",
-              fontSize: 13,
-              fontWeight: 500,
-              cursor: "pointer",
-              transition: "all .2s var(--ease-out)",
-            }}
-          >
-            ✏ Editar
-          </button>
-          <Link
-            href={`/dashboard/agenda?patient=${id}`}
-            style={{
-              padding: "10px 20px",
-              background: "var(--mint)",
-              color: "#060E09",
-              borderRadius: 12,
-              border: "none",
-              fontSize: 13,
-              fontWeight: 600,
-              textDecoration: "none",
-              display: "inline-flex",
-              alignItems: "center",
-            }}
-          >
-            + Agendar Sessão
+        <div className="grid grid-cols-3 gap-3 border-t border-border-subtle pt-4">
+          <EnterpriseStat
+            label="Sessões"
+            value={sessionsCount.toString()}
+            delay={0.1}
+          />
+          <EnterpriseStat
+            label="Última"
+            value={lastSessionDate ? formatDate(lastSessionDate) : "—"}
+            delay={0.2}
+          />
+          <EnterpriseStat
+            label="Status Pag."
+            value={<span className={paymentStatus.tone}>{paymentStatus.label}</span>}
+            delay={0.3}
+          />
+        </div>
+      </EnterpriseCard>
+
+      <section className="grid grid-cols-2 gap-3">
+        <EnterpriseCard delay={0.1} interactive className="group p-4 text-center">
+          <Link href={`/dashboard/agenda?patient=${patient.id}`} className="block">
+            <span className="mx-auto mb-2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-bg-elevated text-text-secondary transition-colors group-hover:border-brand group-hover:text-brand">
+              <span className="material-symbols-outlined text-[20px]">videocam</span>
+            </span>
+            <p className="text-sm font-medium text-text-secondary">Iniciar Sessão</p>
           </Link>
-        </div>
-      </div>
+        </EnterpriseCard>
+        
+        <EnterpriseCard delay={0.2} interactive className="group p-4 text-center">
+          <Link href={`/dashboard/ia?patient=${patient.id}`} className="block">
+            <span className="mx-auto mb-2 inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-bg-elevated text-text-secondary transition-colors group-hover:border-gold group-hover:text-gold">
+              <span className="material-symbols-outlined text-[20px]">edit_document</span>
+            </span>
+            <p className="text-sm font-medium text-text-secondary">Nova Nota</p>
+          </Link>
+        </EnterpriseCard>
+      </section>
 
-      {/* Stats row */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: 12,
-          marginBottom: 28,
-        }}
-      >
-        <StatCard
-          label="Sessões"
-          value={String(sessions.length)}
-          color="var(--mint)"
-        />
-        <StatCard
-          label="Registros"
-          value={String(records.length)}
-          color="var(--blue)"
-        />
-        <StatCard
-          label="Pagamentos"
-          value={String(payments.length)}
-          color="var(--gold)"
-        />
-        <StatCard
-          label="NPS Médio"
-          value={calcAvgNPS(sessions)}
-          color="var(--purple)"
-        />
-      </div>
-
-      {/* Tabs */}
-      <PatientDetailTabs
-        patientId={id}
+      <PatientProfileTabs
+        patientName={patient.name}
         records={records}
         sessions={sessions}
         payments={payments}
+        riskBadge={riskBadge ?? null}
       />
     </div>
   );
-}
-
-// ── Helpers ───────────────────────────────────────────────────────
-function StatCard({
-  label,
-  value,
-  color,
-}: {
-  label: string;
-  value: string;
-  color: string;
-}) {
-  return (
-    <div
-      style={{
-        background: "var(--card)",
-        border: "1px solid var(--border)",
-        borderRadius: 16,
-        padding: "16px 20px",
-      }}
-    >
-      <div
-        style={{ fontSize: 11, color: "var(--ivoryDD)", marginBottom: 6 }}
-      >
-        {label}
-      </div>
-      <div
-        style={{
-          fontFamily: "var(--ff)",
-          fontSize: 28,
-          fontWeight: 200,
-          color,
-        }}
-      >
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function calcAvgNPS(sessions: SessionRow[]): string {
-  const scored = sessions.filter(
-    (s) => s.nps_score !== null && s.nps_score !== undefined
-  );
-  if (scored.length === 0) return "—";
-  const avg =
-    scored.reduce((a, s) => a + (s.nps_score ?? 0), 0) / scored.length;
-  return `${avg.toFixed(1)}/5`;
 }

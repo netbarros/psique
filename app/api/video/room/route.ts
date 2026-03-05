@@ -1,10 +1,17 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createRoom, createMeetingToken } from "@/lib/daily";
 import { logger } from "@/lib/logger";
+import { parseJsonBody } from "@/lib/api/request-validation";
+
+const postSchema = z.object({
+  appointmentId: z.string().uuid(),
+});
 
 export async function POST(req: NextRequest) {
+  const route = "/api/video/room";
   const supabase = await createClient();
   const {
     data: { user },
@@ -12,14 +19,20 @@ export async function POST(req: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
+    logger.warn("[Video] Unauthorized request", { route });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { appointmentId } = (await req.json()) as { appointmentId: string };
-
-  if (!appointmentId) {
-    return NextResponse.json({ error: "appointmentId is required" }, { status: 400 });
+  const parsed = await parseJsonBody({
+    route,
+    request: req,
+    schema: postSchema,
+    context: { userId: user.id },
+  });
+  if (!parsed.ok) {
+    return parsed.response;
   }
+  const { appointmentId } = parsed.data;
 
   try {
     // Verify ownership
@@ -73,7 +86,13 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    logger.error("[Video] Failed to create room", { error: String(error), appointmentId });
+    logger.error("[Video] Failed to create room", {
+      route,
+      requestId: parsed.requestId,
+      userId: user.id,
+      error: String(error),
+      appointmentId,
+    });
     return NextResponse.json({ error: "Failed to create room" }, { status: 500 });
   }
 }

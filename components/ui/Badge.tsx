@@ -9,19 +9,19 @@ interface BadgeProps {
 }
 
 const VARIANTS = {
-  mint:    "bg-[rgba(82,183,136,.12)] text-[var(--mint)] border-[rgba(82,183,136,.3)]",
-  gold:    "bg-[rgba(196,163,90,.12)] text-[var(--gold)] border-[rgba(196,163,90,.3)]",
-  red:     "bg-[rgba(184,84,80,.12)] text-[var(--red)] border-[rgba(184,84,80,.3)]",
-  blue:    "bg-[rgba(74,143,168,.12)] text-[var(--blue)] border-[rgba(74,143,168,.3)]",
-  purple:  "bg-[rgba(123,94,167,.12)] text-[var(--purple)] border-[rgba(123,94,167,.3)]",
-  neutral: "bg-[var(--card2)] text-[var(--ivoryD)] border-[var(--border2)]",
+  mint:    "bg-[rgba(82,183,136,.12)] text-brand border-[rgba(82,183,136,.3)]",
+  gold:    "bg-[rgba(196,163,90,.12)] text-gold border-[rgba(196,163,90,.3)]",
+  red:     "bg-[rgba(248,113,113,.12)] text-error border-[rgba(248,113,113,.3)]",
+  blue:    "bg-[rgba(56,189,248,.12)] text-info border-[rgba(56,189,248,.3)]",
+  purple:  "bg-[rgba(167,139,250,.12)] text-[#a78bfa] border-[rgba(167,139,250,.3)]",
+  neutral: "bg-surface-hover text-text-secondary border-border-strong",
 };
 
 export function Badge({ children, variant = "neutral", size = "md", dot, className }: BadgeProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border font-[family-name:var(--fs)] font-medium",
+        "inline-flex items-center gap-1.5 rounded-full border font-[family-name:var(--font-sans)] font-medium",
         size === "sm" ? "px-2 py-0.5 text-[10px]" : "px-2.5 py-1 text-xs",
         VARIANTS[variant],
         className

@@ -1,0 +1,316 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2026-03-05T00:00:00-03:00",
+  "routes": [
+    {
+      "id": "NSR-001",
+      "kind": "route",
+      "path": "/auth/callback",
+      "methods": ["GET"],
+      "authModel": "public_with_token",
+      "validation": "oauth_code_and_next_param",
+      "criticality": "critical",
+      "notes": "OAuth callback e roteamento pós-login"
+    },
+    {
+      "id": "NSR-002",
+      "kind": "api",
+      "path": "/api/ai/chat",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "session_and_payload",
+      "criticality": "critical",
+      "notes": "Chat IA terapeuta"
+    },
+    {
+      "id": "NSR-003",
+      "kind": "api",
+      "path": "/api/ai/insights",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "rate_limit_and_context",
+      "criticality": "critical",
+      "notes": "Insights IA"
+    },
+    {
+      "id": "NSR-004",
+      "kind": "api",
+      "path": "/api/ai/summarize",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "rate_limit_and_input",
+      "criticality": "critical",
+      "notes": "Resumo de sessão"
+    },
+    {
+      "id": "NSR-005",
+      "kind": "api",
+      "path": "/api/ai/transcribe",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "audio_and_quota",
+      "criticality": "major",
+      "notes": "Transcrição de áudio"
+    },
+    {
+      "id": "NSR-006",
+      "kind": "api",
+      "path": "/api/appointments/[id]/cancel",
+      "methods": ["POST"],
+      "authModel": "authenticated_owner",
+      "validation": "id_and_ownership",
+      "criticality": "critical",
+      "notes": "Cancelamento de agendamento"
+    },
+    {
+      "id": "NSR-007",
+      "kind": "api",
+      "path": "/api/appointments/[id]/reschedule",
+      "methods": ["PUT"],
+      "authModel": "authenticated_owner",
+      "validation": "id_slot_conflict",
+      "criticality": "critical",
+      "notes": "Reagendamento"
+    },
+    {
+      "id": "NSR-008",
+      "kind": "api",
+      "path": "/api/audit/events",
+      "methods": ["GET"],
+      "authModel": "authenticated",
+      "validation": "query_limits",
+      "criticality": "major",
+      "notes": "Leitura de eventos de auditoria"
+    },
+    {
+      "id": "NSR-009",
+      "kind": "api",
+      "path": "/api/auth/mfa/enroll",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "mfa_factor_state",
+      "criticality": "critical",
+      "notes": "Cadastro TOTP"
+    },
+    {
+      "id": "NSR-010",
+      "kind": "api",
+      "path": "/api/auth/mfa/unenroll",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "factor_id",
+      "criticality": "critical",
+      "notes": "Remoção TOTP"
+    },
+    {
+      "id": "NSR-011",
+      "kind": "api",
+      "path": "/api/auth/mfa/verify",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "challenge_and_code",
+      "criticality": "critical",
+      "notes": "Verificação TOTP"
+    },
+    {
+      "id": "NSR-012",
+      "kind": "api",
+      "path": "/api/auth/patient/bootstrap",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "patient_profile_presence",
+      "criticality": "major",
+      "notes": "Bootstrap de perfil paciente"
+    },
+    {
+      "id": "NSR-013",
+      "kind": "api",
+      "path": "/api/booking/checkout",
+      "methods": ["POST"],
+      "authModel": "public_validated",
+      "validation": "required_fields_and_cpf",
+      "criticality": "critical",
+      "notes": "Checkout público"
+    },
+    {
+      "id": "NSR-014",
+      "kind": "api",
+      "path": "/api/cron/reminders",
+      "methods": ["GET"],
+      "authModel": "secret_header",
+      "validation": "authorization_bearer_secret",
+      "criticality": "critical",
+      "notes": "Disparo de lembretes/NPS"
+    },
+    {
+      "id": "NSR-015",
+      "kind": "api",
+      "path": "/api/patient/appointments/checkout",
+      "methods": ["POST"],
+      "authModel": "authenticated_patient",
+      "validation": "zod_payload_and_slot_conflict",
+      "criticality": "critical",
+      "notes": "Checkout no portal do paciente"
+    },
+    {
+      "id": "NSR-016",
+      "kind": "api",
+      "path": "/api/patient/chat/messages",
+      "methods": ["POST"],
+      "authModel": "authenticated_patient",
+      "validation": "rate_limit_and_thread_access",
+      "criticality": "critical",
+      "notes": "Envio de mensagens no chat paciente"
+    },
+    {
+      "id": "NSR-017",
+      "kind": "api",
+      "path": "/api/patient/chat/threads",
+      "methods": ["GET"],
+      "authModel": "authenticated_patient",
+      "validation": "query_limit",
+      "criticality": "major",
+      "notes": "Lista de threads do paciente"
+    },
+    {
+      "id": "NSR-018",
+      "kind": "api",
+      "path": "/api/patient/chat/threads/[id]/messages",
+      "methods": ["GET"],
+      "authModel": "authenticated_patient",
+      "validation": "thread_ownership",
+      "criticality": "major",
+      "notes": "Mensagens da thread do paciente"
+    },
+    {
+      "id": "NSR-019",
+      "kind": "api",
+      "path": "/api/patient/journal",
+      "methods": ["GET", "POST"],
+      "authModel": "authenticated_patient",
+      "validation": "zod_entry_payload",
+      "criticality": "major",
+      "notes": "Diário do paciente"
+    },
+    {
+      "id": "NSR-020",
+      "kind": "api",
+      "path": "/api/patient/mood",
+      "methods": ["GET", "POST"],
+      "authModel": "authenticated_patient",
+      "validation": "zod_mood_payload",
+      "criticality": "major",
+      "notes": "Humor do paciente"
+    },
+    {
+      "id": "NSR-021",
+      "kind": "api",
+      "path": "/api/reports/sessions",
+      "methods": ["GET"],
+      "authModel": "authenticated",
+      "validation": "query_filters",
+      "criticality": "major",
+      "notes": "Relatórios PDF de sessões"
+    },
+    {
+      "id": "NSR-022",
+      "kind": "api",
+      "path": "/api/sessions/[id]/close",
+      "methods": ["PATCH"],
+      "authModel": "authenticated_owner",
+      "validation": "session_id_and_state",
+      "criticality": "critical",
+      "notes": "Fechamento de sessão clínica"
+    },
+    {
+      "id": "NSR-023",
+      "kind": "api",
+      "path": "/api/settings/profile",
+      "methods": ["PATCH"],
+      "authModel": "authenticated",
+      "validation": "zod_profile_payload",
+      "criticality": "major",
+      "notes": "Configurações de perfil"
+    },
+    {
+      "id": "NSR-024",
+      "kind": "api",
+      "path": "/api/settings/security",
+      "methods": ["PATCH"],
+      "authModel": "authenticated",
+      "validation": "zod_security_payload",
+      "criticality": "major",
+      "notes": "Configurações de segurança"
+    },
+    {
+      "id": "NSR-025",
+      "kind": "api",
+      "path": "/api/subscriptions",
+      "methods": ["POST", "DELETE"],
+      "authModel": "authenticated",
+      "validation": "plan_and_subscription_state",
+      "criticality": "critical",
+      "notes": "Gestão de assinatura"
+    },
+    {
+      "id": "NSR-026",
+      "kind": "api",
+      "path": "/api/telegram/webhook",
+      "methods": ["POST"],
+      "authModel": "secret_header",
+      "validation": "telegram_secret_and_idempotency",
+      "criticality": "critical",
+      "notes": "Webhook Telegram"
+    },
+    {
+      "id": "NSR-027",
+      "kind": "api",
+      "path": "/api/video/room",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "session_access",
+      "criticality": "critical",
+      "notes": "Provisionamento de sala de vídeo"
+    },
+    {
+      "id": "NSR-028",
+      "kind": "api",
+      "path": "/api/webhooks/stripe",
+      "methods": ["POST"],
+      "authModel": "stripe_signature",
+      "validation": "signature_and_event_type",
+      "criticality": "critical",
+      "notes": "Webhook Stripe"
+    },
+    {
+      "id": "NSR-029",
+      "kind": "api",
+      "path": "/api/webhooks/supabase",
+      "methods": ["POST"],
+      "authModel": "shared_secret",
+      "validation": "webhook_secret_and_payload",
+      "criticality": "major",
+      "notes": "Webhook Supabase"
+    },
+    {
+      "id": "NSR-030",
+      "kind": "api",
+      "path": "/api/settings/integrations",
+      "methods": ["PATCH"],
+      "authModel": "authenticated",
+      "validation": "provider_keys_and_account_validation",
+      "criticality": "critical",
+      "notes": "Configurações de integrações (OpenRouter, Telegram, Stripe)"
+    },
+    {
+      "id": "NSR-031",
+      "kind": "api",
+      "path": "/api/settings/integrations/stripe/connect",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "stripe_connect_onboarding_or_login_link",
+      "criticality": "critical",
+      "notes": "Fluxo Stripe Connect Express"
+    }
+  ]
+}

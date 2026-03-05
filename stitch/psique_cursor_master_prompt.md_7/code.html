@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PSIQUE - Telegram Automation Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --bg: #080f0b;
+            --bg2: #0c1510;
+            --card: #121a14;
+            --border: #1c2e20;
+            --mint: #52b788;
+            --mintl: #74c9a0;
+            --gold: #c4a35a;
+            --ivory: #ede7d9;
+            --ivoryD: #c8bfa8;
+            --ivoryDD: #8a8070;
+            --red: #b85450;
+            --blue: #4a8fa8;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--ivory);
+            font-family: 'Instrument Sans', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        h1, h2, h3, h4, h5, h6, .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .switch-peer:checked + div {
+            background-color: var(--mint);
+        }
+        .switch-peer:checked + div > div {
+            transform: translateX(100%);
+        }textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: var(--bg2);
+            border-radius: 4px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col pb-20">
+<header class="sticky top-0 z-50 bg-[var(--bg)]/80 backdrop-blur-md border-b border-[var(--border)] px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-[var(--bg2)] transition-colors border border-transparent">
+<span class="material-symbols-outlined text-[var(--ivoryD)]">arrow_back</span>
+</button>
+<div>
+<h1 class="font-serif text-xl font-semibold text-[var(--ivory)] leading-tight">Telegram Hub</h1>
+<p class="text-[11px] text-[var(--mint)] font-medium uppercase tracking-wider flex items-center gap-1 mt-0.5">
+<span class="w-1.5 h-1.5 rounded-full bg-[var(--mint)] animate-pulse"></span>
+                    Bot Online
+                </p>
+</div>
+</div>
+<button class="w-10 h-10 rounded-full bg-[var(--bg2)] border border-[var(--border)] flex items-center justify-center text-[var(--ivory)] hover:border-[var(--gold)] transition-colors">
+<span class="material-symbols-outlined text-lg">save</span>
+</button>
+</header>
+<main class="flex-1 px-4 pt-6 pb-8 space-y-8 max-w-md mx-auto w-full">
+<section class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-5 shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+<svg fill="currentColor" height="120" viewBox="0 0 24 24" width="120"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.25-5.61 3.71-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.05-.48-.82-.27-1.47-.41-1.42-.87.03-.24.36-.48 1.02-.73 4.02-1.75 6.7-2.9 8.04-3.46 3.82-1.58 4.62-1.85 5.14-1.86.11 0 .37.03.51.14.11.09.15.22.16.34-.01.04-.01.12-.02.2z"></path></svg>
+</div>
+<div class="flex justify-between items-start mb-4 relative z-10">
+<div>
+<h2 class="font-serif text-xl font-medium text-[var(--ivory)]">@PsiqueClinicBot</h2>
+<p class="text-sm text-[var(--ivoryDD)] mt-1">Connected since Oct 12, 2023</p>
+</div>
+<div class="bg-[var(--mint)]/10 text-[var(--mint)] px-2.5 py-1 rounded-full text-xs font-semibold flex items-center gap-1.5 border border-[var(--mint)]/20">
+<span class="material-symbols-outlined text-[14px]">check_circle</span>
+                    Active
+                </div>
+</div>
+<div class="pt-4 border-t border-[var(--border)] relative z-10">
+<label class="block text-xs text-[var(--ivoryDD)] uppercase tracking-wider font-semibold mb-2">Public Booking Link</label>
+<div class="flex items-center gap-2 bg-[var(--bg2)] rounded-lg border border-[var(--border)] p-2">
+<div class="bg-[var(--bg)] p-1.5 rounded-md">
+<span class="material-symbols-outlined text-[var(--blue)] text-sm">link</span>
+</div>
+<span class="text-sm text-[var(--ivoryD)] truncate flex-1 font-mono">t.me/PsiqueClinicBot?start=dr_silva</span>
+<button class="p-1.5 text-[var(--gold)] hover:bg-[var(--gold)]/10 rounded-md transition-colors">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+</div>
+</section>
+<section>
+<h3 class="font-serif text-xl text-[var(--ivory)] mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--gold)] text-xl">notifications_active</span>
+                Automated Reminders
+            </h3>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl overflow-hidden shadow-lg">
+<div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
+<div>
+<h4 class="text-[var(--ivory)] font-medium text-base">24-Hour Notice</h4>
+<p class="text-[13px] text-[var(--ivoryDD)] mt-0.5">Sent day before session</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only switch-peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-[var(--border)] rounded-full peer-focus:outline-none transition-colors duration-300">
+<div class="absolute top-[2px] left-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-transform duration-300"></div>
+</div>
+</label>
+</div>
+<div class="p-4 flex items-center justify-between">
+<div>
+<h4 class="text-[var(--ivory)] font-medium text-base">1-Hour Notice</h4>
+<p class="text-[13px] text-[var(--ivoryDD)] mt-0.5">Contains video room link</p>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only switch-peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-[var(--border)] rounded-full peer-focus:outline-none transition-colors duration-300">
+<div class="absolute top-[2px] left-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-transform duration-300"></div>
+</div>
+</label>
+</div>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-serif text-xl text-[var(--ivory)] flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--gold)] text-xl">edit_note</span>
+                    Welcome Message
+                </h3>
+<button class="text-xs text-[var(--gold)] hover:text-[var(--ivory)] font-medium transition-colors flex items-center gap-1 bg-[var(--gold)]/10 px-2.5 py-1 rounded-full border border-[var(--gold)]/20">
+<span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+                    AI Suggest
+                </button>
+</div>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-1 shadow-lg flex flex-col group focus-within:border-[var(--gold)]/50 transition-colors">
+<textarea class="w-full bg-transparent border-none text-[var(--ivory)] text-sm leading-relaxed p-3 focus:ring-0 resize-none h-32" placeholder="Enter the message patients will see when they start the bot...">Olá! Sou a assistente virtual do Dr. Silva.
+Estou aqui para ajudar você a agendar suas sessões, enviar lembretes e gerenciar seus pagamentos de forma simples e segura.
+Como posso ajudar você hoje?</textarea>
+<div class="bg-[var(--bg2)] rounded-xl p-2.5 mt-1 border border-[var(--border)] flex gap-2 overflow-x-auto snap-x pb-2">
+<div class="snap-center shrink-0 bg-[var(--card)] border border-[var(--border)] rounded-lg px-3 py-1.5 text-xs text-[var(--ivoryD)] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-[var(--mint)]">calendar_month</span>
+                        Agendar Sessão
+                    </div>
+<div class="snap-center shrink-0 bg-[var(--card)] border border-[var(--border)] rounded-lg px-3 py-1.5 text-xs text-[var(--ivoryD)] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-[var(--blue)]">list_alt</span>
+                        Minhas Sessões
+                    </div>
+<div class="snap-center shrink-0 bg-[var(--card)] border border-[var(--border)] rounded-lg px-3 py-1.5 text-xs text-[var(--ivoryD)] flex items-center gap-1.5 opacity-50 border-dashed border-[var(--ivoryDD)]">
+<span class="material-symbols-outlined text-[14px]">add</span>
+                        Add Button
+                    </div>
+</div>
+</div>
+<p class="text-[11px] text-[var(--ivoryDD)] mt-2 flex items-center gap-1 px-1">
+<span class="material-symbols-outlined text-[14px]">info</span>
+                Standard navigation buttons are added automatically.
+            </p>
+</section>
+</main>
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)] to-transparent z-40">
+<button class="w-full bg-[var(--mint)] text-[#080f0b] font-medium py-3.5 rounded-xl shadow-[0_0_15px_rgba(82,183,136,0.3)] hover:bg-[var(--mintl)] transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">send</span>
+            Test in Telegram
+        </button>
+</div>
+
+</body></html>

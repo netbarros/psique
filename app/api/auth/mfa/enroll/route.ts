@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { logger } from "@/lib/logger";
 
 export async function POST() {
+  const route = "/api/auth/mfa/enroll";
   const supabase = await createClient();
   const {
     data: { user },
@@ -10,6 +11,7 @@ export async function POST() {
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
+    logger.warn("[MFA] Enroll unauthorized", { route });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -24,7 +26,7 @@ export async function POST() {
       return NextResponse.json({ error: error.message }, { status: 400 });
     }
 
-    logger.info("[MFA] TOTP enrolled", { userId: user.id, factorId: data.id });
+    logger.info("[MFA] TOTP enrolled", { route, userId: user.id, factorId: data.id });
 
     return NextResponse.json({
       success: true,
@@ -35,7 +37,7 @@ export async function POST() {
       },
     });
   } catch (error) {
-    logger.error("[MFA] Enroll error", { error: String(error) });
+    logger.error("[MFA] Enroll error", { route, userId: user.id, error: String(error) });
     return NextResponse.json(
       { error: "Erro interno ao configurar 2FA" },
       { status: 500 }

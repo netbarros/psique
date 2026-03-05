@@ -29,7 +29,7 @@ export default async function ConsultaPage({
   const { data: appointment } = await supabase
     .from("appointments")
     .select(`
-      id, scheduled_at, duration_minutes, video_room_url, status,
+      id, patient_id, scheduled_at, duration_minutes, video_room_url, status,
       patient:patients(name)
     `)
     .eq("therapist_id", therapist.id)
@@ -38,12 +38,43 @@ export default async function ConsultaPage({
 
   if (!appointment) notFound();
 
+  const { data: existingSession } = await supabase
+    .from("sessions")
+    .select("id")
+    .eq("appointment_id", appointment.id)
+    .maybeSingle();
+
+  let sessionId = existingSession?.id ?? null;
+  if (!sessionId) {
+    const { count: sessionCount } = await supabase
+      .from("sessions")
+      .select("id", { count: "exact", head: true })
+      .eq("patient_id", appointment.patient_id);
+
+    const nextSessionNumber = (sessionCount ?? 0) + 1;
+    const { data: createdSession } = await supabase
+      .from("sessions")
+      .insert({
+        appointment_id: appointment.id,
+        therapist_id: therapist.id,
+        patient_id: appointment.patient_id,
+        session_number: nextSessionNumber,
+        started_at: new Date().toISOString(),
+      })
+      .select("id")
+      .single();
+
+    sessionId = createdSession?.id ?? null;
+  }
+
+  if (!sessionId) notFound();
+
   const patient = appointment.patient as unknown as { name: string } | null;
 
   return (
     <ConsultaClient
       roomUrl={appointment.video_room_url ?? ""}
-      appointmentId={appointment.id}
+      sessionId={sessionId}
       patientName={patient?.name ?? "Paciente"}
       scheduledAt={appointment.scheduled_at}
       durationMinutes={appointment.duration_minutes}

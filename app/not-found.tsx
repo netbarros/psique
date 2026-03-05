@@ -7,91 +7,40 @@ export const metadata: Metadata = {
 
 export default function NotFound() {
   return (
-    <div
-      style={{
-        minHeight: "100vh",
-        background: "var(--bg)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "40px 24px",
-        textAlign: "center",
-      }}
-    >
-      <div style={{ maxWidth: 420 }}>
-        <div
-          style={{
-            width: 90,
-            height: 90,
-            borderRadius: "50%",
-            background:
-              "radial-gradient(circle at 35% 35%, rgba(196,163,90,.3), rgba(196,163,90,.08))",
-            border: "2px solid rgba(196,163,90,.4)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            fontSize: 38,
-            margin: "0 auto 24px",
-            fontFamily: "var(--ff)",
-            fontWeight: 200,
-            color: "var(--gold)",
-          }}
+    <main className="flex min-h-screen flex-col items-center justify-center bg-bg-base px-4 text-center">
+      <p className="mb-3 inline-flex rounded-full border border-gold/35 bg-gold/10 px-3 py-1 text-[10px] uppercase tracking-[0.14em] text-gold">
+        Página indisponível
+      </p>
+      <p className="font-display text-[120px] font-bold leading-none text-gold/20">
+        404
+      </p>
+      <h1 className="mt-2 font-display text-4xl text-text-primary">
+        Página não encontrada
+      </h1>
+      <p className="mt-3 max-w-md text-sm leading-relaxed text-text-secondary">
+        A rota solicitada não existe ou foi removida. Escolha uma ação abaixo para retomar seu fluxo.
+      </p>
+
+      <div className="mt-6 flex flex-wrap items-center justify-center gap-3">
+        <Link
+          href="/"
+          className="rounded-xl bg-brand px-6 py-3 text-sm font-semibold text-bg-base transition-colors hover:bg-brand-hover"
         >
-          404
-        </div>
-        <h1
-          style={{
-            fontFamily: "var(--ff)",
-            fontSize: 32,
-            fontWeight: 200,
-            color: "var(--ivory)",
-            marginBottom: 12,
-          }}
+          Ir para início
+        </Link>
+        <Link
+          href="/auth/login"
+          className="rounded-xl border border-border-subtle bg-surface px-6 py-3 text-sm text-text-secondary transition-colors hover:bg-surface-hover"
         >
-          Página não encontrada
-        </h1>
-        <p
-          style={{
-            fontSize: 14,
-            color: "var(--ivoryDD)",
-            lineHeight: 1.7,
-            marginBottom: 28,
-          }}
+          Fazer login
+        </Link>
+        <Link
+          href="/pricing"
+          className="rounded-xl border border-border-subtle bg-surface px-6 py-3 text-sm text-text-secondary transition-colors hover:bg-surface-hover"
         >
-          A página que você procura não existe ou foi movida. Verifique o
-          endereço ou volte à página inicial.
-        </p>
-        <div style={{ display: "flex", gap: 12, justifyContent: "center" }}>
-          <Link
-            href="/"
-            style={{
-              padding: "12px 28px",
-              borderRadius: 12,
-              background: "var(--mint)",
-              color: "#060E09",
-              textDecoration: "none",
-              fontSize: 14,
-              fontWeight: 600,
-            }}
-          >
-            Página Inicial
-          </Link>
-          <Link
-            href="/auth/login"
-            style={{
-              padding: "12px 28px",
-              borderRadius: 12,
-              background: "var(--card)",
-              border: "1px solid var(--border)",
-              color: "var(--ivoryD)",
-              textDecoration: "none",
-              fontSize: 14,
-            }}
-          >
-            Fazer Login
-          </Link>
-        </div>
+          Ver planos
+        </Link>
       </div>
-    </div>
+    </main>
   );
 }

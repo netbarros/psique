@@ -1,14 +1,21 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendEmail } from "@/lib/resend";
 import { logger } from "@/lib/logger";
+import { parseJsonBody } from "@/lib/api/request-validation";
+
+const putSchema = z.object({
+  newScheduledAt: z.string().datetime(),
+});
 
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const route = "/api/appointments/[id]/reschedule";
   const { id: appointmentId } = await params;
   const supabase = await createClient();
   const {
@@ -17,17 +24,20 @@ export async function PUT(
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
+    logger.warn("[Reschedule] Unauthorized request", { route, appointmentId });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const body = (await req.json()) as { newScheduledAt: string };
-
-  if (!body.newScheduledAt) {
-    return NextResponse.json(
-      { error: "newScheduledAt is required" },
-      { status: 400 }
-    );
+  const parsed = await parseJsonBody({
+    route,
+    request: req,
+    schema: putSchema,
+    context: { appointmentId, userId: user.id },
+  });
+  if (!parsed.ok) {
+    return parsed.response;
   }
+  const body = parsed.data;
 
   const admin = createAdminClient();
 
@@ -156,6 +166,8 @@ export async function PUT(
     }
 
     logger.info("[Reschedule] Appointment rescheduled", {
+      route,
+      requestId: parsed.requestId,
       appointmentId,
       oldDate: oldDate.toISOString(),
       newDate: newDate.toISOString(),
@@ -167,7 +179,13 @@ export async function PUT(
       data: { newScheduledAt: body.newScheduledAt },
     });
   } catch (error) {
-    logger.error("[Reschedule] Error", { error: String(error) });
+    logger.error("[Reschedule] Error", {
+      route,
+      requestId: parsed.requestId,
+      appointmentId,
+      userId: user.id,
+      error: String(error),
+    });
     return NextResponse.json(
       { error: "Erro interno ao reagendar" },
       { status: 500 }

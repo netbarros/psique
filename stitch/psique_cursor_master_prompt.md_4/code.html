@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html class="antialiased" lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Patient Clinical Profile &amp; Insights</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Instrument+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@300,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style type="text/tailwindcss">
+    :root {
+      --bg: #080f0b;
+      --bg2: #0c1510;
+      --card: #121a14;
+      --border: #1c2e20;
+      --mint: #52b788;
+      --mintl: #74c9a0;
+      --gold: #c4a35a;
+      --ivory: #ede7d9;
+      --ivoryD: #c8bfa8;
+      --ivoryDD: #8a8070;
+      --red: #b85450;
+      --blue: #4a8fa8;
+      --ff: 'Cormorant Garamond', serif;
+      --fs: 'Instrument Sans', sans-serif;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--ivory);
+      font-family: var(--fs);
+      -webkit-tap-highlight-color: transparent;
+    }
+    h1, h2, h3, h4, h5, h6, .font-heading {
+      font-family: var(--ff);
+    }
+    .card {
+      background-color: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .card:hover {
+      border-color: rgba(82, 183, 136, 0.3);
+      box-shadow: 0 10px 40px -10px rgba(0,0,0,0.5), 0 0 20px -5px rgba(82, 183, 136, 0.05);
+      transform: translateY(-2px);
+    }
+    .glass-nav {
+      background: rgba(8, 15, 11, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .badge {
+      background-color: rgba(28, 46, 32, 0.6);
+      border: 1px solid var(--border);
+      color: var(--ivoryD);
+    }
+    .badge-alert {
+      background-color: rgba(184, 84, 80, 0.1);
+      border: 1px solid rgba(184, 84, 80, 0.3);
+      color: var(--red);
+    }
+    .badge-success {
+      background-color: rgba(82, 183, 136, 0.1);
+      border: 1px solid rgba(82, 183, 136, 0.3);
+      color: var(--mint);
+    }
+    .ai-gradient {
+      background: linear-gradient(135deg, rgba(82, 183, 136, 0.1) 0%, rgba(196, 163, 90, 0.05) 100%);
+      border: 1px solid rgba(196, 163, 90, 0.2);
+    }
+    .btn-primary {
+      background-color: var(--mint);
+      color: var(--bg);
+      transition: all 0.2s ease;
+    }
+    .btn-primary:hover {
+      background-color: var(--mintl);
+    }
+    .btn-secondary {
+      background-color: transparent;
+      border: 1px solid var(--border);
+      color: var(--ivory);
+      transition: all 0.2s ease;
+    }
+    .btn-secondary:hover {
+      border-color: var(--mint);
+      color: var(--mint);
+    }
+    .tab-active {
+      color: var(--mint);
+      border-bottom: 2px solid var(--mint);
+    }
+    .tab-inactive {
+      color: var(--ivoryDD);
+      border-bottom: 2px solid transparent;
+    }.no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;scrollbar-width: none;}
+    .timeline-line {
+      position: absolute;
+      left: 1.25rem;
+      top: 2rem;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--border) 0%, rgba(28, 46, 32, 0) 100%);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen flex flex-col pb-24">
+<header class="glass-nav sticky top-0 z-50 px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="w-10 h-10 flex items-center justify-center rounded-full btn-secondary text-[var(--ivoryD)]">
+<span class="material-symbols-outlined text-xl">arrow_back</span>
+</button>
+<div>
+<h1 class="font-heading text-xl font-medium tracking-wide text-[var(--ivory)] leading-tight">Marina Silva</h1>
+<p class="text-xs text-[var(--ivoryDD)] flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[var(--mint)]"></span> Active Patient
+        </p>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full btn-secondary">
+<span class="material-symbols-outlined text-xl">more_vert</span>
+</button>
+</div>
+</header>
+<main class="flex-1 px-4 py-6 space-y-6">
+<section class="card p-5">
+<div class="flex items-start gap-4 mb-5">
+<div class="w-16 h-16 rounded-full bg-[var(--border)] flex items-center justify-center flex-shrink-0 relative overflow-hidden">
+<img alt="Patient photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZdt9BnrmMzf0Pwte-7Hh5PriICElJF1ii5shpzVF-TFBuS_W616wo5Ue0Ts2hGNWaAw7bm60jOPldXNAoAPSwdxvyePUlQoeLXP8O0sp0rK_NTXdTp3zK_nFOmxsEnBSkUNmR4MXKrWdmn4BM-30k8ilEDpG3xQ7UNcnfcPsPiRctD2-pyJSNEF340yQOnpzZWcIKV7jU6DWBi02i6XOG7J11pzBgZKO0hMUWda6o36Oa0yG6fMBxxPSSxi7xeNd6Vel1FgxtJQbT"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-heading text-2xl font-medium text-[var(--ivory)]">Marina Silva</h2>
+<p class="text-sm text-[var(--ivoryDD)] mt-0.5">34 anos • Arquiteta</p>
+</div>
+<button class="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--bg2)] border border-[var(--border)] text-[var(--blue)]">
+<span class="material-symbols-outlined text-[1.125rem]">send</span>
+</button>
+</div>
+<div class="mt-3 flex flex-wrap gap-2">
+<span class="badge px-2.5 py-1 rounded-md text-[0.65rem] uppercase tracking-wider font-semibold">Ansiedade</span>
+<span class="badge px-2.5 py-1 rounded-md text-[0.65rem] uppercase tracking-wider font-semibold">Burnout</span>
+<span class="badge-alert px-2.5 py-1 rounded-md text-[0.65rem] uppercase tracking-wider font-semibold flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">warning</span> Risco Relacional
+            </span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-3 pt-4 border-t border-[var(--border)]">
+<div class="text-center">
+<p class="text-[0.65rem] uppercase tracking-wider text-[var(--ivoryDD)] font-semibold mb-1">Sessões</p>
+<p class="font-heading text-xl text-[var(--ivory)]">14</p>
+</div>
+<div class="text-center border-l border-r border-[var(--border)]">
+<p class="text-[0.65rem] uppercase tracking-wider text-[var(--ivoryDD)] font-semibold mb-1">Última</p>
+<p class="font-heading text-xl text-[var(--ivory)]">03/10</p>
+</div>
+<div class="text-center">
+<p class="text-[0.65rem] uppercase tracking-wider text-[var(--ivoryDD)] font-semibold mb-1">Status Pag.</p>
+<p class="font-heading text-xl text-[var(--mint)]">Em dia</p>
+</div>
+</div>
+</section>
+<section class="grid grid-cols-2 gap-3">
+<button class="card p-4 flex flex-col items-center justify-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-[var(--bg2)] border border-[var(--border)] flex items-center justify-center group-hover:border-[var(--mint)] group-hover:text-[var(--mint)] transition-colors">
+<span class="material-symbols-outlined">videocam</span>
+</div>
+<span class="text-sm font-medium text-[var(--ivoryD)]">Iniciar Sessão</span>
+</button>
+<button class="card p-4 flex flex-col items-center justify-center gap-2 group">
+<div class="w-10 h-10 rounded-full bg-[var(--bg2)] border border-[var(--border)] flex items-center justify-center group-hover:border-[var(--gold)] group-hover:text-[var(--gold)] transition-colors">
+<span class="material-symbols-outlined">edit_document</span>
+</div>
+<span class="text-sm font-medium text-[var(--ivoryD)]">Nova Nota</span>
+</button>
+</section>
+<div class="flex border-b border-[var(--border)] mt-2">
+<button class="flex-1 pb-3 text-sm font-medium tab-active">Visão Geral</button>
+<button class="flex-1 pb-3 text-sm font-medium tab-inactive">Prontuário</button>
+<button class="flex-1 pb-3 text-sm font-medium tab-inactive">Financeiro</button>
+</div>
+<section class="card p-5 ai-gradient relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-[var(--gold)] opacity-[0.03] rounded-full blur-2xl -mr-10 -mt-10"></div>
+<div class="flex items-center justify-between mb-4 relative z-10">
+<h3 class="font-heading text-xl font-medium text-[var(--ivory)] flex items-center gap-2">
+<span class="material-symbols-outlined text-[var(--gold)] text-[1.25rem]">auto_awesome</span>
+          AI Clinical Insights
+        </h3>
+<span class="text-[0.65rem] uppercase tracking-wider text-[var(--ivoryDD)] font-semibold">Atualizado 03/10</span>
+</div>
+<div class="space-y-4 relative z-10">
+<div>
+<h4 class="text-xs uppercase tracking-wider text-[var(--gold)] font-semibold mb-2">Resumo Analítico (Sessões 1-14)</h4>
+<p class="text-sm text-[var(--ivoryD)] leading-relaxed">
+            A paciente apresenta redução nos sintomas agudos de ansiedade, mas mantém padrão de evitação em conflitos no ambiente de trabalho. O núcleo central atual gira em torno da necessidade de aprovação externa e dificuldade em estabelecer limites.
+          </p>
+</div>
+<div class="grid grid-cols-1 gap-3 pt-3 border-t border-[rgba(196,163,90,0.1)]">
+<div class="bg-[var(--bg2)] border border-[rgba(196,163,90,0.15)] rounded-lg p-3">
+<h4 class="text-xs uppercase tracking-wider text-[var(--ivoryDD)] font-semibold mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">psychology</span> Hipótese Principal
+            </h4>
+<p class="text-sm text-[var(--ivory)]">Conflito entre autonomia profissional e lealdade familiar (figura materna).</p>
+</div>
+<div class="bg-[var(--bg2)] border border-[rgba(196,163,90,0.15)] rounded-lg p-3">
+<h4 class="text-xs uppercase tracking-wider text-[var(--ivoryDD)] font-semibold mb-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> Próximos Passos Sugeridos
+            </h4>
+<ul class="text-sm text-[var(--ivory)] space-y-1.5 list-disc pl-4 marker:text-[var(--gold)]">
+<li>Explorar a memória recorrente citada na sessão #13 (evento escola).</li>
+<li>Avaliar resposta somática quando o chefe envia mensagens fora do horário.</li>
+</ul>
+</div>
+</div>
+</div>
+</section>
+<section class="card p-5">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-heading text-xl font-medium text-[var(--ivory)]">Mood Evolution</h3>
+<select class="bg-transparent border-none text-xs text-[var(--ivoryDD)] focus:ring-0 p-0 text-right cursor-pointer">
+<option>Últimas 5 sessões</option>
+<option>Últimas 10 sessões</option>
+<option>Todo o período</option>
+</select>
+</div>
+<div class="h-40 w-full relative">
+<svg class="w-full h-full overflow-visible" preserveAspectRatio="none" viewBox="0 0 400 150">
+<line stroke="var(--border)" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="400" y1="20" y2="20"></line>
+<line stroke="var(--border)" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="400" y1="75" y2="75"></line>
+<line stroke="var(--border)" stroke-dasharray="4 4" stroke-width="1" x1="0" x2="400" y1="130" y2="130"></line>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="end" x="-10" y="24">10</text>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="end" x="-10" y="79">5</text>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="end" x="-10" y="134">1</text>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="middle" x="20" y="155">S10</text>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="middle" x="110" y="155">S11</text>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="middle" x="200" y="155">S12</text>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="middle" x="290" y="155">S13</text>
+<text fill="var(--ivoryDD)" font-family="Instrument Sans" font-size="10" text-anchor="middle" x="380" y="155">S14</text>
+<defs>
+<linearGradient id="moodGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="var(--mint)" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="var(--mint)" stop-opacity="0"></stop>
+</linearGradient>
+<filter height="140%" id="glow" width="140%" x="-20%" y="-20%">
+<feGaussianBlur result="blur" stdDeviation="3"></feGaussianBlur>
+<feComposite in="SourceGraphic" in2="blur" operator="over"></feComposite>
+</filter>
+</defs>
+<path d="M 20 100 L 110 110 L 200 60 L 290 85 L 380 40 L 380 130 L 20 130 Z" fill="url(#moodGradient)"></path>
+<path d="M 20 100 L 110 110 L 200 60 L 290 85 L 380 40" fill="none" filter="url(#glow)" stroke="var(--mint)" stroke-linecap="round" stroke-linejoin="round" stroke-width="3"></path>
+<circle cx="20" cy="100" fill="var(--bg)" r="4" stroke="var(--mint)" stroke-width="2"></circle>
+<circle cx="110" cy="110" fill="var(--bg)" r="4" stroke="var(--mint)" stroke-width="2"></circle>
+<circle cx="200" cy="60" fill="var(--bg)" r="4" stroke="var(--mint)" stroke-width="2"></circle>
+<circle cx="290" cy="85" fill="var(--bg)" r="4" stroke="var(--mint)" stroke-width="2"></circle>
+<circle cx="380" cy="40" fill="var(--mint)" r="5" stroke="var(--bg)" stroke-width="2"></circle>
+</svg>
+</div>
+<div class="mt-6 flex items-center justify-between text-xs">
+<span class="text-[var(--ivoryDD)] flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[var(--mint)]"></span> Paciente relata melhora
+        </span>
+<span class="text-[var(--mint)] font-medium">+2pts desde a última sessão</span>
+</div>
+</section>
+<section>
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-heading text-xl font-medium text-[var(--ivory)]">Histórico de Sessões</h3>
+<button class="text-sm text-[var(--mint)] font-medium">Ver todas</button>
+</div>
+<div class="relative pl-3">
+<div class="timeline-line"></div>
+<div class="relative pl-8 mb-6">
+<div class="absolute left-[2px] top-1.5 w-4 h-4 rounded-full bg-[var(--bg)] border-2 border-[var(--mint)] flex items-center justify-center z-10">
+<div class="w-1.5 h-1.5 rounded-full bg-[var(--mint)]"></div>
+</div>
+<div class="card p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<span class="text-xs font-semibold text-[var(--mint)] uppercase tracking-wider">Sessão #14</span>
+<h4 class="font-heading text-lg text-[var(--ivory)] leading-tight mt-0.5">03 de Out, 15:00</h4>
+</div>
+<span class="badge-success px-2 py-0.5 rounded text-[0.6rem] uppercase tracking-wider">Realizada</span>
+</div>
+<p class="text-sm text-[var(--ivoryDD)] line-clamp-2 mt-2">
+              Paciente trouxe questão sobre limite de horários no trabalho. Fizemos exercício de roleplay para ensaiar recusa assertiva. Relatou melhora no sono.
+            </p>
+<div class="mt-3 flex gap-2">
+<button class="text-[0.7rem] uppercase tracking-wider font-semibold text-[var(--ivoryD)] flex items-center gap-1 bg-[var(--bg2)] px-2 py-1 rounded border border-[var(--border)] hover:border-[var(--mint)] transition-colors">
+<span class="material-symbols-outlined text-[12px]">description</span> Ler Notas
+              </button>
+<button class="text-[0.7rem] uppercase tracking-wider font-semibold text-[var(--gold)] flex items-center gap-1 bg-[rgba(196,163,90,0.05)] px-2 py-1 rounded border border-[rgba(196,163,90,0.2)] hover:bg-[rgba(196,163,90,0.1)] transition-colors">
+<span class="material-symbols-outlined text-[12px]">auto_awesome</span> Resumo IA
+              </button>
+</div>
+</div>
+</div>
+<div class="relative pl-8 mb-6">
+<div class="absolute left-[2px] top-1.5 w-4 h-4 rounded-full bg-[var(--bg)] border-2 border-[var(--border)] z-10"></div>
+<div class="card p-4 opacity-75 hover:opacity-100">
+<div class="flex justify-between items-start mb-2">
+<div>
+<span class="text-xs font-semibold text-[var(--ivoryDD)] uppercase tracking-wider">Sessão #13</span>
+<h4 class="font-heading text-lg text-[var(--ivory)] leading-tight mt-0.5">26 de Set, 15:00</h4>
+</div>
+<span class="badge px-2 py-0.5 rounded text-[0.6rem] uppercase tracking-wider">Realizada</span>
+</div>
+<p class="text-sm text-[var(--ivoryDD)] line-clamp-2 mt-2">
+              Sessão focada na figura materna. Paciente lembrou de episódio na infância onde foi repreendida por buscar independência. Conexão direta com ansiedade atual.
+            </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<div class="fixed bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-[var(--bg)] via-[var(--bg)] to-transparent pt-12 z-40">
+<button class="w-full btn-primary font-semibold text-sm py-3.5 rounded-xl shadow-lg flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[1.25rem]">calendar_month</span>
+      Agendar Próxima Sessão
+    </button>
+</div>
+
+</body></html>

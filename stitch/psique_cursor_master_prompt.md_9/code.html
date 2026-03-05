@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Segurança e LGPD — PSIQUE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&amp;family=Instrument+Sans:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+    :root {
+      --bg: #080f0b;
+      --bg2: #0c1510;
+      --card: #121a14;
+      --border: #1c2e20;
+      --mint: #52b788;
+      --mintl: #74c9a0;
+      --gold: #c4a35a;
+      --ivory: #ede7d9;
+      --ivoryD: #c8bfa8;
+      --ivoryDD: #8a8070;
+      --red: #b85450;
+      --blue: #4a8fa8;
+    }
+    body {
+      background-color: var(--bg);
+      color: var(--ivory);
+      font-family: 'Instrument Sans', sans-serif;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .toggle-checkbox:checked {
+      right: 0;
+      border-color: var(--mint);
+    }
+    .toggle-checkbox:checked + .toggle-label {
+      background-color: var(--mint);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen flex flex-col">
+<header class="sticky top-0 z-50 bg-[var(--bg2)]/80 backdrop-blur-md border-b border-[var(--border)] px-4 py-4 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<button class="text-[var(--ivoryD)] hover:text-[var(--ivory)] transition-colors p-2 -ml-2 rounded-full hover:bg-[var(--card)]">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-xl font-semibold tracking-wide text-[var(--ivory)]">Segurança &amp; LGPD</h1>
+</div>
+<div class="w-8 h-8 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-xs font-semibold text-[var(--gold)]">
+      DR
+    </div>
+</header>
+<main class="flex-1 overflow-y-auto pb-8">
+<div class="px-5 pt-6 pb-8 border-b border-[var(--border)] bg-gradient-to-b from-[var(--bg2)] to-[var(--bg)]">
+<div class="flex items-center gap-3 mb-3 text-[var(--mint)]">
+<span class="material-symbols-outlined text-3xl">shield_lock</span>
+<h2 class="text-2xl font-semibold text-[var(--ivory)]">Conformidade Ativa</h2>
+</div>
+<p class="text-[var(--ivoryD)] text-sm leading-relaxed">
+        Gerencie as configurações de segurança da sua clínica. Todos os dados são criptografados em repouso seguindo diretrizes rigorosas da LGPD e protocolos de saúde.
+      </p>
+</div>
+<div class="px-5 py-6 border-b border-[var(--border)]">
+<h3 class="text-lg font-semibold text-[var(--gold)] mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">phonelink_lock</span>
+        Autenticação em Duas Etapas (2FA)
+      </h3>
+<div class="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4 flex items-start justify-between gap-4">
+<div>
+<h4 class="font-medium text-[var(--ivory)] mb-1">Aplicativo Autenticador (TOTP)</h4>
+<p class="text-[var(--ivoryDD)] text-xs mb-3">Exige um código gerado no seu celular (Google Authenticator, Authy) para fazer login.</p>
+<div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[var(--mint)]/10 text-[var(--mint)] text-[10px] font-semibold tracking-wider uppercase border border-[var(--mint)]/20">
+<span class="w-1.5 h-1.5 rounded-full bg-[var(--mint)]"></span>
+            Ativado
+          </div>
+</div>
+<button class="px-4 py-2 rounded-lg border border-[var(--border)] text-[var(--ivoryD)] text-sm font-medium hover:bg-[var(--bg2)] hover:text-[var(--ivory)] transition-colors whitespace-nowrap">
+          Gerenciar
+        </button>
+</div>
+<div class="mt-3 flex items-start gap-2 text-[var(--ivoryDD)]">
+<span class="material-symbols-outlined text-base mt-0.5">info</span>
+<p class="text-xs">Para manter a conformidade máxima, a desativação do 2FA exigirá confirmação por e-mail e SMS.</p>
+</div>
+</div>
+<div class="px-5 py-6 border-b border-[var(--border)]">
+<h3 class="text-lg font-semibold text-[var(--gold)] mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">enhanced_encryption</span>
+        Criptografia e Privacidade
+      </h3>
+<ul class="space-y-4">
+<li class="flex items-center justify-between gap-4">
+<div>
+<h4 class="font-medium text-[var(--ivory)] text-sm">Criptografia de Prontuários</h4>
+<p class="text-[var(--ivoryDD)] text-xs mt-0.5">Notas clínicas cifradas no banco (pgcrypto).</p>
+</div>
+<div class="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-[var(--ivory)] border-4 border-[var(--bg2)] appearance-none cursor-pointer transition-transform duration-200 ease-in-out translate-x-6 z-10" id="toggle1" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-[var(--mint)] cursor-pointer" for="toggle1"></label>
+</div>
+</li>
+<li class="flex items-center justify-between gap-4">
+<div>
+<h4 class="font-medium text-[var(--ivory)] text-sm">Consentimento LGPD Automático</h4>
+<p class="text-[var(--ivoryDD)] text-xs mt-0.5">Exigir aceite antes do primeiro agendamento.</p>
+</div>
+<div class="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+<input checked="" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-[var(--ivory)] border-4 border-[var(--bg2)] appearance-none cursor-pointer transition-transform duration-200 ease-in-out translate-x-6 z-10" id="toggle2" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-[var(--mint)] cursor-pointer" for="toggle2"></label>
+</div>
+</li>
+<li class="flex items-center justify-between gap-4">
+<div>
+<h4 class="font-medium text-[var(--ivory)] text-sm">Ocultar Dados no App</h4>
+<p class="text-[var(--ivoryDD)] text-xs mt-0.5">Borrar nomes na tela inicial do dashboard.</p>
+</div>
+<div class="relative inline-block w-12 align-middle select-none transition duration-200 ease-in">
+<input class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-[var(--ivory)] border-4 border-[var(--bg2)] appearance-none cursor-pointer transition-transform duration-200 ease-in-out z-10" id="toggle3" name="toggle" type="checkbox"/>
+<label class="toggle-label block overflow-hidden h-6 rounded-full bg-[var(--border)] cursor-pointer" for="toggle3"></label>
+</div>
+</li>
+</ul>
+</div>
+<div class="px-5 py-6 border-b border-[var(--border)]">
+<h3 class="text-lg font-semibold text-[var(--gold)] mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">file_download</span>
+        Exportação de Dados
+      </h3>
+<p class="text-[var(--ivoryD)] text-sm mb-4">
+        De acordo com o Art. 18 da LGPD, você ou seus pacientes têm direito à portabilidade e acesso aos dados estruturados.
+      </p>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-between p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--mint)]/50 transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-[var(--bg2)] flex items-center justify-center text-[var(--ivory)] group-hover:text-[var(--mint)] transition-colors">
+<span class="material-symbols-outlined">folder_shared</span>
+</div>
+<div class="text-left">
+<span class="block font-medium text-[var(--ivory)] text-sm">Exportar Prontuários (PDF)</span>
+<span class="block text-[var(--ivoryDD)] text-xs mt-0.5">Relatório clínico completo por paciente.</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[var(--ivoryDD)] group-hover:text-[var(--ivory)] transition-colors">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 rounded-xl bg-[var(--card)] border border-[var(--border)] hover:border-[var(--mint)]/50 transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-[var(--bg2)] flex items-center justify-center text-[var(--ivory)] group-hover:text-[var(--mint)] transition-colors">
+<span class="material-symbols-outlined">database</span>
+</div>
+<div class="text-left">
+<span class="block font-medium text-[var(--ivory)] text-sm">Backup Completo (JSON/CSV)</span>
+<span class="block text-[var(--ivoryDD)] text-xs mt-0.5">Exportar toda a base de dados estruturada.</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-[var(--ivoryDD)] group-hover:text-[var(--ivory)] transition-colors">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="px-5 py-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-lg font-semibold text-[var(--gold)] flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">manage_search</span>
+          Logs de Auditoria
+        </h3>
+<button class="text-[var(--blue)] text-sm font-medium hover:underline">Ver tudo</button>
+</div>
+<p class="text-[var(--ivoryD)] text-sm mb-5">
+        Registro imutável de quem acessou, editou ou exportou informações sensíveis nos últimos 30 dias.
+      </p>
+<div class="space-y-4 relative before:absolute before:inset-0 before:ml-2 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-[var(--border)]">
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+<div class="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[var(--bg)] bg-[var(--blue)] shrink-0 z-10 ml-0 md:mx-auto"></div>
+<div class="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] ml-4 md:ml-0 p-3 rounded-xl bg-[var(--card)] border border-[var(--border)]">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-semibold text-[var(--blue)]">Exportação PDF</span>
+<span class="text-[10px] text-[var(--ivoryDD)]">Hoje, 14:32</span>
+</div>
+<p class="text-xs text-[var(--ivory)]">Prontuário de "Ana S." exportado por Dr. Ricardo.</p>
+<p class="text-[10px] text-[var(--ivoryDD)] mt-1 font-mono">IP: 192.168.1.45</p>
+</div>
+</div>
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+<div class="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[var(--bg)] bg-[var(--border)] shrink-0 z-10 ml-0 md:mx-auto"></div>
+<div class="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] ml-4 md:ml-0 p-3 rounded-xl bg-[var(--bg2)] border border-[var(--border)]/50">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-medium text-[var(--ivoryD)]">Acesso a Prontuário</span>
+<span class="text-[10px] text-[var(--ivoryDD)]">Ontem, 09:15</span>
+</div>
+<p class="text-xs text-[var(--ivoryDD)]">Visualização do histórico de "Carlos M."</p>
+<p class="text-[10px] text-[var(--ivoryDD)]/70 mt-1 font-mono">IP: 192.168.1.45</p>
+</div>
+</div>
+<div class="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+<div class="flex items-center justify-center w-4 h-4 rounded-full border-2 border-[var(--bg)] bg-[var(--mint)] shrink-0 z-10 ml-0 md:mx-auto"></div>
+<div class="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] ml-4 md:ml-0 p-3 rounded-xl bg-[var(--bg2)] border border-[var(--border)]/50">
+<div class="flex items-center justify-between mb-1">
+<span class="text-xs font-medium text-[var(--mint)]">Login Bem Sucedido</span>
+<span class="text-[10px] text-[var(--ivoryDD)]">Ontem, 08:00</span>
+</div>
+<p class="text-xs text-[var(--ivoryDD)]">Sessão iniciada com 2FA verificado.</p>
+<p class="text-[10px] text-[var(--ivoryDD)]/70 mt-1 font-mono">IP: 192.168.1.45</p>
+</div>
+</div>
+</div>
+</div>
+<div class="px-5 py-8 mt-4 border-t border-[var(--red)]/20 bg-gradient-to-b from-[var(--red)]/5 to-transparent">
+<h3 class="text-lg font-semibold text-[var(--red)] mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-xl">warning</span>
+        Zona de Perigo
+      </h3>
+<p class="text-[var(--ivoryD)] text-sm mb-4">
+        Ações destrutivas relativas à sua conta e dados.
+      </p>
+<button class="w-full py-3 px-4 rounded-xl border border-[var(--red)]/30 text-[var(--red)] font-medium text-sm hover:bg-[var(--red)]/10 transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-base">delete_forever</span>
+        Solicitar Exclusão da Conta
+      </button>
+</div>
+</main>
+
+</body></html>

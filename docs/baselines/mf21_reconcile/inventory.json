@@ -1,0 +1,10 @@
+{
+  "generatedAt": "2026-03-05T01:36:27.717Z",
+  "totals": {
+    "docs_stitch": 10,
+    "files": 12,
+    "e2e_contracts": 3,
+    "app_pages": 32,
+    "api_routes": 28
+  }
+}

@@ -1,15 +1,29 @@
 import OpenAI from "openai";
 import type { SessionSummaryResult } from "@/types/domain";
 import { logger } from "@/lib/logger";
+import { sanitizeOpenRouterApiKeyCandidate } from "@/lib/api/openrouter-key";
 
-export const openrouter = new OpenAI({
-  baseURL: "https://openrouter.ai/api/v1",
-  apiKey: process.env.OPENROUTER_API_KEY,
-  defaultHeaders: {
-    "HTTP-Referer": "https://psique.app",
-    "X-Title": "Psique — Plataforma Terapêutica",
-  },
-});
+function createOpenRouterClient(apiKey: string) {
+  return new OpenAI({
+    baseURL: "https://openrouter.ai/api/v1",
+    apiKey,
+    defaultHeaders: {
+      "HTTP-Referer": "https://psique.app",
+      "X-Title": "Psique — Plataforma Terapêutica",
+    },
+  });
+}
+
+export function getClient(apiKey?: string) {
+  const resolvedApiKey =
+    sanitizeOpenRouterApiKeyCandidate(apiKey) ??
+    sanitizeOpenRouterApiKeyCandidate(process.env.OPENROUTER_API_KEY);
+  if (!resolvedApiKey) {
+    throw new Error("[OpenRouter] Missing usable OPENROUTER_API_KEY");
+  }
+
+  return createOpenRouterClient(resolvedApiKey);
+}
 
 export const CLINICAL_SYSTEM_PROMPT = `
 Você é um assistente clínico especializado em psicanálise e psicoterapia.
@@ -30,15 +44,17 @@ export async function generateSessionSummary(params: {
   sessionNumber: number;
   previousSummaries?: string[];
   model?: string;
+  apiKey?: string;
 }): Promise<SessionSummaryResult> {
   const model = params.model ?? "anthropic/claude-3.5-sonnet";
+  const client = getClient(params.apiKey);
 
   logger.info("[OpenRouter] Generating session summary", {
     sessionNumber: params.sessionNumber,
     model,
   });
 
-  const response = await openrouter.chat.completions.create({
+  const response = await client.chat.completions.create({
     model,
     messages: [
       { role: "system", content: CLINICAL_SYSTEM_PROMPT },
@@ -86,8 +102,10 @@ export async function generatePatientInsights(params: {
     recentSummaries: string[];
   }>;
   model?: string;
+  apiKey?: string;
 }): Promise<{ insights: string[]; recommendations: string[]; alerts: string[] }> {
   const model = params.model ?? "anthropic/claude-3.5-sonnet";
+  const client = getClient(params.apiKey);
 
   logger.info("[OpenRouter] Generating patient insights", { model });
 
@@ -98,7 +116,7 @@ export async function generatePatientInsights(params: {
     )
     .join("\n");
 
-  const response = await openrouter.chat.completions.create({
+  const response = await client.chat.completions.create({
     model,
     messages: [
       { role: "system", content: CLINICAL_SYSTEM_PROMPT },
@@ -134,14 +152,16 @@ export async function chatWithContext(params: {
   messages: Array<{ role: "user" | "assistant"; content: string }>;
   patientContext?: string;
   model?: string;
+  apiKey?: string;
 }): Promise<string> {
   const model = params.model ?? "anthropic/claude-3-haiku";
+  const client = getClient(params.apiKey);
 
   const systemPrompt = params.patientContext
     ? `${CLINICAL_SYSTEM_PROMPT}\n\nCONTEXTO DO PACIENTE:\n${params.patientContext}`
     : CLINICAL_SYSTEM_PROMPT;
 
-  const response = await openrouter.chat.completions.create({
+  const response = await client.chat.completions.create({
     model,
     messages: [
       { role: "system", content: systemPrompt },

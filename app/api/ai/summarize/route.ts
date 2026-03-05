@@ -1,12 +1,22 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateSessionSummary } from "@/lib/openrouter";
 import { getAIRatelimiter } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
 import { createClient } from "@/lib/supabase/server";
+import { parseJsonBody } from "@/lib/api/request-validation";
+import { sanitizeOpenRouterApiKeyCandidate } from "@/lib/api/openrouter-key";
+import { classifyAIError } from "@/lib/api/ai-error";
+
+const postSchema = z.object({
+  sessionId: z.string().uuid(),
+  notes: z.string().trim().min(1).max(20000),
+});
 
 export async function POST(req: NextRequest) {
+  const route = "/api/ai/summarize";
   // 1. Auth check
   const supabase = await createClient();
   const {
@@ -15,6 +25,7 @@ export async function POST(req: NextRequest) {
   } = await supabase.auth.getUser();
 
   if (authError || !user) {
+    logger.warn("[AI/Summarize] Unauthorized request", { route });
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
@@ -23,22 +34,24 @@ export async function POST(req: NextRequest) {
   const { success, remaining } = await ratelimiter.limit(user.id);
 
   if (!success) {
+    logger.warn("[AI/Summarize] Rate limit exceeded", { route, userId: user.id });
     return NextResponse.json(
       { error: "Rate limit exceeded. Máximo 10 chamadas/minuto." },
       { status: 429 }
     );
   }
 
-  // 3. Parse body
-  const body = await req.json();
-  const { sessionId, notes } = body as { sessionId: string; notes: string };
-
-  if (!sessionId || !notes) {
-    return NextResponse.json(
-      { error: "sessionId e notes são obrigatórios" },
-      { status: 400 }
-    );
+  const parsed = await parseJsonBody({
+    route,
+    request: req,
+    schema: postSchema,
+    context: { userId: user.id },
+  });
+  if (!parsed.ok) {
+    return parsed.response;
   }
+
+  const { sessionId, notes } = parsed.data;
 
   try {
     const admin = createAdminClient();
@@ -50,7 +63,7 @@ export async function POST(req: NextRequest) {
         `*, 
          patient:patients(name, tags),
          appointment:appointments(scheduled_at),
-         therapist:therapists(ai_model, user_id)`
+         therapist:therapists(ai_model, user_id, openrouter_key_hash)`
       )
       .eq("id", sessionId)
       .single();
@@ -80,6 +93,7 @@ export async function POST(req: NextRequest) {
       sessionNumber: session.session_number,
       previousSummaries: history?.map((h) => h.ai_summary!).filter(Boolean),
       model: session.therapist?.ai_model ?? undefined,
+      apiKey: sanitizeOpenRouterApiKeyCandidate(session.therapist?.openrouter_key_hash),
     });
 
     // 8. Save result to database
@@ -95,6 +109,8 @@ export async function POST(req: NextRequest) {
       .eq("id", sessionId);
 
     logger.info("[AI/Summarize] Generated summary", {
+      route,
+      requestId: parsed.requestId,
       sessionId,
       userId: user.id,
       remaining,
@@ -102,13 +118,20 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ success: true, data: result });
   } catch (error) {
+    const classified = classifyAIError(error);
     logger.error("[AI/Summarize] Error", {
+      route,
+      requestId: parsed.requestId,
       error: String(error),
+      userId: user.id,
       sessionId,
+      errorCode: classified.code,
+      errorStatus: classified.status,
+      providerStatus: classified.providerStatus ?? null,
     });
     return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
+      { error: classified.message, code: classified.code },
+      { status: classified.status }
     );
   }
 }

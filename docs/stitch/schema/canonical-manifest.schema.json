@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://psique.local/schemas/canonical-manifest.schema.json",
+  "title": "PSIQUE Canonical Manifest v4",
+  "type": "object",
+  "required": ["version", "generated_at", "source_of_truth", "themes", "screens"],
+  "properties": {
+    "version": { "type": "string" },
+    "generated_at": { "type": "string" },
+    "source_of_truth": { "type": "string" },
+    "themes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["dark_core", "dark_theater", "light_onboard", "light_patient"]
+      },
+      "minItems": 4,
+      "uniqueItems": true
+    },
+    "screens": {
+      "type": "array",
+      "minItems": 28,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "source_type",
+          "title",
+          "theme",
+          "route",
+          "routePattern",
+          "aliases",
+          "coverageLevel",
+          "evidenceRequired",
+          "source_file",
+          "status"
+        ],
+        "properties": {
+          "id": { "type": "string", "pattern": "^S\\d{2}$" },
+          "source_type": { "type": "string", "enum": ["stitch", "derived"] },
+          "title": { "type": "string", "minLength": 1 },
+          "theme": {
+            "type": "string",
+            "enum": ["dark_core", "dark_theater", "light_onboard", "light_patient"]
+          },
+          "route": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              { "type": "array", "items": { "type": "string" }, "minItems": 1 }
+            ]
+          },
+          "routePattern": { "type": "string", "minLength": 1 },
+          "aliases": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "coverageLevel": {
+            "type": "string",
+            "enum": ["L1", "L2", "L3"]
+          },
+          "evidenceRequired": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "route-contract",
+                "flow-critical",
+                "trace",
+                "screenshot",
+                "visual-snapshot",
+                "api-auth",
+                "api-error",
+                "rls-check"
+              ]
+            },
+            "minItems": 1,
+            "uniqueItems": true
+          },
+          "source_file": { "type": "string", "minLength": 1 },
+          "status": { "type": "string", "enum": ["mapped", "planned", "deprecated"] },
+          "derives_from": {
+            "type": "array",
+            "items": { "type": "string", "pattern": "^S\\d{2}$" },
+            "uniqueItems": true
+          }
+        },
+        "additionalProperties": true
+      }
+    }
+  },
+  "additionalProperties": true
+}

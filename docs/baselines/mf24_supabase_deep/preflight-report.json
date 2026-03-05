@@ -1,0 +1,116 @@
+{
+  "generatedAt": "2026-03-05T05:13:39.117Z",
+  "summary": {
+    "total": 14,
+    "passed": 14,
+    "failed": 0,
+    "criticalFailed": 0
+  },
+  "checks": [
+    {
+      "id": "migrations_present",
+      "severity": "critical",
+      "passed": true,
+      "detail": "Loaded 6 migration files",
+      "samples": [
+        "20240301000001_initial.sql",
+        "20260304000002_patient_profile_policy.sql",
+        "20260304000003_patient_portal_real_features.sql",
+        "20260304000004_rls_authenticated_writes.sql",
+        "20260305000005_enterprise_supabase_hardening.sql",
+        "20260305000006_webhook_event_locks.sql"
+      ]
+    },
+    {
+      "id": "rls_enabled_tables_declared",
+      "severity": "critical",
+      "passed": true,
+      "detail": "RLS enable statements found for all required domain tables",
+      "samples": []
+    },
+    {
+      "id": "policy_allowlist_declared",
+      "severity": "critical",
+      "passed": true,
+      "detail": "Policy allowlist declarations found in migrations",
+      "samples": []
+    },
+    {
+      "id": "critical_indexes_and_constraints_declared",
+      "severity": "critical",
+      "passed": true,
+      "detail": "Critical index/constraint declarations found in migrations",
+      "samples": []
+    },
+    {
+      "id": "webhook_event_locks_table_accessible",
+      "severity": "critical",
+      "passed": true,
+      "detail": "webhook_event_locks accessible (0 rows)",
+      "samples": []
+    },
+    {
+      "id": "therapists_user_id_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate therapists.user_id found",
+      "samples": []
+    },
+    {
+      "id": "patients_user_id_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate patients.user_id found",
+      "samples": []
+    },
+    {
+      "id": "patients_therapist_email_ci_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate (therapist_id,email_ci) found in patients",
+      "samples": []
+    },
+    {
+      "id": "appointments_active_slot_unique",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No duplicate active appointment slots found",
+      "samples": []
+    },
+    {
+      "id": "orphan_appointments_relations",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No orphan appointments detected",
+      "samples": []
+    },
+    {
+      "id": "orphan_sessions_relations",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No orphan sessions detected",
+      "samples": []
+    },
+    {
+      "id": "appointments_state_values_valid",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No invalid appointment state values found",
+      "samples": []
+    },
+    {
+      "id": "sessions_mood_values_valid",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No invalid session mood values found",
+      "samples": []
+    },
+    {
+      "id": "payments_state_values_valid",
+      "severity": "critical",
+      "passed": true,
+      "detail": "No invalid payments state values found",
+      "samples": []
+    }
+  ]
+}

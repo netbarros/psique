@@ -3,6 +3,8 @@
 **Data:** 2026-03-03  
 **Status:** ✅ Fases concluídas e validadas (TSC_PASSED — 0 erros TypeScript)
 
+> Atualização 2026-03-04 (Fase 21 v3.0): gap histórico de `app/auth/reset-password/page.tsx` foi resolvido.
+
 ---
 
 ## O que foi entregue

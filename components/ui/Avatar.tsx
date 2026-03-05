@@ -28,17 +28,11 @@ export function Avatar({ name, src, size = "md", className, online }: AvatarProp
         <img
           src={src}
           alt={name ?? "Avatar"}
-          className="w-full h-full rounded-full object-cover border border-[var(--border2)]"
+          className="h-full w-full rounded-full border border-border-strong object-cover"
         />
       ) : (
         <div
-          className="w-full h-full rounded-full flex items-center justify-center border border-[rgba(82,183,136,.55)]"
-          style={{
-            background: "radial-gradient(circle at 35% 35%, rgba(82,183,136,.44), rgba(82,183,136,.22))",
-            fontFamily: "var(--ff)",
-            color: "var(--mint)",
-            fontWeight: 300,
-          }}
+          className="flex h-full w-full items-center justify-center rounded-full border border-[rgba(82,183,136,.55)] bg-[radial-gradient(circle_at_35%_35%,rgba(82,183,136,.44),rgba(82,183,136,.22))] font-display font-light text-brand"
           aria-label={name ?? "Usuário"}
         >
           {initStr}
@@ -47,9 +41,9 @@ export function Avatar({ name, src, size = "md", className, online }: AvatarProp
       {online !== undefined && (
         <span
           className={cn(
-            "absolute bottom-0 right-0 rounded-full border-2 border-[var(--bg2)]",
+            "absolute bottom-0 right-0 rounded-full border-2 border-[var(--color-bg-elevated)]",
             size === "xs" || size === "sm" ? "w-2 h-2" : "w-3 h-3",
-            online ? "bg-[var(--mint)]" : "bg-[var(--ivoryDD)]"
+            online ? "bg-brand" : "bg-[var(--color-text-muted)]"
           )}
           aria-label={online ? "Online" : "Offline"}
         />

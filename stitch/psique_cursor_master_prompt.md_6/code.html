@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Financial Performance Dashboard - PSIQUE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&amp;family=Instrument+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style type="text/tailwindcss">
+        :root {
+            --bg: #080f0b;
+            --bg2: #0c1510;
+            --card: #121a14;
+            --border: #1c2e20;
+            --mint: #52b788;
+            --mintl: #74c9a0;
+            --gold: #c4a35a;
+            --ivory: #ede7d9;
+            --ivoryD: #c8bfa8;
+            --ivoryDD: #8a8070;
+            --red: #b85450;
+            --blue: #4a8fa8;
+            --ff: 'Cormorant Garamond', serif;
+            --fs: 'Instrument Sans', sans-serif;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--ivory);
+            font-family: var(--fs);
+        }
+        .heading-font {
+            font-family: var(--ff);
+        }
+        .card {
+            background-color: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+        }
+        .bar-chart-container {
+            display: flex;
+            align-items: flex-end;
+            height: 120px;
+            gap: 8px;
+            padding-top: 20px;
+        }
+        .bar {
+            flex: 1;
+            background-color: var(--mint);
+            border-radius: 4px 4px 0 0;
+            transition: background-color 0.3s ease;
+        }
+        .bar:hover {
+            background-color: var(--mintl);
+        }
+        .bar.inactive {
+            background-color: var(--border);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="antialiased min-h-screen pb-24">
+<header class="sticky top-0 z-10 bg-[var(--bg)]/90 backdrop-blur-md border-b border-[var(--border)] px-4 py-4 flex justify-between items-center">
+<div>
+<h1 class="heading-font text-2xl font-semibold text-[var(--ivory)]">Financial Intelligence</h1>
+<p class="text-sm text-[var(--ivoryDD)]">October 2023 Overview</p>
+</div>
+<button class="w-10 h-10 rounded-full bg-[var(--card)] border border-[var(--border)] flex items-center justify-center text-[var(--ivory)] hover:bg-[var(--bg2)]">
+<span class="material-symbols-outlined text-xl">tune</span>
+</button>
+</header>
+<main class="p-4 space-y-6">
+<section class="card p-6 flex flex-col relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-[var(--gold)]/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-medium text-[var(--ivoryD)] flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm">monitoring</span>
+                    Monthly Recurring Revenue
+                </span>
+<span class="text-xs font-semibold px-2 py-1 rounded-full bg-[var(--mint)]/10 text-[var(--mint)] border border-[var(--mint)]/20 flex items-center gap-1">
+<span class="material-symbols-outlined text-[10px]">arrow_upward</span>
+                    12.4%
+                </span>
+</div>
+<div class="mt-2">
+<h2 class="heading-font text-5xl font-bold tracking-tight text-[var(--ivory)]">R$ 18.450</h2>
+<p class="text-sm text-[var(--ivoryDD)] mt-1">vs R$ 16.200 last month</p>
+</div>
+<div class="mt-6 border-t border-[var(--border)] pt-4">
+<div class="flex justify-between items-end h-16 gap-2">
+<div class="w-full bg-[var(--mint)]/20 rounded-t-sm" style="height: 40%"></div>
+<div class="w-full bg-[var(--mint)]/30 rounded-t-sm" style="height: 55%"></div>
+<div class="w-full bg-[var(--mint)]/40 rounded-t-sm" style="height: 45%"></div>
+<div class="w-full bg-[var(--mint)]/50 rounded-t-sm" style="height: 70%"></div>
+<div class="w-full bg-[var(--mint)]/60 rounded-t-sm" style="height: 60%"></div>
+<div class="w-full bg-[var(--mint)] rounded-t-sm" style="height: 100%"></div>
+</div>
+<div class="flex justify-between text-[10px] text-[var(--ivoryDD)] mt-2">
+<span>May</span>
+<span>Jun</span>
+<span>Jul</span>
+<span>Aug</span>
+<span>Sep</span>
+<span class="text-[var(--mint)] font-medium">Oct</span>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-2 gap-4">
+<div class="card p-4">
+<div class="flex items-center gap-2 mb-3">
+<div class="w-8 h-8 rounded-full bg-[var(--gold)]/10 flex items-center justify-center text-[var(--gold)]">
+<span class="material-symbols-outlined text-sm">schedule</span>
+</div>
+<span class="text-sm font-medium text-[var(--ivoryD)]">Pending</span>
+</div>
+<h3 class="heading-font text-2xl font-bold text-[var(--ivory)]">R$ 2.400</h3>
+<p class="text-xs text-[var(--ivoryDD)] mt-1">8 sessions awaiting</p>
+</div>
+<div class="card p-4">
+<div class="flex items-center gap-2 mb-3">
+<div class="w-8 h-8 rounded-full bg-[var(--red)]/10 flex items-center justify-center text-[var(--red)]">
+<span class="material-symbols-outlined text-sm">receipt_long</span>
+</div>
+<span class="text-sm font-medium text-[var(--ivoryD)]">Est. Tax</span>
+</div>
+<h3 class="heading-font text-2xl font-bold text-[var(--ivory)]">R$ 1.107</h3>
+<p class="text-xs text-[var(--ivoryDD)] mt-1">Simples Nacional (6%)</p>
+</div>
+</div>
+<section class="card p-0 overflow-hidden">
+<div class="p-4 border-b border-[var(--border)] flex justify-between items-center">
+<h3 class="font-semibold text-[var(--ivory)]">Recent Transactions</h3>
+<button class="text-sm text-[var(--gold)] hover:text-[var(--ivory)] transition-colors">View All</button>
+</div>
+<div class="divide-y divide-[var(--border)]">
+<div class="p-4 flex items-center justify-between hover:bg-[var(--bg2)] transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[var(--mint)]/10 flex items-center justify-center text-[var(--mint)]">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div>
+<p class="font-medium text-[var(--ivory)] text-sm">Dra. Mariana Silva</p>
+<p class="text-xs text-[var(--ivoryDD)] mt-0.5">Session #12 • Oct 24</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-semibold text-[var(--ivory)]">R$ 300,00</p>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--mint)]/10 text-[var(--mint)] text-[10px] font-medium mt-1 border border-[var(--mint)]/20">
+<span class="w-1.5 h-1.5 rounded-full bg-[var(--mint)]"></span>
+                            Paid via Stripe
+                        </span>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between hover:bg-[var(--bg2)] transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[var(--gold)]/10 flex items-center justify-center text-[var(--gold)]">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div>
+<p class="font-medium text-[var(--ivory)] text-sm">Carlos Mendes</p>
+<p class="text-xs text-[var(--ivoryDD)] mt-0.5">Session #4 • Oct 23</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-semibold text-[var(--ivory)]">R$ 300,00</p>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--gold)]/10 text-[var(--gold)] text-[10px] font-medium mt-1 border border-[var(--gold)]/20">
+<span class="w-1.5 h-1.5 rounded-full bg-[var(--gold)]"></span>
+                            Pending
+                        </span>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between hover:bg-[var(--bg2)] transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-[var(--mint)]/10 flex items-center justify-center text-[var(--mint)]">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div>
+<p class="font-medium text-[var(--ivory)] text-sm">Ana Clara R.</p>
+<p class="text-xs text-[var(--ivoryDD)] mt-0.5">Session #8 • Oct 21</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-semibold text-[var(--ivory)]">R$ 250,00</p>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[var(--mint)]/10 text-[var(--mint)] text-[10px] font-medium mt-1 border border-[var(--mint)]/20">
+<span class="w-1.5 h-1.5 rounded-full bg-[var(--mint)]"></span>
+                            Paid via Pix
+                        </span>
+</div>
+</div>
+</div>
+<div class="p-3 bg-[var(--bg2)] border-t border-[var(--border)] text-center">
+<p class="text-xs text-[var(--ivoryDD)] flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+                    Payments securely processed by Stripe
+                </p>
+</div>
+</section>
+<div class="flex gap-3 mt-6">
+<button class="flex-1 bg-[var(--ivory)] text-[var(--bg)] font-medium py-3 rounded-lg hover:bg-white transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+                New Charge
+            </button>
+<button class="flex-1 bg-[var(--card)] border border-[var(--border)] text-[var(--ivory)] font-medium py-3 rounded-lg hover:bg-[var(--border)] transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">download</span>
+                Export Report
+            </button>
+</div>
+</main>
+<nav class="fixed bottom-0 w-full bg-[var(--bg)]/90 backdrop-blur-md border-t border-[var(--border)] pb-safe pt-2 px-6 flex justify-between items-center z-20">
+<a class="flex flex-col items-center p-2 text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] mt-1 font-medium">Panel</span>
+</a>
+<a class="flex flex-col items-center p-2 text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="text-[10px] mt-1 font-medium">Agenda</span>
+</a>
+<a class="flex flex-col items-center p-2 text-[var(--gold)]" href="#">
+<span class="material-symbols-outlined drop-shadow-[0_0_8px_rgba(196,163,90,0.5)]">account_balance_wallet</span>
+<span class="text-[10px] mt-1 font-medium">Finance</span>
+</a>
+<a class="flex flex-col items-center p-2 text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-[10px] mt-1 font-medium">Patients</span>
+</a>
+</nav>
+<style>
+        .pb-safe {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+    </style>
+
+</body></html>

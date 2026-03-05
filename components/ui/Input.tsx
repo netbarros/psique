@@ -21,14 +21,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="text-xs font-medium text-[var(--ivoryD)] tracking-wide"
+            className="text-[13px] font-medium text-text-secondary tracking-wide"
           >
             {label}
           </label>
         )}
         <div className="relative flex items-center">
           {prefix && (
-            <span className="absolute left-3.5 text-[var(--ivoryDD)] text-sm pointer-events-none">
+            <span className="absolute left-3.5 text-text-muted text-[14px] pointer-events-none">
               {prefix}
             </span>
           )}
@@ -38,33 +38,33 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             aria-describedby={error ? `${inputId}-error` : hint ? `${inputId}-hint` : undefined}
             aria-invalid={!!error}
             className={cn(
-              "w-full bg-[var(--card2)] border text-[var(--text)] rounded-xl px-4 py-3 text-sm",
-              "font-[family-name:var(--fs)] outline-none transition-all duration-200",
-              "placeholder:text-[var(--ivoryDD)]",
+              "w-full bg-surface-hover border text-text-primary rounded-xl px-4 py-3 text-[14px]",
+              "font-sans outline-none transition-all duration-300",
+              "placeholder:text-text-muted placeholder:font-light",
               "disabled:opacity-50 disabled:cursor-not-allowed",
-              "focus:border-[var(--mint)] focus:bg-[var(--bg3)] focus:shadow-[0_0_0_3px_rgba(82,183,136,.12)]",
+              "focus:border-brand focus:bg-surface focus:shadow-[0_0_0_3px_rgba(82,183,136,.15)]",
               error
-                ? "border-[rgba(184,84,80,.6)] focus:border-[var(--red)] focus:shadow-[0_0_0_3px_rgba(184,84,80,.12)]"
-                : "border-[var(--border2)]",
-              prefix && "pl-9",
-              suffix && "pr-9",
+                ? "border-red-500/40 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,.15)]"
+                : "border-border-subtle",
+              prefix && "pl-10",
+              suffix && "pr-10",
               className
             )}
             {...props}
           />
           {suffix && (
-            <span className="absolute right-3.5 text-[var(--ivoryDD)] text-sm pointer-events-none">
+            <span className="absolute right-3.5 text-text-muted text-[14px] pointer-events-none">
               {suffix}
             </span>
           )}
         </div>
         {error && (
-          <p id={`${inputId}-error`} role="alert" className="text-xs text-[var(--red)]">
+          <p id={`${inputId}-error`} role="alert" className="text-[12px] font-medium text-red-500 mt-0.5">
             {error}
           </p>
         )}
         {!error && hint && (
-          <p id={`${inputId}-hint`} className="text-xs text-[var(--ivoryDD)]">
+          <p id={`${inputId}-hint`} className="text-[12px] text-text-muted mt-0.5">
             {hint}
           </p>
         )}

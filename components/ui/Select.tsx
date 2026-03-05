@@ -19,7 +19,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
     return (
       <div className={cn("flex flex-col gap-1.5", fullWidth && "w-full")}>
         {label && (
-          <label htmlFor={selectId} className="text-xs font-medium text-[var(--ivoryD)] tracking-wide">
+          <label htmlFor={selectId} className="text-[13px] font-medium text-text-secondary tracking-wide">
             {label}
           </label>
         )}
@@ -30,13 +30,13 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             aria-describedby={error ? `${selectId}-error` : undefined}
             aria-invalid={!!error}
             className={cn(
-              "w-full appearance-none bg-[var(--card2)] border text-[var(--text)] rounded-xl px-4 py-3 text-sm pr-10",
-              "font-[family-name:var(--fs)] outline-none transition-all duration-200 cursor-pointer",
+              "w-full appearance-none bg-surface-hover border text-text-primary rounded-xl px-4 py-3 text-[14px] pr-10",
+              "font-[family-name:var(--font-sans)] outline-none transition-all duration-300 cursor-pointer",
               "disabled:opacity-50 disabled:cursor-not-allowed",
-              "focus:border-[var(--mint)] focus:bg-[var(--bg3)] focus:shadow-[0_0_0_3px_rgba(82,183,136,.12)]",
+              "focus:border-brand focus:bg-surface focus:shadow-[0_0_0_3px_rgba(82,183,136,.15)]",
               error
-                ? "border-[rgba(184,84,80,.6)]"
-                : "border-[var(--border2)]",
+                ? "border-red-500/40 focus:border-red-500 focus:shadow-[0_0_0_3px_rgba(239,68,68,.15)]"
+                : "border-border-subtle",
               className
             )}
             {...props}
@@ -51,15 +51,15 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             ))}
           </select>
           {/* Chevron */}
-          <span className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-[var(--ivoryDD)] text-xs">
-            ▾
+          <span className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-text-muted text-[12px]">
+            ▼
           </span>
         </div>
         {error && (
-          <p id={`${selectId}-error`} role="alert" className="text-xs text-[var(--red)]">{error}</p>
+          <p id={`${selectId}-error`} role="alert" className="text-[12px] font-medium text-red-500 mt-0.5">{error}</p>
         )}
         {!error && hint && (
-          <p className="text-xs text-[var(--ivoryDD)]">{hint}</p>
+          <p className="text-[12px] text-text-muted mt-0.5">{hint}</p>
         )}
       </div>
     );

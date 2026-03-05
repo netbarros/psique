@@ -62,27 +62,27 @@ export function Modal({ open, onClose, title, children, size = "md", className }
       {/* Panel */}
       <div
         className={cn(
-          "relative w-full bg-[var(--bg2)] border border-[var(--border)] rounded-2xl",
-          "shadow-[0_24px_80px_rgba(0,0,0,.6)]",
-          "animate-[scaleIn_.2s_var(--ease-spring)]",
+          "relative w-full bg-surface border border-border-subtle rounded-3xl",
+          "shadow-[0_24px_80px_rgba(0,0,0,.6)] overflow-hidden",
+          "animate-[fadeUp_.2s_ease-out_both]",
           SIZES[size],
           className
         )}
       >
         {/* Header */}
         {title && (
-          <div className="flex items-center justify-between px-6 pt-5 pb-4 border-b border-[var(--border)]">
+          <div className="flex items-center justify-between px-6 md:px-8 pt-6 pb-5 border-b border-border-subtle">
             <h2
               id="modal-title"
-              className="font-[family-name:var(--ff)] text-xl font-light text-[var(--ivory)]"
+              className="font-display text-2xl font-light tracking-tight text-text-primary"
             >
               {title}
             </h2>
             <button
               ref={firstFocusRef}
               onClick={onClose}
-              aria-label="Fechar"
-              className="text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors text-xl leading-none p-1"
+              aria-label="Fechar modal"
+              className="text-text-muted hover:text-text-primary transition-all duration-300 text-2xl leading-none p-1.5 rounded-lg hover:bg-surface-hover"
             >
               ×
             </button>

@@ -1,15 +1,71 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { formatBRL, formatDate } from "@/lib/utils";
 import type { Metadata } from "next";
+import { formatBRL } from "@/lib/utils";
+import { EnterpriseCard, EnterpriseStat } from "@/components/ui/EnterpriseCard";
 
 export const metadata: Metadata = { title: "Financeiro" };
+
+type PaymentRow = {
+  id: string;
+  amount: number;
+  status: string;
+  method: string | null;
+  created_at: string;
+  patient: { name?: string | null } | Array<{ name?: string | null }> | null;
+};
+
+const BAR_HEIGHT_CLASSES = [
+  "h-[24%]",
+  "h-[34%]",
+  "h-[46%]",
+  "h-[58%]",
+  "h-[74%]",
+  "h-[92%]",
+] as const;
+
+const BAR_TONE_CLASSES = [
+  "bg-brand/20",
+  "bg-brand/30",
+  "bg-brand/40",
+  "bg-brand/50",
+  "bg-brand/60",
+  "bg-brand",
+] as const;
+
+function monthShort(date: Date): string {
+  return date
+    .toLocaleDateString("pt-BR", { month: "short" })
+    .replace(".", "")
+    .replace(/^\w/, (char) => char.toUpperCase());
+}
+
+function resolvePatientName(patient: PaymentRow["patient"]): string {
+  if (!patient) return "Paciente";
+  if (Array.isArray(patient)) return patient[0]?.name ?? "Paciente";
+  return patient.name ?? "Paciente";
+}
+
+function statusBadge(status: string): string {
+  if (status === "paid") return "border-brand/35 bg-brand/10 text-brand";
+  if (status === "pending") return "border-gold/35 bg-gold/10 text-gold";
+  return "border-border-strong bg-surface text-text-muted";
+}
+
+function methodLabel(method: string | null): string {
+  if (!method) return "Manual";
+  if (method === "stripe") return "Stripe";
+  if (method === "pix") return "PIX";
+  if (method === "manual") return "Manual";
+  return method;
+}
 
 export default async function FinanceiroPage() {
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
   if (!user) redirect("/auth/login");
 
   const { data: therapist } = await supabase
@@ -17,349 +73,228 @@ export default async function FinanceiroPage() {
     .select("id, session_price")
     .eq("user_id", user.id)
     .single();
+
   if (!therapist) redirect("/auth/login");
 
   const now = new Date();
-  const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
-  const lastMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1).toISOString();
-  const lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0).toISOString();
+  const currentMonthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const previousMonthStart = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+  const previousMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
+  const sixMonthsStart = new Date(now.getFullYear(), now.getMonth() - 5, 1);
 
-  const [paymentsThisMonth, paymentsLastMonth, allPayments] = await Promise.all([
-    supabase
-      .from("payments")
-      .select("amount, status")
-      .eq("therapist_id", therapist.id)
-      .eq("status", "paid")
-      .gte("created_at", startOfMonth),
+  const [currentMonthPaid, previousMonthPaid, recentPayments, pendingPayments, sixMonthPayments] = await Promise.all([
     supabase
       .from("payments")
       .select("amount")
       .eq("therapist_id", therapist.id)
       .eq("status", "paid")
-      .gte("created_at", lastMonthStart)
-      .lte("created_at", lastMonthEnd),
+      .gte("created_at", currentMonthStart.toISOString()),
+    supabase
+      .from("payments")
+      .select("amount")
+      .eq("therapist_id", therapist.id)
+      .eq("status", "paid")
+      .gte("created_at", previousMonthStart.toISOString())
+      .lte("created_at", previousMonthEnd.toISOString()),
     supabase
       .from("payments")
       .select(`
-        id, amount, currency, method, status, created_at, paid_at,
+        id, amount, status, method, created_at,
         patient:patients(name)
       `)
       .eq("therapist_id", therapist.id)
       .order("created_at", { ascending: false })
-      .limit(50),
+      .limit(12),
+    supabase
+      .from("payments")
+      .select("amount")
+      .eq("therapist_id", therapist.id)
+      .eq("status", "pending"),
+    supabase
+      .from("payments")
+      .select("amount, created_at")
+      .eq("therapist_id", therapist.id)
+      .eq("status", "paid")
+      .gte("created_at", sixMonthsStart.toISOString()),
   ]);
 
-  const mrr = (paymentsThisMonth.data ?? []).reduce(
-    (acc, p) => acc + Number(p.amount),
-    0
-  );
-  const mrrLast = (paymentsLastMonth.data ?? []).reduce(
-    (acc, p) => acc + Number(p.amount),
-    0
-  );
-  const mrrDelta = mrrLast > 0 ? ((mrr - mrrLast) / mrrLast) * 100 : 0;
-  const payments = allPayments.data ?? [];
-  const totalPaid = payments
-    .filter((p) => p.status === "paid")
-    .reduce((acc, p) => acc + Number(p.amount), 0);
-  const pending = payments.filter((p) => p.status === "pending").length;
+  const mrr = (currentMonthPaid.data ?? []).reduce((sum, item) => sum + Number(item.amount), 0);
+  const previousMrr = (previousMonthPaid.data ?? []).reduce((sum, item) => sum + Number(item.amount), 0);
+  const mrrDelta = previousMrr > 0 ? ((mrr - previousMrr) / previousMrr) * 100 : 0;
+  const pendingAmount = (pendingPayments.data ?? []).reduce((sum, item) => sum + Number(item.amount), 0);
+  const estimatedTax = mrr * 0.06;
 
-  const PAYMENT_STATUS_CONFIG: Record<string, { label: string; color: string }> = {
-    pending: { label: "Pendente", color: "var(--gold)" },
-    processing: { label: "Processando", color: "var(--blue)" },
-    paid: { label: "Pago", color: "var(--mint)" },
-    failed: { label: "Falhou", color: "var(--red)" },
-    refunded: { label: "Reembolsado", color: "var(--purple)" },
-    disputed: { label: "Disputado", color: "var(--red)" },
-  };
+  const monthTotals = Array.from({ length: 6 }, (_, offset) => {
+    const baseDate = new Date(now.getFullYear(), now.getMonth() - (5 - offset), 1);
+    const key = `${baseDate.getFullYear()}-${String(baseDate.getMonth() + 1).padStart(2, "0")}`;
+    const total = (sixMonthPayments.data ?? []).reduce((sum, payment) => {
+      const paymentDate = new Date(payment.created_at);
+      const paymentKey = `${paymentDate.getFullYear()}-${String(paymentDate.getMonth() + 1).padStart(2, "0")}`;
+      return paymentKey === key ? sum + Number(payment.amount) : sum;
+    }, 0);
+    return { label: monthShort(baseDate), total };
+  });
 
-  const METHOD_LABELS: Record<string, string> = {
-    stripe: "Stripe",
-    pix: "PIX",
-    manual: "Manual",
-    exempt: "Isento",
-  };
+  const maxTotal = Math.max(...monthTotals.map((month) => month.total), 1);
+  const bars = monthTotals.map((month) => {
+    const pct = Math.round((month.total / maxTotal) * 100);
+    if (pct <= 20) return BAR_HEIGHT_CLASSES[0];
+    if (pct <= 35) return BAR_HEIGHT_CLASSES[1];
+    if (pct <= 50) return BAR_HEIGHT_CLASSES[2];
+    if (pct <= 65) return BAR_HEIGHT_CLASSES[3];
+    if (pct <= 80) return BAR_HEIGHT_CLASSES[4];
+    return BAR_HEIGHT_CLASSES[5];
+  });
 
-  const isPositive = mrrDelta >= 0;
+  const payments = (recentPayments.data ?? []) as PaymentRow[];
 
   return (
-    <div style={{ padding: "32px 40px", maxWidth: 1200 }}>
-      {/* Header */}
-      <div style={{ marginBottom: 28 }}>
-        <h1
-          style={{
-            fontFamily: "var(--ff)",
-            fontSize: 34,
-            fontWeight: 200,
-            color: "var(--ivory)",
-          }}
+    <div className="mx-auto w-full max-w-6xl space-y-6 px-4 pb-10 pt-6 sm:px-6 lg:px-8">
+      <header className="flex items-center justify-between">
+        <div>
+          <h1 className="font-display text-3xl font-semibold text-text-primary">
+            Financial Intelligence
+          </h1>
+          <p className="text-sm text-text-muted">
+            {now.toLocaleDateString("pt-BR", { month: "long", year: "numeric" })}
+          </p>
+        </div>
+        <button
+          type="button"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface text-text-secondary transition-colors hover:text-text-primary"
+          aria-label="Filtros financeiros"
         >
-          Financeiro
-        </h1>
-        <p style={{ fontSize: 14, color: "var(--ivoryDD)", marginTop: 4 }}>
-          Receitas, pagamentos e relatórios financeiros
-        </p>
-      </div>
+          <span className="material-symbols-outlined text-xl">tune</span>
+        </button>
+      </header>
 
-      {/* KPI cards */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(4, 1fr)",
-          gap: 16,
-          marginBottom: 28,
-        }}
-      >
-        <div
-          style={{
-            background: "var(--card)",
-            border: "1px solid var(--border)",
-            borderRadius: 18,
-            padding: "24px 28px",
-          }}
-        >
-          <div
-            style={{
-              fontSize: 12,
-              color: "var(--ivoryDD)",
-              letterSpacing: ".06em",
-              textTransform: "uppercase",
-              marginBottom: 8,
-            }}
-          >
-            MRR Este Mês
+      <EnterpriseCard className="p-6">
+        <div className="pointer-events-none absolute -right-8 -top-8 h-28 w-28 rounded-full bg-gold/10 blur-3xl" />
+
+        <div className="relative space-y-4">
+          <div className="flex items-center justify-between">
+            <p className="flex items-center gap-1.5 text-sm text-text-secondary">
+              <span className="material-symbols-outlined text-sm">monitoring</span>
+              Monthly Recurring Revenue
+            </p>
+            <span className="inline-flex items-center gap-1 rounded-full border border-brand/20 bg-brand/10 px-2 py-0.5 text-xs font-semibold text-brand">
+              <span className="material-symbols-outlined text-[10px]">
+                {mrrDelta >= 0 ? "arrow_upward" : "arrow_downward"}
+              </span>
+              {Math.abs(mrrDelta).toFixed(1)}%
+            </span>
           </div>
-          <div
-            style={{
-              fontFamily: "var(--ff)",
-              fontSize: 32,
-              fontWeight: 200,
-              color: "var(--gold)",
-              lineHeight: 1,
-              marginBottom: 8,
-            }}
-          >
-            {formatBRL(mrr)}
+
+          <div>
+            <h2 className="font-display text-5xl font-bold tracking-tight text-text-primary">
+              {formatBRL(mrr)}
+            </h2>
+            <p className="mt-1 text-sm text-text-muted">vs {formatBRL(previousMrr)} no mês anterior</p>
           </div>
-          <div
-            style={{
-              fontSize: 12,
-              color: isPositive ? "var(--mint)" : "var(--red)",
-            }}
-          >
-            {isPositive ? "↑" : "↓"} {Math.abs(mrrDelta).toFixed(1)}% vs mês
-            anterior
+
+          <div className="border-t border-border-subtle pt-4">
+            <div className="flex h-16 items-end gap-2">
+              {bars.map((barClass, index) => (
+                <div
+                  key={`${monthTotals[index].label}-${index}`}
+                  className={`w-full rounded-t-sm transition-colors duration-300 hover:bg-brand/80 ${barClass} ${BAR_TONE_CLASSES[index]}`}
+                />
+              ))}
+            </div>
+            <div className="mt-2 flex justify-between text-[10px] text-text-muted">
+              {monthTotals.map((month, index) => (
+                <span key={month.label} className={index === monthTotals.length - 1 ? "font-medium text-brand" : ""}>
+                  {month.label}
+                </span>
+              ))}
+            </div>
           </div>
         </div>
+      </EnterpriseCard>
 
-        <KPISimple
-          label="Total Recebido"
-          value={formatBRL(totalPaid)}
-          color="var(--mint)"
+      <div className="grid grid-cols-2 gap-4">
+        <EnterpriseStat
+          label={
+            <div className="mb-3 flex items-center gap-2">
+              <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gold/10 text-gold">
+                <span className="material-symbols-outlined text-sm">schedule</span>
+              </div>
+              <span className="text-sm font-medium text-text-secondary normal-case tracking-normal">Pending</span>
+            </div> as unknown as string
+          }
+          value={formatBRL(pendingAmount)}
+          trendLabel={`${pendingPayments.data?.length ?? 0} aguardando`}
+          delay={0.1}
         />
-        <KPISimple
-          label="Pagamentos"
-          value={String(payments.length)}
-          color="var(--blue)"
-        />
-        <KPISimple
-          label="Pendentes"
-          value={String(pending)}
-          color="var(--gold)"
+
+        <EnterpriseStat
+          label={
+            <div className="mb-3 flex items-center gap-2">
+              <div className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-error/10 text-error">
+                <span className="material-symbols-outlined text-sm">receipt_long</span>
+              </div>
+              <span className="text-sm font-medium text-text-secondary normal-case tracking-normal">Est. Tax</span>
+            </div> as unknown as string
+          }
+          value={formatBRL(estimatedTax)}
+          trendLabel="Simples (6%)"
+          delay={0.2}
         />
       </div>
 
-      {/* Price info */}
-      <div
-        style={{
-          background: "var(--card)",
-          border: "1px solid var(--border)",
-          borderRadius: 14,
-          padding: "16px 20px",
-          marginBottom: 24,
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-        }}
-      >
-        <span style={{ fontSize: 11, color: "var(--ivoryDD)", textTransform: "uppercase", letterSpacing: ".08em" }}>
-          Preço por sessão:
-        </span>
-        <span
-          style={{
-            fontFamily: "var(--ff)",
-            fontSize: 20,
-            fontWeight: 300,
-            color: "var(--gold)",
-          }}
-        >
-          {formatBRL(Number(therapist.session_price))}
-        </span>
-      </div>
-
-      {/* Payments table */}
-      <div
-        style={{
-          background: "var(--card)",
-          border: "1px solid var(--border)",
-          borderRadius: 20,
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            padding: "16px 20px",
-            borderBottom: "1px solid var(--border)",
-          }}
-        >
-          <h2
-            style={{
-              fontFamily: "var(--ff)",
-              fontSize: 22,
-              fontWeight: 300,
-              color: "var(--ivory)",
-            }}
-          >
-            Últimos Pagamentos
-          </h2>
-        </div>
-
-        {/* Table header */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr",
-            padding: "12px 20px",
-            borderBottom: "1px solid var(--border)",
-            fontSize: 11,
-            color: "var(--ivoryDD)",
-            letterSpacing: ".08em",
-            textTransform: "uppercase",
-          }}
-        >
-          <span>Paciente</span>
-          <span>Data</span>
-          <span>Valor</span>
-          <span>Método</span>
-          <span>Status</span>
+      <EnterpriseCard className="p-0 overflow-hidden" delay={0.3}>
+        <div className="flex items-center justify-between border-b border-border-subtle px-4 py-4">
+          <h3 className="text-base font-semibold text-text-primary">Recent Transactions</h3>
+          <button type="button" className="text-sm text-gold transition-colors hover:text-text-primary">
+            Ver todas
+          </button>
         </div>
 
         {payments.length === 0 ? (
-          <div
-            style={{
-              padding: "40px",
-              textAlign: "center",
-              color: "var(--ivoryDD)",
-              fontSize: 14,
-            }}
-          >
-            Nenhum pagamento registrado ainda.
-          </div>
+          <div className="px-4 py-8 text-center text-sm text-text-secondary">Nenhuma transação encontrada.</div>
         ) : (
-          <div>
-            {payments.map((p, i) => {
-              const patient = p.patient as unknown as { name: string } | null;
-              const statusCfg = PAYMENT_STATUS_CONFIG[p.status] ?? {
-                label: p.status,
-                color: "var(--ivoryDD)",
-              };
-              return (
-                <div
-                  key={p.id}
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "2fr 1fr 1fr 1fr 1fr",
-                    padding: "14px 20px",
-                    alignItems: "center",
-                    borderBottom:
-                      i < payments.length - 1
-                        ? "1px solid var(--border)"
-                        : "none",
-                  }}
-                >
-                  <span style={{ fontSize: 14, color: "var(--ivory)", fontWeight: 500 }}>
-                    {patient?.name ?? "—"}
-                  </span>
-                  <span style={{ fontSize: 12, color: "var(--ivoryDD)" }}>
-                    {formatDate(p.created_at)}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 14,
-                      color: "var(--ivory)",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {formatBRL(Number(p.amount))}
-                  </span>
-                  <span style={{ fontSize: 12, color: "var(--ivoryDD)" }}>
-                    {p.method ? METHOD_LABELS[p.method] ?? p.method : "—"}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 11,
-                      padding: "3px 10px",
-                      borderRadius: 20,
-                      background: `color-mix(in srgb, ${statusCfg.color} 12%, transparent)`,
-                      color: statusCfg.color,
-                      border: `1px solid color-mix(in srgb, ${statusCfg.color} 30%, transparent)`,
-                      display: "inline-flex",
-                      alignItems: "center",
-                      width: "fit-content",
-                    }}
-                  >
-                    {statusCfg.label}
+          <div className="divide-y divide-border-subtle">
+            {payments.map((payment) => (
+              <article
+                key={payment.id}
+                className="flex cursor-pointer items-center justify-between gap-4 px-4 py-4 transition-colors hover:bg-bg-elevated"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-brand/10 text-brand">
+                    <span className="material-symbols-outlined">psychology</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-text-primary">{resolvePatientName(payment.patient)}</p>
+                    <p className="mt-0.5 text-xs text-text-muted">
+                      {new Date(payment.created_at).toLocaleDateString("pt-BR", {
+                        day: "2-digit",
+                        month: "short",
+                      })}{" "}
+                      • {methodLabel(payment.method)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="text-right">
+                  <p className="text-sm font-semibold text-text-primary">
+                    {formatBRL(Number(payment.amount))}
+                  </p>
+                  <span className={`mt-1 inline-flex rounded-full border px-2 py-0.5 text-[10px] font-medium ${statusBadge(payment.status)}`}>
+                    {payment.status}
                   </span>
                 </div>
-              );
-            })}
+              </article>
+            ))}
           </div>
         )}
-      </div>
-    </div>
-  );
-}
 
-function KPISimple({
-  label,
-  value,
-  color,
-}: {
-  label: string;
-  value: string;
-  color: string;
-}) {
-  return (
-    <div
-      style={{
-        background: "var(--card)",
-        border: "1px solid var(--border)",
-        borderRadius: 18,
-        padding: "24px 28px",
-      }}
-    >
-      <div
-        style={{
-          fontSize: 12,
-          color: "var(--ivoryDD)",
-          letterSpacing: ".06em",
-          textTransform: "uppercase",
-          marginBottom: 8,
-        }}
-      >
-        {label}
-      </div>
-      <div
-        style={{
-          fontFamily: "var(--ff)",
-          fontSize: 32,
-          fontWeight: 200,
-          color,
-          lineHeight: 1,
-        }}
-      >
-        {value}
-      </div>
+        <div className="border-t border-border-subtle bg-bg-elevated px-4 py-3 text-center">
+          <p className="inline-flex items-center gap-1 text-xs text-text-muted">
+            <span className="material-symbols-outlined text-sm">lock</span>
+            Payments securely processed by Stripe
+          </p>
+        </div>
+      </EnterpriseCard>
     </div>
   );
 }
