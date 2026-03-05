@@ -1,7 +1,7 @@
 # PR Checklist — Layout Agent (CLAUDE) ↔ Backend (Codex)
 
-Data: 2026-03-05
-Owner: Backend Architecture (Codex)
+Data: 2026-03-05  
+Owner: Backend Architecture (Codex)  
 Escopo: mudanças de layout/UI sem regressão de contrato backend
 
 ## 1) Pré-leitura obrigatória
@@ -14,70 +14,64 @@ Escopo: mudanças de layout/UI sem regressão de contrato backend
 
 ## 2) Regra de ouro da parceria
 
-1. Layout pode mudar visual/composição, sem quebrar contratos de API.
-2. Nenhuma rota/método backend deve ser renomeada/removida sem aprovação do owner backend.
-3. Tratar erros por semântica HTTP (401/403/409/429/500) com UX específica.
+1. Layout muda visual/composição, não contrato backend.
+2. Não renomear/remover endpoint sem aprovação do owner backend.
+3. Tratar semântica HTTP por UX específica.
+4. Não fazer escrita client-side direta em tabelas sensíveis.
 
-## 3) Matriz de contrato endpoint por endpoint
+## 3) Matriz de endpoint para a nova migração
 
 | Superfície | Endpoint | Método | Critério de aceite UI |
 |---|---|---|---|
-| Booking público | `/api/booking/checkout` | `POST` | Lida com `409` (horário indisponível) e não assume sucesso 200-only |
-| Portal paciente | `/api/patient/appointments/checkout` | `POST` | Em conflito `409`, oferece reescolha de horário |
-| Portal paciente | `/api/patient/journal` | `GET` | Carrega estado inicial sem crash para vazio |
-| Portal paciente | `/api/patient/journal` | `POST` | Após escrita, atualiza feed sem recarregar página |
-| Portal paciente | `/api/patient/mood` | `GET` | Exibe histórico/estado com fallback |
-| Portal paciente | `/api/patient/mood` | `POST` | Mantém consistência visual após submit |
-| Portal paciente | `/api/patient/chat/threads` | `GET` | Se vazio, mostra estado “sem conversas” |
-| Portal paciente | `/api/patient/chat/threads/[id]/messages` | `GET` | Não quebra quando thread é inválida/expirada |
-| Portal paciente | `/api/patient/chat/messages` | `POST` | Em `429`, mostra cooldown; em `500`, fallback amigável |
-| Segurança | `/api/auth/mfa/enroll` | `POST` | Fluxo de setup robusto com erro explícito |
-| Segurança | `/api/auth/mfa/verify` | `POST` | Verificação com feedback claro de sucesso/falha |
-| Segurança | `/api/auth/mfa/unenroll` | `POST` | Remoção sem estados inconsistentes |
-| Bootstrap | `/api/auth/patient/bootstrap` | `POST` | Fluxo tolerante a reexecução |
-| IA | `/api/ai/summarize` | `POST` | Em `429`, exibe limite; sem travar tela |
-| IA | `/api/ai/insights` | `POST` | Em falha, mantém dashboard utilizável |
-| Agenda | `/api/appointments/[id]/cancel` | `POST` | Reflete cancelamento com estado e toast |
-| Agenda | `/api/appointments/[id]/reschedule` | `PUT` | Em conflito, mantém formulário com mensagem |
-| Sessão | `/api/sessions/[id]/close` | `PATCH` | Encerramento idempotente com feedback |
-| Config | `/api/settings/profile` | `PATCH` | Persistência sem perda de estado local |
-| Config | `/api/settings/security` | `PATCH` | Persistência + atualização de UI imediata |
-| Auditoria | `/api/audit/events` | `GET` | Falha não bloqueia a tela de segurança |
+| Público | `/api/public/plans` | `GET` | Renderiza catálogo publicado sem hardcode |
+| Público | `/api/public/content` | `GET` | Renderiza conteúdo por `page+locale` com fallback visual |
+| Admin | `/api/admin/plans` | `GET` | Lista revisões com filtro de status |
+| Admin | `/api/admin/plans/drafts` | `POST` | Cria draft e atualiza lista sem reload |
+| Admin | `/api/admin/plans/drafts/[draftId]` | `PATCH` | Atualiza draft com controle de conflito por ETag |
+| Admin | `/api/admin/plans/drafts/[draftId]/publish` | `POST` | Publica e reflete no público após revalidação |
+| Admin | `/api/admin/content` | `GET` | Lista revisões por página/seção/locale |
+| Admin | `/api/admin/content/drafts` | `POST` | Cria draft de conteúdo |
+| Admin | `/api/admin/content/drafts/[draftId]` | `PATCH` | Atualiza draft de conteúdo com ETag |
+| Admin | `/api/admin/content/drafts/[draftId]/publish` | `POST` | Publica conteúdo e valida reflexo nas páginas públicas |
+| Admin | `/api/admin/integrations` | `GET` | Lista integrações sem expor segredos |
+| Admin | `/api/admin/integrations/[provider]` | `PATCH` | Atualiza config global com UX resiliente |
+| Admin | `/api/admin/audit/events` | `GET` | Exibe timeline de auditoria com paginação/limite |
+| Legado | `/api/settings/*` writes | `PATCH/POST` | Exibe mensagem de migração (`409`) sem quebrar UI |
 
 ## 4) Semântica de erro obrigatória no frontend
 
-1. `400` → validação de entrada (campo/toast).
-2. `401` → redirecionar para login/sessão expirada.
-3. `403` → permissão insuficiente (mensagem estática, sem loop).
-4. `404` → recurso indisponível/não encontrado.
-5. `409` → conflito de estado (ex.: slot reservado por outra sessão).
-6. `429` → limite de taxa (cooldown/backoff visual).
-7. `500` → fallback resiliente (sem tela quebrada).
+1. `400` validação de query/input.
+2. `401` redirecionar para login.
+3. `403` permissão insuficiente.
+4. `404` recurso não encontrado.
+5. `409` conflito de estado/endpoint legado desativado.
+6. `422` payload inválido.
+7. `428` ausência de `If-Match` em publish.
+8. `500` fallback resiliente.
 
 ## 5) Checklist técnico antes de abrir PR
 
-1. Não alterou path/método de API existente.
-2. Não moveu lógica de negócio sensível para client sem endpoint.
-3. Cobriu fluxos de erro acima em UI.
-4. Executou:
+1. Sem alteração de path/method dos contratos backend.
+2. Sem hardcode novo para catálogo público.
+3. Sem escrita direta em tabelas admin/públicas no client.
+4. Fluxos `loading/empty/error/conflict` cobertos.
+5. Executou:
    - `npm run test:api`
    - `npm run typecheck`
    - `npm run backend:audit`
-   - `npm run docs:watch:check`
-   - `npm run contract:non-screen:check` (se mexer em integração de rotas)
+   - `npm run contract:non-screen:check`
+   - `npm run docs:sync:check` (se mexer em docs espelho)
 
-## 6) Template de solicitação para owner backend
-
-Quando precisar evoluir contrato, abrir pedido com:
+## 6) Template para pedido de evolução de contrato
 
 1. Endpoint atual.
-2. Campos adicionais necessários.
-3. Exemplo de payload/response desejado.
-4. UX fallback se o dado vier vazio.
+2. Campo(s) extra(s) e tipo.
+3. Exemplo de request/response.
+4. Fallback UI quando vazio.
 5. Critério de aceite de teste.
 
 ## 7) Critério de merge
 
-1. PR de layout só é elegível com checklist completo.
-2. Qualquer quebra de contrato backend bloqueia merge.
-3. Divergência detectada em `docs/handoffs` exige reconciliação antes do merge.
+1. Checklist completo.
+2. Sem quebra de contrato.
+3. Diferença documental reconciliada em `docs/handoffs` e `docs/backend`.

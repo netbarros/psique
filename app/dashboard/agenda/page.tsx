@@ -140,30 +140,33 @@ export default async function AgendaPage({
   dayAppointments.forEach((appt) => {
     const startDate = new Date(appt.scheduled_at);
     const slot = toMinuteSlot(startDate);
-    if (slot < 8 * 60 || slot > 18 * 60) return;
+    if (slot < 7 * 60 || slot > 22 * 60) return;
     const existing = appointmentsBySlot.get(slot) ?? [];
     existing.push(appt);
     appointmentsBySlot.set(slot, existing);
   });
 
   const slots: number[] = [];
-  for (let minute = 8 * 60; minute <= 18 * 60; minute += 30) {
+  for (let minute = 7 * 60; minute <= 22 * 60; minute += 30) {
     slots.push(minute);
   }
 
   return (
     <div className="relative mx-auto w-full max-w-5xl space-y-6 px-4 pb-28 pt-6 sm:px-6 lg:px-8">
-      <header className="space-y-1">
-        <h1 className="font-display text-3xl font-semibold text-text-primary">
-          Agenda
-        </h1>
-        <p className="text-sm text-text-muted capitalize">
-          {selectedDate.toLocaleDateString("pt-BR", {
-            weekday: "long",
-            day: "2-digit",
-            month: "long",
-          })}
-        </p>
+      <header className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+        <div className="space-y-1">
+          <h1 className="font-display text-3xl font-semibold text-text-primary">
+            Agenda
+          </h1>
+          <p className="text-sm text-text-muted capitalize">
+            {selectedDate.toLocaleDateString("pt-BR", {
+              weekday: "long",
+              day: "2-digit",
+              month: "long",
+            })}
+          </p>
+        </div>
+        <NewAppointmentSheet patients={patientOptions} />
       </header>
 
       <section className="grid grid-cols-7 gap-2">
@@ -226,8 +229,6 @@ export default async function AgendaPage({
           );
         })}
       </section>
-
-      <NewAppointmentSheet patients={patientOptions} />
     </div>
   );
 }

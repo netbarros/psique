@@ -56,12 +56,15 @@ function checkAuth(route, source) {
   const authModel = route.authModel;
 
   if (authModel.startsWith("authenticated")) {
+    const hasWrapperAuth =
+      /requireMasterAdminContext|requireAuthenticatedContext/.test(source);
+    const passed = hasAuthCheck(source) || hasWrapperAuth;
     return makeCheck(
       "auth_model_enforced",
-      hasAuthCheck(source),
+      passed,
       "critical",
-      hasAuthCheck(source)
-        ? "Authenticated route checks Supabase user session"
+      passed
+        ? "Authenticated route checks Supabase user session (direct or wrapped helper)"
         : "Authenticated route missing supabase.auth.getUser check"
     );
   }

@@ -1,13 +1,22 @@
-/* eslint-disable @next/next/no-img-element */
 import type { Metadata } from "next";
 import Link from "next/link";
+import { getContentSection, getPublicContent } from "@/lib/frontend/public-catalog-client";
+import { mapLandingContent } from "@/lib/frontend/content-mappers";
 
 export const metadata: Metadata = {
   title: "Psique — A única plataforma que cuida de quem cuida",
-  description: "Automação clínica, insights terapêuticos por IA e operação completa da prática em uma plataforma Stitch-first.",
+  description: "Conteúdo público dinâmico gerenciado por master_admin.",
 };
 
-export default function LandingPage() {
+function pickString(value: unknown, fallback: string) {
+  return typeof value === "string" && value.trim().length > 0 ? value : fallback;
+}
+
+export default async function LandingPage() {
+  const content = await getPublicContent("landing", "pt-BR").catch(() => null);
+  const section = content ? getContentSection(content, "main") : null;
+  const mapped = mapLandingContent(section);
+
   return (
     <div className="min-h-screen bg-bg-base text-text-primary flex flex-col overflow-x-hidden pb-20">
       
@@ -33,13 +42,13 @@ export default function LandingPage() {
         
         <div className="relative z-10 text-center flex flex-col items-center">
           <h1 className="text-5xl md:text-6xl font-medium leading-[1.1] mb-6 tracking-tight text-text-primary">
-            A única plataforma que cuida de <span className="text-brand italic">quem cuida.</span>
+            {mapped.title}
           </h1>
           <p className="text-lg text-text-secondary leading-relaxed mb-10 max-w-md mx-auto">
-            Transforme sua prática clínica com <strong className="text-text-primary font-medium">insights terapêuticos por IA</strong> e automação invisível via <strong className="text-text-primary font-medium">Telegram</strong>. Mais tempo para a escuta, menos tempo com burocracia.
+            {mapped.subtitle}
           </p>
-          <Link href="/auth/register" className="w-full max-w-xs bg-brand text-bg-base font-semibold text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(82,183,136,0.3)] hover:bg-brand-hover hover:scale-[1.02] transition-all duration-300 flex justify-center items-center gap-2">
-            Começar Teste Grátis
+          <Link href={mapped.primaryCtaHref} className="w-full max-w-xs bg-brand text-bg-base font-semibold text-lg py-4 rounded-xl shadow-[0_0_20px_rgba(82,183,136,0.3)] hover:bg-brand-hover hover:scale-[1.02] transition-all duration-300 flex justify-center items-center gap-2">
+            {mapped.primaryCtaLabel}
             <span className="material-symbols-outlined text-xl">arrow_right_alt</span>
           </Link>
           <p className="mt-4 text-xs text-text-muted">Sem cartão de crédito • Configure em 5 minutos</p>
@@ -72,8 +81,8 @@ export default function LandingPage() {
                 </p>
               </div>
               
-              <div className="bg-[#2481cc]/10 rounded-xl border border-[#2481cc]/30 p-4 shadow-sm flex items-start gap-3 mt-auto transform rotate-1 hover:rotate-0 transition-transform duration-500">
-                <div className="bg-[#2481cc] rounded-full w-8 h-8 flex items-center justify-center shrink-0">
+              <div className="rounded-xl border p-4 shadow-sm flex items-start gap-3 mt-auto transform rotate-1 hover:rotate-0 transition-transform duration-500" style={{ backgroundColor: "rgba(36, 129, 204, 0.1)", borderColor: "rgba(36, 129, 204, 0.3)" }}>
+                <div className="rounded-full w-8 h-8 flex items-center justify-center shrink-0" style={{ backgroundColor: "#2481cc" }}>
                   <span className="material-symbols-outlined text-white text-sm">send</span>
                 </div>
                 <div>
@@ -99,62 +108,74 @@ export default function LandingPage() {
 
       {/* ═══════ FEATURES S12 ═══════ */}
       <section className="px-5 space-y-6 max-w-md mx-auto self-center relative z-10 w-full">
-        <div className="glass-card rounded-2xl p-6 relative overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-          <div className="absolute top-0 right-0 w-32 h-32 bg-brand/10 blur-2xl rounded-full -mr-10 -mt-10"></div>
-          <div className="w-12 h-12 rounded-full border border-border-subtle bg-bg-elevated flex items-center justify-center mb-5 glow-mint">
-            <span className="material-symbols-outlined text-brand">calendar_month</span>
-          </div>
-          <h3 className="text-2xl font-display mb-2 text-text-primary">Agenda Inteligente</h3>
-          <p className="text-text-secondary text-sm leading-relaxed mb-4">
-            Página pública de autoagendamento com pagamento integrado via Stripe. Reduza o atrito e capture leads 24/7.
-          </p>
-          <ul className="space-y-2 text-xs text-text-muted">
-            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-[16px] text-brand">check</span> Fuso horário automático</li>
-            <li className="flex items-center gap-2"><span className="material-symbols-outlined text-[16px] text-brand">check</span> Salas de vídeo HD (Daily.co)</li>
-          </ul>
-        </div>
-
-        <div className="glass-card rounded-2xl p-6 border-brand/30 glow-mint relative shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-          <div className="w-12 h-12 rounded-full border border-brand/50 bg-brand/10 flex items-center justify-center mb-5">
-            <span className="material-symbols-outlined text-brand">psychology</span>
-          </div>
-          <h3 className="text-2xl font-display mb-2 text-text-primary">IA Clínica via OpenRouter</h3>
-          <p className="text-text-secondary text-sm leading-relaxed mb-5">
-            Modelos avançados (Claude 3.5 Sonnet) analisam suas anotações brutas e geram resumos clínicos com estrita confidencialidade.
-          </p>
-          <div className="bg-linear-to-b from-[#16221a] to-bg-elevated rounded-xl p-4 border border-border-subtle shadow-inner">
-            <div className="flex items-center gap-2 mb-3 border-b border-border-subtle pb-2">
-              <div className="w-2 h-2 rounded-full bg-brand animate-pulse"></div>
-              <span className="text-xs text-text-muted font-mono">Resumo Gerado • Sessão #12</span>
+        {mapped.blocks[0] && (
+          <div className="glass-card rounded-2xl p-6 relative overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-brand/10 blur-2xl rounded-full -mr-10 -mt-10"></div>
+            <div className="w-12 h-12 rounded-full border border-border-subtle bg-bg-elevated flex items-center justify-center mb-5 glow-mint">
+              <span className="material-symbols-outlined text-brand">calendar_month</span>
             </div>
-            <p className="text-sm text-text-secondary italic font-display leading-relaxed mb-3">
-              &quot;Paciente demonstrou ambivalência em relação à figura paterna. Insight principal: repetição de padrão de evitação em relações de autoridade...&quot;
+            <h3 className="text-2xl font-display mb-2 text-text-primary">
+              {pickString(mapped.blocks[0]?.title, "Agenda Inteligente")}
+            </h3>
+            <p className="text-text-secondary text-sm leading-relaxed mb-4">
+              {pickString(mapped.blocks[0]?.description, "Página pública de autoagendamento com pagamento integrado via Stripe. Reduza o atrito e capture leads 24/7.")}
             </p>
-            <div className="flex gap-2">
-              <span className="text-[10px] px-2 py-1 rounded-full bg-bg-base border border-border-subtle text-gold">Risco: Baixo</span>
-              <span className="text-[10px] px-2 py-1 rounded-full bg-bg-base border border-border-subtle text-brand">+2 Insights</span>
-            </div>
+            <ul className="space-y-2 text-xs text-text-muted">
+              <li className="flex items-center gap-2"><span className="material-symbols-outlined text-[16px] text-brand">check</span> Fuso horário automático</li>
+              <li className="flex items-center gap-2"><span className="material-symbols-outlined text-[16px] text-brand">check</span> Salas de vídeo HD nativas</li>
+            </ul>
           </div>
-        </div>
+        )}
 
-        <div className="glass-card rounded-2xl p-6 relative overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-          <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#2AABEE]/10 blur-2xl rounded-full -ml-10 -mb-10"></div>
-          <div className="w-12 h-12 rounded-full border border-border-subtle bg-bg-elevated flex items-center justify-center mb-5">
-            <span className="material-symbols-outlined text-[#2AABEE]">send</span>
-          </div>
-          <h3 className="text-2xl font-display mb-2 text-text-primary">Telegram Bot Nativo</h3>
-          <p className="text-text-secondary text-sm leading-relaxed mb-4">
-            O fim do WhatsApp manual. Seu bot exclusivo agenda sessões, envia lembretes e gerencia cobranças automaticamente.
-          </p>
-          <div className="bg-bg-base rounded-lg p-3 border border-border-subtle flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center shrink-0">
-              <span className="material-symbols-outlined text-brand text-[16px]">robot_2</span>
+        {mapped.blocks[1] && (
+          <div className="glass-card rounded-2xl p-6 border-brand/30 glow-mint relative shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+            <div className="w-12 h-12 rounded-full border border-brand/50 bg-brand/10 flex items-center justify-center mb-5">
+              <span className="material-symbols-outlined text-brand">psychology</span>
             </div>
-            <div>
-              <p className="text-xs text-text-secondary">⏰ Lembrete: Sessão amanhã às 16h. Link de acesso gerado.</p>
+            <h3 className="text-2xl font-display mb-2 text-text-primary">
+              {pickString(mapped.blocks[1]?.title, "IA Clínica")}
+            </h3>
+            <p className="text-text-secondary text-sm leading-relaxed mb-5">
+              {pickString(mapped.blocks[1]?.description, "Modelos avançados analisam suas anotações brutas e geram resumos clínicos com confidencialidade.")}
+            </p>
+            <div className="bg-linear-to-b from-[#16221a] to-bg-elevated rounded-xl p-4 border border-border-subtle shadow-inner">
+              <div className="flex items-center gap-2 mb-3 border-b border-border-subtle pb-2">
+                <div className="w-2 h-2 rounded-full bg-brand animate-pulse"></div>
+                <span className="text-xs text-text-muted font-mono">Resumo Gerado • Sessão #12</span>
+              </div>
+              <p className="text-sm text-text-secondary italic font-display leading-relaxed mb-3">
+                &quot;Paciente demonstrou ambivalência em relação à figura paterna. Insight principal: repetição de padrão de evitação...&quot;
+              </p>
+              <div className="flex gap-2">
+                <span className="text-[10px] px-2 py-1 rounded-full bg-bg-base border border-border-subtle text-gold">Risco: Baixo</span>
+                <span className="text-[10px] px-2 py-1 rounded-full bg-bg-base border border-border-subtle text-brand">+2 Insights</span>
+              </div>
             </div>
           </div>
-        </div>
+        )}
+
+        {mapped.blocks[2] && (
+          <div className="glass-card rounded-2xl p-6 relative overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#2AABEE]/10 blur-2xl rounded-full -ml-10 -mb-10"></div>
+            <div className="w-12 h-12 rounded-full border border-border-subtle bg-bg-elevated flex items-center justify-center mb-5">
+              <span className="material-symbols-outlined text-[#2AABEE]">send</span>
+            </div>
+            <h3 className="text-2xl font-display mb-2 text-text-primary">
+              {pickString(mapped.blocks[2]?.title, "Telegram Bot Nativo")}
+            </h3>
+            <p className="text-text-secondary text-sm leading-relaxed mb-4">
+              {pickString(mapped.blocks[2]?.description, "O fim do WhatsApp manual. Seu bot exclusivo agenda sessões, envia lembretes e gerencia cobranças automaticamente.")}
+            </p>
+            <div className="bg-bg-base rounded-lg p-3 border border-border-subtle flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-brand/20 flex items-center justify-center shrink-0">
+                <span className="material-symbols-outlined text-brand text-[16px]">robot_2</span>
+              </div>
+              <div>
+                <p className="text-xs text-text-secondary">⏰ Lembrete: Sessão amanhã às 16h. Link de acesso gerado.</p>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       {/* ═══════ POR QUE PSIQUE S12 ═══════ */}
@@ -200,8 +221,8 @@ export default function LandingPage() {
       </section>
 
       <div className="fixed bottom-0 left-0 w-full p-4 bg-linear-to-t from-bg-base via-bg-base to-transparent z-50 flex justify-center pb-8 pointer-events-none">
-        <Link href="/pricing" className="pointer-events-auto w-full max-w-sm bg-brand hover:bg-brand-hover text-bg-base font-medium py-4 px-6 rounded-full shadow-[0_0_20px_rgba(82,183,136,0.3)] transition-all flex items-center justify-center gap-2">
-          Descobrir Planos
+        <Link href={mapped.secondaryCtaHref} className="pointer-events-auto w-full max-w-sm bg-brand hover:bg-brand-hover text-bg-base font-medium py-4 px-6 rounded-full shadow-[0_0_20px_rgba(82,183,136,0.3)] transition-all flex items-center justify-center gap-2">
+          {mapped.secondaryCtaLabel}
           <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
         </Link>
       </div>

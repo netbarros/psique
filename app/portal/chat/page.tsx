@@ -130,7 +130,7 @@ export default function ChatPage() {
   }
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-124px)] w-full max-w-4xl flex-col px-4 pb-3 pt-4 sm:px-6 sm:pt-6">
+    <div className="mx-auto flex h-[calc(100svh-124px)] w-full max-w-4xl flex-col overflow-x-hidden px-4 pb-3 pt-4 sm:px-6 sm:pt-6">
       <header className="mb-4 rounded-2xl border border-portal-border-soft bg-white p-4 shadow-sm">
         <div className="flex items-center gap-3">
           <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-portal-bg-subtle-2 text-portal-brand">
@@ -227,7 +227,7 @@ export default function ChatPage() {
               onKeyDown={handleEnter}
               rows={1}
               placeholder="Escreva sua mensagem..."
-              className="max-h-32 min-h-[46px] flex-1 resize-none rounded-xl border border-portal-border-soft bg-white px-4 py-3 text-sm text-portal-text-primary outline-none transition-colors placeholder:text-portal-text-placeholder focus:border-portal-brand focus:ring-2 focus:ring-portal-brand/20"
+              className="max-h-24 min-h-[46px] flex-1 resize-none rounded-xl border border-portal-border-soft bg-white px-4 py-3 text-sm text-portal-text-primary outline-none transition-colors placeholder:text-portal-text-placeholder focus:border-portal-brand focus:ring-2 focus:ring-portal-brand/20"
             />
             <button
               type="button"

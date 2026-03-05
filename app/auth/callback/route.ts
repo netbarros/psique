@@ -23,9 +23,42 @@ export async function GET(request: NextRequest) {
     }
 
     const userRole = (data.user?.user_metadata?.role as string | undefined) ?? "therapist";
+    const normalizedRole =
+      userRole === "patient" || userRole === "master_admin" ? userRole : "therapist";
+
+    if (data.user && data.session) {
+      const admin = createAdminClient();
+
+      await admin
+        .from("user_roles")
+        .upsert(
+          {
+            user_id: data.user.id,
+            role: normalizedRole,
+          },
+          { onConflict: "user_id" },
+        );
+
+      if (normalizedRole === "master_admin") {
+        await admin
+          .from("master_admin_profiles")
+          .upsert(
+            {
+              user_id: data.user.id,
+              display_name:
+                data.user.user_metadata?.name ??
+                data.user.user_metadata?.full_name ??
+                data.user.email ??
+                "Master Admin",
+              status: "active",
+            },
+            { onConflict: "user_id" },
+          );
+      }
+    }
 
     // Patient bootstrap: attach auth user to existing patient row by email.
-    if (data.user && data.session && userRole === "patient") {
+    if (data.user && data.session && normalizedRole === "patient") {
       const admin = createAdminClient();
 
       const { data: patientByUser } = await admin
@@ -59,6 +92,10 @@ export async function GET(request: NextRequest) {
       }
 
       return NextResponse.redirect(`${origin}${next ?? "/portal"}`);
+    }
+
+    if (data.user && data.session && normalizedRole === "master_admin") {
+      return NextResponse.redirect(`${origin}${next ?? "/admin"}`);
     }
 
     // Therapist bootstrap.

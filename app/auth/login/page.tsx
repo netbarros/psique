@@ -46,7 +46,7 @@ export default function LoginPage() {
     }
 
     try {
-      const { error: signInError } = await supabase.auth.signInWithPassword({
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -58,7 +58,12 @@ export default function LoginPage() {
         localStorage.removeItem("psique_remembered_email");
       }
 
-      router.push(role === "patient" ? "/portal" : "/dashboard");
+      const signedRole = signInData.user?.user_metadata?.role;
+      if (signedRole === "master_admin") {
+        router.push("/admin");
+      } else {
+        router.push(role === "patient" ? "/portal" : "/dashboard");
+      }
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Erro desconhecido";
       setError(translateAuthError(msg));

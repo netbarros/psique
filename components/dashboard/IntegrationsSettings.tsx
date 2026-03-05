@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { toast } from "@/components/ui/Toast";
+import LegacyWriteDisabledBanner from "@/components/dashboard/LegacyWriteDisabledBanner";
+import { parseLegacyWriteDisabledPayload, type LegacyWriteDisabledPayload } from "@/lib/frontend/legacy-settings";
 
 interface Props {
   initialOpenRouter?: string | null;
@@ -21,11 +23,13 @@ export default function IntegrationsSettings({
   const [stripeAccount, setStripeAccount] = useState(initialStripe ?? "");
   const [saving, setSaving] = useState(false);
   const [stripeConnecting, setStripeConnecting] = useState(false);
+  const [legacyConflict, setLegacyConflict] = useState<LegacyWriteDisabledPayload | null>(null);
 
   const openRouterConnected = Boolean(openRouterKey);
 
   const saveIntegrations = async () => {
     setSaving(true);
+    setLegacyConflict(null);
     try {
       const response = await fetch("/api/settings/integrations", {
         method: "PATCH",
@@ -45,6 +49,12 @@ export default function IntegrationsSettings({
       };
 
       if (!response.ok) {
+        const conflict = parseLegacyWriteDisabledPayload(payload);
+        if (conflict) {
+          setLegacyConflict(conflict);
+          toast.warning("Escrita legada desativada. Use /admin para atualizar integrações.");
+          return;
+        }
         throw new Error(payload.error ?? "Erro ao salvar integrações");
       }
 
@@ -64,6 +74,7 @@ export default function IntegrationsSettings({
   const connectStripe = async () => {
     if (stripeConnecting) return;
     setStripeConnecting(true);
+    setLegacyConflict(null);
     try {
       const response = await fetch("/api/settings/integrations/stripe/connect", {
         method: "POST",
@@ -74,6 +85,12 @@ export default function IntegrationsSettings({
       };
 
       if (!response.ok || !payload.data?.url) {
+        const conflict = parseLegacyWriteDisabledPayload(payload);
+        if (conflict) {
+          setLegacyConflict(conflict);
+          toast.warning("Stripe Connect legado bloqueado. Continue no painel /admin.");
+          return;
+        }
         throw new Error(payload.error ?? "Falha ao iniciar Stripe Connect");
       }
 
@@ -92,6 +109,7 @@ export default function IntegrationsSettings({
 
   return (
     <div className="flex flex-col gap-4">
+      {legacyConflict ? <LegacyWriteDisabledBanner conflict={legacyConflict} /> : null}
       <IntegrationItem
         id="openrouter"
         name="OpenRouter (IA / LLM)"
@@ -101,6 +119,7 @@ export default function IntegrationsSettings({
         onChange={setOpenRouterKey}
         placeholder="Opcional (usa a chave padrão da plataforma Psique)"
         type="password"
+        readOnly={Boolean(legacyConflict)}
       />
 
       <IntegrationItem
@@ -112,6 +131,7 @@ export default function IntegrationsSettings({
         onChange={setTelegramToken}
         placeholder="123456789:ABCDefghIJKlmnopQRSTuvwxYZ"
         type="password"
+        readOnly={Boolean(legacyConflict)}
       />
 
       <IntegrationItem
@@ -123,13 +143,14 @@ export default function IntegrationsSettings({
         onChange={setStripeAccount}
         placeholder="acct_1Ou..."
         type="text"
+        readOnly={Boolean(legacyConflict)}
       />
 
       <div className="flex justify-end">
         <button
           type="button"
           onClick={connectStripe}
-          disabled={stripeConnecting}
+          disabled={stripeConnecting || Boolean(legacyConflict)}
           className={`rounded-xl px-4 py-2 text-[12px] font-semibold transition-all ${
             stripeConnecting
               ? "cursor-not-allowed border border-border-subtle bg-surface text-text-muted"
@@ -144,7 +165,7 @@ export default function IntegrationsSettings({
         <button
           type="button"
           onClick={saveIntegrations}
-          disabled={saving}
+          disabled={saving || Boolean(legacyConflict)}
           className={`rounded-xl px-6 py-2.5 text-[13px] font-semibold transition-all ${
             saving
               ? "cursor-not-allowed border border-border-subtle bg-surface text-text-muted"
@@ -167,6 +188,7 @@ function IntegrationItem({
   onChange,
   placeholder,
   type,
+  readOnly = false,
 }: {
   id: string;
   name: string;
@@ -176,6 +198,7 @@ function IntegrationItem({
   onChange: (v: string) => void;
   placeholder: string;
   type: string;
+  readOnly?: boolean;
 }) {
   return (
     <div id={`integracao-${id}`} className="flex flex-col gap-3 border-b border-border-subtle py-4">
@@ -209,8 +232,11 @@ function IntegrationItem({
         type={type}
         value={value}
         onChange={(e) => onChange(e.target.value)}
+        readOnly={readOnly}
+        disabled={readOnly}
         placeholder={placeholder}
-        className="w-full rounded-lg border border-border-subtle bg-bg-base px-3.5 py-2.5 text-[13px] text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-border-strong"
+        className="scheme-dark w-full rounded-lg border border-border-subtle bg-bg-base px-3.5 py-2.5 text-[13px] text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-border-strong"
+        data-theme="dark"
       />
     </div>
   );

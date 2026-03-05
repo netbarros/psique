@@ -227,20 +227,20 @@
       "kind": "api",
       "path": "/api/settings/profile",
       "methods": ["PATCH"],
-      "authModel": "authenticated",
-      "validation": "zod_profile_payload",
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
       "criticality": "major",
-      "notes": "Configurações de perfil"
+      "notes": "Legacy: escrita desabilitada, migrado para domínio admin"
     },
     {
       "id": "NSR-024",
       "kind": "api",
       "path": "/api/settings/security",
       "methods": ["PATCH"],
-      "authModel": "authenticated",
-      "validation": "zod_security_payload",
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
       "criticality": "major",
-      "notes": "Configurações de segurança"
+      "notes": "Legacy: escrita desabilitada, migrado para domínio admin"
     },
     {
       "id": "NSR-025",
@@ -297,20 +297,150 @@
       "kind": "api",
       "path": "/api/settings/integrations",
       "methods": ["PATCH"],
-      "authModel": "authenticated",
-      "validation": "provider_keys_and_account_validation",
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
       "criticality": "critical",
-      "notes": "Configurações de integrações (OpenRouter, Telegram, Stripe)"
+      "notes": "Legacy: escrita desabilitada, migrado para /api/admin/integrations/:provider"
     },
     {
       "id": "NSR-031",
       "kind": "api",
       "path": "/api/settings/integrations/stripe/connect",
       "methods": ["POST"],
-      "authModel": "authenticated",
-      "validation": "stripe_connect_onboarding_or_login_link",
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
       "criticality": "critical",
-      "notes": "Fluxo Stripe Connect Express"
+      "notes": "Legacy: escrita desabilitada, migrado para /api/admin/integrations/stripe"
+    },
+    {
+      "id": "NSR-032",
+      "kind": "api",
+      "path": "/api/admin/plans",
+      "methods": ["GET"],
+      "authModel": "authenticated_master_admin",
+      "validation": "query_status_locale",
+      "criticality": "critical",
+      "notes": "Lista revisões de planos no domínio master_admin"
+    },
+    {
+      "id": "NSR-033",
+      "kind": "api",
+      "path": "/api/admin/plans/drafts",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_plan_draft_payload",
+      "criticality": "critical",
+      "notes": "Criação de draft de plano com versionamento"
+    },
+    {
+      "id": "NSR-034",
+      "kind": "api",
+      "path": "/api/admin/plans/drafts/[draftId]",
+      "methods": ["PATCH"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_patch_if_match_optional",
+      "criticality": "critical",
+      "notes": "Atualização de draft de plano com ETag otimista"
+    },
+    {
+      "id": "NSR-035",
+      "kind": "api",
+      "path": "/api/admin/plans/drafts/[draftId]/publish",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "if_match_required_publish",
+      "criticality": "critical",
+      "notes": "Publicação de revisão de plano (draft -> published)"
+    },
+    {
+      "id": "NSR-036",
+      "kind": "api",
+      "path": "/api/admin/content",
+      "methods": ["GET"],
+      "authModel": "authenticated_master_admin",
+      "validation": "query_page_locale_status",
+      "criticality": "critical",
+      "notes": "Lista revisões de conteúdo público por página/locale"
+    },
+    {
+      "id": "NSR-037",
+      "kind": "api",
+      "path": "/api/admin/content/drafts",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_content_draft_payload",
+      "criticality": "critical",
+      "notes": "Criação de draft de conteúdo público versionado"
+    },
+    {
+      "id": "NSR-038",
+      "kind": "api",
+      "path": "/api/admin/content/drafts/[draftId]",
+      "methods": ["PATCH"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_patch_if_match_optional",
+      "criticality": "critical",
+      "notes": "Atualização de draft de conteúdo com ETag otimista"
+    },
+    {
+      "id": "NSR-039",
+      "kind": "api",
+      "path": "/api/admin/content/drafts/[draftId]/publish",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "if_match_required_publish",
+      "criticality": "critical",
+      "notes": "Publicação de revisão de conteúdo (draft -> published)"
+    },
+    {
+      "id": "NSR-040",
+      "kind": "api",
+      "path": "/api/admin/integrations",
+      "methods": ["GET"],
+      "authModel": "authenticated_master_admin",
+      "validation": "list_integrations_without_secrets",
+      "criticality": "critical",
+      "notes": "Leitura de integrações globais sem exposição de segredos"
+    },
+    {
+      "id": "NSR-041",
+      "kind": "api",
+      "path": "/api/admin/integrations/[provider]",
+      "methods": ["PATCH"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_provider_config_payload",
+      "criticality": "critical",
+      "notes": "Atualização global de integração com trilha de auditoria"
+    },
+    {
+      "id": "NSR-042",
+      "kind": "api",
+      "path": "/api/admin/audit/events",
+      "methods": ["GET"],
+      "authModel": "authenticated_master_admin",
+      "validation": "query_limit",
+      "criticality": "major",
+      "notes": "Timeline de auditoria do domínio admin"
+    },
+    {
+      "id": "NSR-043",
+      "kind": "api",
+      "path": "/api/public/plans",
+      "methods": ["GET"],
+      "authModel": "public_readonly",
+      "validation": "published_only_locale_filter",
+      "criticality": "critical",
+      "notes": "Catálogo público de planos publicados"
+    },
+    {
+      "id": "NSR-044",
+      "kind": "api",
+      "path": "/api/public/content",
+      "methods": ["GET"],
+      "authModel": "public_readonly",
+      "validation": "published_only_page_locale_filter",
+      "criticality": "critical",
+      "notes": "Conteúdo público publicado por página/locale"
     }
   ]
 }

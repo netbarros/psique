@@ -20,6 +20,16 @@ export async function POST() {
 
   const admin = createAdminClient();
 
+  await admin
+    .from("user_roles")
+    .upsert(
+      {
+        user_id: user.id,
+        role: "patient",
+      },
+      { onConflict: "user_id" },
+    );
+
   const { data: existingPatientByUser } = await admin
     .from("patients")
     .select("id")

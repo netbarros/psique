@@ -1,102 +1,193 @@
 # Backend Contract — Frontend/Layout Agent (CLAUDE Partner)
 
-Data: 2026-03-05
-Owner: Backend Architecture (Codex)
-Status: Active / Blocking for integration quality
+Data: 2026-03-05  
+Owner: Backend Architecture (Codex)  
+Status: Active / Enterprise Synced (master_admin aplicado no remoto)
 
-Checklist operacional de PR: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`
+Checklist operacional de PR: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`  
+Contrato backend completo: `docs/backend/BACKEND-API-SURFACE.md`
 
-Escopo deste documento: subconjunto de contratos consumidos por frontend/layout.
-Contrato backend completo (30 APIs canônicas): `docs/backend/BACKEND-API-SURFACE.md`.
+## 0) Resumo desta atualização (o que foi feito no backend)
+
+1. Migrações aplicadas no Supabase remoto até:
+   - `20260305000007_master_admin_domain.sql`
+   - `20260305000008_master_admin_backfill.sql`
+2. Domínio `master_admin` está ativo com:
+   - `user_roles`
+   - `master_admin_profiles`
+   - `plan_documents`, `plan_revisions`
+   - `content_documents`, `content_revisions`
+   - `platform_integrations`
+   - `admin_audit_events`
+3. Backfill inicial publicado:
+   - Planos: `solo`, `pro` (`pt-BR`)
+   - Conteúdo: `landing`, `pricing`, `checkout_secure`, `booking`, `booking_success` (section `main`, locale `pt-BR`)
+4. Validação runtime completa: `supabase:preflight:runtime` 14/14 PASS.
+5. Verificação backend completa: `verify:backend:runtime` PASS.
 
 ## 1) Boundary of responsibilities
 
-1. Frontend agent (layout) can change UI/UX, CSS, spacing, typography, components composition.
-2. Frontend agent must NOT rename, move, or change backend route contracts.
-3. Frontend agent must NOT bypass backend by writing clinical/business data directly from client components.
-4. Any new data need must be requested as backend contract change (new endpoint or payload evolution).
+1. Frontend agent pode alterar layout/UI/estados visuais sem alterar contrato HTTP.
+2. Frontend agent não pode renomear path/method dos endpoints.
+3. Frontend agent não pode escrever diretamente em tabelas sensíveis via client.
+4. Qualquer dado novo exige evolução de contrato backend.
 
-## 2) Integration rules (mandatory)
+## 2) Regras de autenticação e roteamento (obrigatórias)
 
-1. Keep canonical patient navigation on `/portal/*`.
-2. Use API routes below exactly as documented.
-3. Handle `401`/`403` as auth/session issues (redirect/login flow), not generic errors.
-4. Handle `409` as business conflict (slot race / duplicate) with user-facing retry message.
-5. Handle `429` on AI endpoints with backoff and non-blocking UI fallback.
-6. Never assume 200-only flow; always parse `{ error }` bodies.
+1. `proxy.ts` protege `/admin`, `/dashboard`, `/portal`.
+2. `/admin/*` exige usuário autenticado + `user_roles.role = master_admin`.
+3. `app/admin/layout.tsx` reforça gate:
+   - sem sessão -> redirect `/auth/login?next=/admin`
+   - role diferente de `master_admin` -> redirect `/dashboard?error=master_admin_required`
+4. Login:
+   - `master_admin` -> `/admin`
+   - `therapist` -> `/dashboard`
+   - `patient` -> `/portal`
 
-## 3) Backend surface consumed by frontend
+## 3) Endpoints que o frontend deve consumir
 
-### Patient/Portal
-- `POST /api/patient/appointments/checkout`
-  - success: `{ success: true, data: { appointmentId, checkoutUrl } }`
-  - conflict: `409` when slot was taken
-- `GET|POST /api/patient/journal`
-- `GET|POST /api/patient/mood`
-- `GET /api/patient/chat/threads`
-- `GET /api/patient/chat/threads/[id]/messages`
-- `POST /api/patient/chat/messages`
+### Público (somente publicado)
+1. `GET /api/public/plans?locale=pt-BR`
+2. `GET /api/public/content?page=<pageKey>&locale=pt-BR`
 
-### Public booking
-- `POST /api/booking/checkout`
-  - success: `{ success: true, data: { appointmentId, checkoutUrl } }`
-  - conflict: `409` for race conditions
+### Admin (somente master_admin)
+1. `GET /api/admin/plans?status=draft|published|archived&locale=pt-BR`
+2. `POST /api/admin/plans/drafts`
+3. `PATCH /api/admin/plans/drafts/:draftId` (`If-Match` opcional)
+4. `POST /api/admin/plans/drafts/:draftId/publish` (`If-Match` obrigatório)
+5. `GET /api/admin/content?page=<pageKey>&locale=pt-BR&status=...`
+6. `POST /api/admin/content/drafts`
+7. `PATCH /api/admin/content/drafts/:draftId` (`If-Match` opcional)
+8. `POST /api/admin/content/drafts/:draftId/publish` (`If-Match` obrigatório)
+9. `GET /api/admin/integrations`
+10. `PATCH /api/admin/integrations/:provider`
+11. `GET /api/admin/audit/events?limit=<n>`
 
-### Therapist dashboard actions
-- `POST /api/auth/mfa/enroll`
-- `POST /api/auth/mfa/verify`
-- `POST /api/auth/mfa/unenroll`
-- `POST /api/auth/patient/bootstrap`
-- `POST /api/ai/summarize`
-- `POST /api/ai/insights`
-- `POST /api/appointments/[id]/cancel`
-- `PUT /api/appointments/[id]/reschedule`
-- `PATCH /api/sessions/[id]/close`
-- `PATCH /api/settings/profile`
-- `PATCH /api/settings/security`
-- `PATCH /api/settings/integrations`
-- `POST /api/settings/integrations/stripe/connect`
-- `GET /api/audit/events`
+### Legado de escrita (não usar em telas novas)
+1. `PATCH /api/settings/profile` -> `409`
+2. `PATCH /api/settings/security` -> `409`
+3. `PATCH /api/settings/integrations` -> `409`
+4. `POST /api/settings/integrations/stripe/connect` -> `409`
 
-## 4) Error semantics to preserve in UI
+## 4) Semântica de payload/response (padrão de envelope)
 
-1. `400`: invalid input (show inline validation or toast).
-2. `401`: unauthenticated (redirect/login CTA).
-3. `403`: forbidden (permission copy, no retry loop).
-4. `404`: entity not found / unavailable.
-5. `409`: state conflict (slot already booked, stale state).
-6. `429`: rate limited (cooldown UX).
-7. `500`: internal error fallback.
+1. Resposta de sucesso padrão:
+   - `{ success: true, data: ... }`
+2. Erro padrão:
+   - `{ error: string, code?: string, ... }`
+3. Contratos canônicos:
+   - `lib/contracts/admin/plans.ts`
+   - `lib/contracts/admin/content.ts`
+   - `lib/contracts/public/plans.ts`
+   - `lib/contracts/public/content.ts`
 
-## 5) Coordination protocol with backend owner
+## 5) Concorrência otimista e publish flow
 
-1. If layout requires extra data fields, send request with:
-   - endpoint
-   - required fields
-   - fallback behavior
-   - acceptance test
-2. Backend owner returns contract update before frontend merge.
-3. Frontend merges only after `test:api` is green.
+1. ETag é campo de revisão (`etag`) e muda em cada update/publish.
+2. `PATCH draft`:
+   - aceita `If-Match` opcional
+   - se enviado e divergente -> `409 ETAG_MISMATCH`
+3. `POST publish`:
+   - exige `If-Match` obrigatório
+   - sem header -> `428 MISSING_IF_MATCH`
+   - header stale -> `409 ETAG_MISMATCH`
+4. Publicação faz:
+   - arquiva published anterior do mesmo documento
+   - publica revisão alvo
+   - grava auditoria
+   - revalida páginas públicas
 
-## 6) Non-breaking change policy
+## 6) Chaves e convenções para o frontend (não inventar nomes)
 
-1. Additive changes only (new optional fields/endpoints).
-2. No removal/rename of existing response keys without versioning.
-3. Keep route method and path stable.
+1. Plan keys atuais: `solo`, `pro`.
+2. Locale padrão: `pt-BR`.
+3. Page keys de conteúdo público:
+   - `landing`
+   - `pricing`
+   - `checkout_secure`
+   - `booking`
+   - `booking_success`
+4. Section key padrão: `main`.
+5. Status de revisão:
+   - `draft`
+   - `published`
+   - `archived`
 
-## 7) Validation gates
+## 7) Error semantics obrigatórias no frontend
 
-Frontend agent must run before handoff:
+1. `400` validação de query.
+2. `401` sessão expirada/não autenticado.
+3. `403` permissão insuficiente.
+4. `404` recurso não encontrado.
+5. `409` conflito de estado ou endpoint legado bloqueado.
+6. `422` payload inválido por schema.
+7. `428` ausência de `If-Match` em publish.
+8. `500` fallback resiliente.
+
+## 8) Fluxo mínimo para conectar telas admin sem regressão
+
+1. Listar revisões (`GET`) e renderizar `etag` por item.
+2. Editar draft com `PATCH` enviando `If-Match` do item aberto.
+3. Publicar com `POST publish` enviando `If-Match` obrigatório.
+4. Em `409/428`, mostrar conflito e forçar refresh da revisão antes de novo submit.
+5. Em integrações, usar somente `/api/admin/integrations*` (nunca `/api/settings/*`).
+
+## 9) Credenciais E2E para validação dos 3 dashboards
+
+1. `master_admin`
+   - email: `e2e.master_admin@psique.local`
+   - senha: `E2E_Psique_123!`
+2. `therapist`
+   - email: `e2e.therapist@psique.local`
+   - senha: `E2E_Psique_123!`
+3. `patient`
+   - email: `e2e.patient@psique.local`
+   - senha: `E2E_Psique_123!`
+
+## 10) Gates obrigatórios antes do merge frontend
+
 1. `npm run test:api`
 2. `npm run typecheck`
-3. (when touching routing contracts) `npm run contract:non-screen:check`
-4. `npm run backend:audit`
+3. `npm run backend:audit`
+4. `npm run contract:non-screen:check`
+5. Se houve alteração documental: `npm run docs:sync:check`
 
-## 8) Backend release checklist
+## 11) Política de breaking change
 
-1. `npm run verify:backend` com sucesso (gate estático determinístico).
-2. Quando houver acesso a ambiente Supabase real, executar também `npm run verify:backend:runtime`.
-3. `docs/baselines/mf24_supabase_deep/preflight-report.json` atualizado (quando aplicável).
-4. `criticalFailed === 0` em `supabase:preflight` (execução runtime).
-5. `docs/backend/BACKEND-API-SURFACE.md` sincronizado com `NON_SCREEN_ROUTES.json`.
-6. Sem mudanças breaking em path/method/shape de sucesso existente.
+1. Mudanças aditivas apenas.
+2. Remoção/rename de endpoint ou campo só com versionamento + migração explícita.
+3. Qualquer quebra no contrato bloqueia merge.
+
+## 12) Bloco pronto para colar no agente em execução (incorporar no task/plan atual)
+
+```md
+ATUALIZAÇÃO OBRIGATÓRIA DE ESCOPO (IN-FLIGHT)
+
+Incorpore esta frente no task/plan atual em execução (não abrir trilha paralela).
+
+1) Atualize o plano corrente adicionando subtarefas de integração backend `master_admin`:
+- consumo de `/api/public/plans` e `/api/public/content` nas telas públicas;
+- consumo de `/api/admin/*` nas telas admin;
+- tratamento de `If-Match` (patch/publish) com UX de conflito (`409`) e missing header (`428`);
+- remoção de qualquer uso de escrita em `/api/settings/*` (agora legado 409).
+
+2) Restrições contratuais:
+- não alterar path/method dos endpoints;
+- não inventar chaves fora dos contratos (`planKey`, `pageKey`, `sectionKey`, `locale`, `status`, `etag`);
+- respeitar RBAC: `/admin/*` somente `master_admin`.
+
+3) Critérios de aceite no PR atual:
+- sem hardcode de catálogo público;
+- estados `loading/empty/error/conflict` implementados;
+- validações obrigatórias executadas: `test:api`, `typecheck`, `backend:audit`, `contract:non-screen:check`.
+
+4) Fonte de verdade:
+- `docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md`
+- `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`
+- `docs/backend/BACKEND-API-SURFACE.md`
+
+Credenciais E2E para validar os 3 dashboards:
+- master_admin: `e2e.master_admin@psique.local` / `E2E_Psique_123!`
+- therapist: `e2e.therapist@psique.local` / `E2E_Psique_123!`
+- patient: `e2e.patient@psique.local` / `E2E_Psique_123!`
+```

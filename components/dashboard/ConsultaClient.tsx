@@ -134,8 +134,8 @@ export default function ConsultaClient({
           </div>
         )}
         {/* Dark vignette gradient — topo e base */}
-        <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-bg-base/80 via-transparent to-bg-base/90" />
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(8,15,11,1)_100%)] opacity-40" />
+        <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-bg-base/90 via-transparent to-bg-base/95" />
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(8,15,11,1)_100%)] opacity-50 mix-blend-multiply" />
       </div>
 
       {/* ── Top bar: timer pill + controls (stitch S03) ─────────────────────── */}
@@ -161,10 +161,8 @@ export default function ConsultaClient({
       </div>
 
       {/* ── PiP (Picture-in-Picture) — 100×140 top right (stitch S03) ─────── */}
-      <div className="absolute right-5 top-28 z-10 h-[140px] w-[100px] overflow-hidden rounded-2xl border border-border-subtle shadow-[0_0_15px_rgba(82,183,136,0.15)]">
-        <div className="flex h-full w-full items-center justify-center bg-bg-elevated text-text-muted text-xs text-center p-2 leading-relaxed">
-          <span>Câmera<br/>local</span>
-        </div>
+      <div className="absolute right-5 top-28 z-10 flex h-[140px] w-[100px] flex-col items-center justify-center overflow-hidden rounded-2xl border border-brand/30 bg-bg-elevated glow-mint backdrop-blur-xl">
+        <span className="text-center text-xs leading-relaxed text-text-muted">Câmera<br />local</span>
       </div>
 
       {/* ── Patient name (stitch) ─────────────────────────────────────────── */}

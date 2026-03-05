@@ -121,6 +121,16 @@ export async function provisionTherapistForE2E(): Promise<ProvisionedTherapist> 
     throw new Error(therapistError?.message ?? "Unable to create E2E therapist profile");
   }
 
+  await admin
+    .from("user_roles")
+    .upsert(
+      {
+        user_id: userId,
+        role: "therapist",
+      },
+      { onConflict: "user_id" },
+    );
+
   return {
     email,
     password,
@@ -139,4 +149,3 @@ export async function cleanupProvisionedTherapist(data: ProvisionedTherapist): P
 
   await admin.auth.admin.deleteUser(data.userId);
 }
-

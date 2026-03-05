@@ -76,7 +76,7 @@ export default async function AgendarPage() {
     .from("availability")
     .select("day_of_week, start_time, end_time")
     .eq("therapist_id", patient.therapist_id)
-    .eq("active", true)
+    .eq("is_off", false)
     .order("day_of_week")
     .order("start_time");
   const availability = (availabilityData ?? []) as AvailabilitySlot[];
@@ -91,9 +91,21 @@ export default async function AgendarPage() {
     .gte("scheduled_at", new Date().toISOString())
     .lte("scheduled_at", twoWeeksAhead.toISOString());
 
-  const bookedEpochs = ((existingAppointments ?? []) as BookedAppointment[]).map((item) =>
-    new Date(item.scheduled_at).getTime()
-  );
+  const { data: blocks } = await supabase
+    .from("availability_blocks")
+    .select("blocked_at")
+    .eq("therapist_id", patient.therapist_id)
+    .gte("blocked_at", new Date().toISOString())
+    .lte("blocked_at", twoWeeksAhead.toISOString());
+
+  const bookedEpochs = [
+    ...((existingAppointments ?? []) as BookedAppointment[]).map((item) =>
+      new Date(item.scheduled_at).getTime()
+    ),
+    ...((blocks ?? []) as { blocked_at: string }[]).map((b) =>
+      new Date(b.blocked_at).getTime()
+    )
+  ];
 
   const availabilityByDay = new Map<number, AvailabilitySlot[]>();
   for (const slot of availability) {

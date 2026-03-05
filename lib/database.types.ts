@@ -24,6 +24,10 @@ export type MedicalRecordType =
   | "evolution"
   | "attachment"
   | "risk_assessment";
+export type UserRole = "master_admin" | "therapist" | "patient";
+export type AdminRevisionStatus = "draft" | "published" | "archived";
+export type MasterAdminProfileStatus = "active" | "inactive";
+export type PlatformIntegrationStatus = "active" | "inactive" | "invalid" | "draft";
 
 export type TherapistRow = {
   id: string;
@@ -255,6 +259,87 @@ export type TherapistSettingsRow = {
   blur_patient_data: boolean;
   created_at: string;
   updated_at: string;
+};
+
+export type UserRoleRow = {
+  user_id: string;
+  role: UserRole;
+  created_at: string;
+  updated_at: string;
+};
+
+export type MasterAdminProfileRow = {
+  user_id: string;
+  display_name: string;
+  status: MasterAdminProfileStatus;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PlanDocumentRow = {
+  id: string;
+  plan_key: string;
+  locale: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PlanRevisionRow = {
+  id: string;
+  document_id: string;
+  version: number;
+  status: AdminRevisionStatus;
+  payload_json: Json;
+  etag: string;
+  created_by: string | null;
+  published_by: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ContentDocumentRow = {
+  id: string;
+  page_key: string;
+  section_key: string;
+  locale: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type ContentRevisionRow = {
+  id: string;
+  document_id: string;
+  version: number;
+  status: AdminRevisionStatus;
+  payload_json: Json;
+  etag: string;
+  created_by: string | null;
+  published_by: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PlatformIntegrationRow = {
+  provider: string;
+  status: PlatformIntegrationStatus;
+  public_config_json: Json;
+  secret_ref: string | null;
+  last_validated_at: string | null;
+  updated_by: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type AdminAuditEventRow = {
+  id: string;
+  actor_user_id: string;
+  action: string;
+  resource_type: string;
+  resource_id: string;
+  diff_json: Json | null;
+  created_at: string;
 };
 
 type Relationship = {
@@ -500,12 +585,58 @@ export type Database = {
           },
         ]
       >;
+      user_roles: TableDef<UserRoleRow>;
+      master_admin_profiles: TableDef<MasterAdminProfileRow>;
+      plan_documents: TableDef<PlanDocumentRow>;
+      plan_revisions: TableDef<
+        PlanRevisionRow,
+        [
+          {
+            foreignKeyName: "plan_revisions_document_id_fkey";
+            columns: ["document_id"];
+            referencedRelation: "plan_documents";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      content_documents: TableDef<ContentDocumentRow>;
+      content_revisions: TableDef<
+        ContentRevisionRow,
+        [
+          {
+            foreignKeyName: "content_revisions_document_id_fkey";
+            columns: ["document_id"];
+            referencedRelation: "content_documents";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      platform_integrations: TableDef<PlatformIntegrationRow>;
+      admin_audit_events: TableDef<AdminAuditEventRow>;
     };
     Views: {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      is_master_admin: {
+        Args: {
+          uid: string;
+        };
+        Returns: boolean;
+      };
+      get_public_plans: {
+        Args: {
+          p_locale: string;
+        };
+        Returns: Json;
+      };
+      get_public_content: {
+        Args: {
+          p_page_key: string;
+          p_locale: string;
+        };
+        Returns: Json;
+      };
     };
     Enums: {
       [_ in never]: never;

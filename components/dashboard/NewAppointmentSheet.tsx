@@ -56,16 +56,10 @@ export function NewAppointmentSheet({
 
         if (insertError) throw insertError;
       } else {
-        // Here we insert a "bloqueio" type appointment, or whatever the DB expects
-        // But for standard appointments table, we can set status = 'blocked' if it exists.
-        // Assuming your standard allows "status" = "blocked" or "type" = "block"
-        // Let's use type = "block" and status = "confirmed" with no patient_id
-        const { error: insertError } = await supabase.from("appointments").insert({
+        const { error: insertError } = await supabase.from("availability_blocks").insert({
           therapist_id: therapist.id,
-          scheduled_at: scheduledAt.toISOString(),
-          duration_minutes: duration,
-          status: "confirmed",
-          type: "block",
+          blocked_at: scheduledAt.toISOString(),
+          reason: "Bloqueio manual",
         });
 
         if (insertError) throw insertError;
@@ -73,8 +67,8 @@ export function NewAppointmentSheet({
 
       setOpen(false);
       window.location.reload();
-    } catch (err: any) {
-      setError(err.message || "Erro inesperado");
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : "Erro inesperado");
     } finally {
       setIsLoading(false);
     }
@@ -191,7 +185,7 @@ export function NewAppointmentSheet({
                       name="date"
                       required
                       data-theme="dark"
-                      className="w-full rounded-xl border border-border-strong bg-bg-base py-2.5 pl-10 pr-3 text-sm text-text-primary outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand [color-scheme:dark]"
+                      className="w-full rounded-xl border border-border-strong bg-bg-base py-2.5 pl-10 pr-3 text-sm text-text-primary outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand scheme-dark"
                     />
                   </div>
                 </div>
@@ -209,7 +203,7 @@ export function NewAppointmentSheet({
                       required
                       step="1800"
                       data-theme="dark"
-                      className="w-full rounded-xl border border-border-strong bg-bg-base py-2.5 pl-10 pr-3 text-sm text-text-primary outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand [color-scheme:dark]"
+                      className="w-full rounded-xl border border-border-strong bg-bg-base py-2.5 pl-10 pr-3 text-sm text-text-primary outline-none transition-colors focus:border-brand focus:ring-1 focus:ring-brand scheme-dark"
                     />
                   </div>
                 </div>

@@ -12,6 +12,7 @@ test.describe("Public Navigation", () => {
     await expect(
       page.getByRole("heading", { name: /A única plataforma que cuida de|Transforme agenda lotada em/i })
     ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(/landing_.*_unavailable|cta_.*_unavailable|content_block_.*_unavailable/i);
   });
 
   test("auth routes are public", async ({ page }) => {
@@ -37,10 +38,12 @@ test.describe("Public Navigation", () => {
         name: /investimento na sua excelência clínica|Escolha o plano para operar sua clínica com previsibilidade/i,
       })
     ).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(/pricing_.*_unavailable|faq_.*_/i);
 
     const checkout = await page.goto("/checkout/secure");
     expect(checkout?.status()).toBe(200);
     await expect(page.getByRole("heading", { name: /Plano (Clínica Pro|Analista Solo)/i })).toBeVisible();
+    await expect(page.locator("body")).not.toContainText(/checkout_.*_unavailable|trust_badges_unavailable|selected_plan_unavailable/i);
   });
 
   test("404 page renders for unknown routes", async ({ page }) => {

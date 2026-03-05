@@ -1,35 +1,33 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-
+import { getContentSection, getPublicContent, getPublicPlans } from "@/lib/frontend/public-catalog-client";
+import { getDefaultPublicPlans, mapCheckoutContent, mapPublicPlan } from "@/lib/frontend/content-mappers";
 
 export const metadata: Metadata = {
-  title: "Secure Checkout",
-  description: "Fluxo seguro de ativação da plataforma Psique.",
+  title: "Secure Checkout | Psique",
+  description: "Checkout público dinâmico gerenciado por master_admin.",
 };
 
-const checkoutPlans = {
-  solo: {
-    name: "Plano Analista Solo",
-    description: "Essencial para operação clínica individual com IA.",
-    total: "R$ 297,00",
-  },
-  pro: {
-    name: "Plano Clínica Pro",
-    description: "Acesso completo com IA e automação clínica para escala.",
-    total: "R$ 497,00",
-  },
-} as const;
-
-type CheckoutPageProps = {
+type SecureCheckoutPageProps = {
   searchParams?: Promise<{
     plan?: string;
   }>;
 };
 
-export default async function SecureCheckoutPage({ searchParams }: CheckoutPageProps) {
-  const resolved = (await searchParams) ?? {};
-  const planKey = resolved.plan === "solo" ? "solo" : "pro";
-  const selectedPlan = checkoutPlans[planKey];
+export default async function SecureCheckoutPage({ searchParams }: SecureCheckoutPageProps) {
+  const resolvedSearch = (await searchParams) ?? {};
+  const selectedPlanKey = resolvedSearch.plan?.trim() ?? "";
+
+  const [plansRaw, contentRaw] = await Promise.all([
+    getPublicPlans("pt-BR").catch(() => []),
+    getPublicContent("checkout_secure", "pt-BR").catch(() => null),
+  ]);
+
+  const plans = plansRaw.length > 0 ? plansRaw.map(mapPublicPlan) : getDefaultPublicPlans();
+  const selectedPlan = plans.find((plan) => plan.planKey === selectedPlanKey) ?? plans[0] ?? null;
+
+  const contentSection = contentRaw ? getContentSection(contentRaw, "main") : null;
+  const content = mapCheckoutContent(contentSection);
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-start bg-bg-base pt-8 pb-12 px-4 relative overflow-x-hidden text-text-primary font-sans selection:bg-brand selection:text-bg-base">
@@ -59,9 +57,9 @@ export default async function SecureCheckoutPage({ searchParams }: CheckoutPageP
             </div>
             <div>
               <h2 className="text-xl text-text-primary font-display font-bold leading-tight mb-1">
-                {selectedPlan.name}
+                {selectedPlan?.name ?? content.title}
               </h2>
-              <p className="text-text-muted text-sm">{selectedPlan.description}</p>
+              <p className="text-text-muted text-sm">{selectedPlan?.description ?? content.subtitle}</p>
             </div>
           </div>
 
@@ -85,7 +83,7 @@ export default async function SecureCheckoutPage({ searchParams }: CheckoutPageP
                 </div>
                 <div>
                   <p className="text-text-secondary text-xs mb-0.5">Ciclo</p>
-                  <p className="text-text-primary text-sm font-medium">Renovação Mensal</p>
+                  <p className="text-text-primary text-sm font-medium">{selectedPlan?.intervalLabel ?? "Renovação Mensal"}</p>
                 </div>
               </div>
             </div>
@@ -93,7 +91,7 @@ export default async function SecureCheckoutPage({ searchParams }: CheckoutPageP
 
           <div className="mt-6 pt-5 border-t border-border-subtle flex items-center justify-between relative z-10">
             <span className="text-text-secondary text-sm">Total Hoje</span>
-            <span className="text-2xl font-display font-bold text-text-primary">{selectedPlan.total}</span>
+            <span className="text-2xl font-display font-bold text-text-primary">{selectedPlan?.amountFormatted ?? "R$ 0,00"}</span>
           </div>
         </section>
 
@@ -172,14 +170,24 @@ export default async function SecureCheckoutPage({ searchParams }: CheckoutPageP
         </section>
 
         <div className="flex items-center justify-center gap-6 py-4 opacity-50 mt-4">
-          <div className="flex items-center gap-1.5 text-text-secondary text-xs">
-            <span className="material-symbols-outlined text-[16px]">lock</span>
-            256-bit Encryption
-          </div>
-          <div className="flex items-center gap-1.5 text-text-secondary text-xs">
-            <span className="material-symbols-outlined text-[16px]">gpp_good</span>
-            LGPD Compliant
-          </div>
+          {content.trustBadges?.map((badge, idx) => (
+            <div key={`badge-${idx}`} className="flex items-center gap-1.5 text-text-secondary text-xs">
+              <span className="material-symbols-outlined text-[16px]">{idx === 0 ? "lock" : "gpp_good"}</span>
+              {badge}
+            </div>
+          ))}
+          {!content.trustBadges?.length && (
+            <>
+              <div className="flex items-center gap-1.5 text-text-secondary text-xs">
+                <span className="material-symbols-outlined text-[16px]">lock</span>
+                256-bit Encryption
+              </div>
+              <div className="flex items-center gap-1.5 text-text-secondary text-xs">
+                <span className="material-symbols-outlined text-[16px]">gpp_good</span>
+                LGPD Compliant
+              </div>
+            </>
+          )}
         </div>
       </main>
 
@@ -187,10 +195,10 @@ export default async function SecureCheckoutPage({ searchParams }: CheckoutPageP
       <div className="fixed bottom-0 left-0 right-0 p-4 bg-linear-to-t from-bg-base via-bg-base to-transparent z-20 pb-8 pointer-events-none">
         <div className="max-w-md mx-auto pointer-events-auto">
           <Link
-            href={`/auth/register?plan=${planKey}`}
+            href={selectedPlan?.ctaHref ?? `/auth/register?plan=${selectedPlanKey}`}
             className="w-full bg-brand hover:bg-brand-hover text-bg-base font-semibold py-4 rounded-xl transition-all shadow-[0_4px_20px_rgba(82,183,136,0.2)] active:scale-[0.98] flex items-center justify-center gap-2"
           >
-            Pagar {selectedPlan.total}
+            {selectedPlan?.ctaLabel ?? `Pagar ${selectedPlan?.amountFormatted ?? "agora"}`}
             <span className="material-symbols-outlined text-[20px]">arrow_forward</span>
           </Link>
           <p className="text-center text-[10px] text-text-muted mt-3">

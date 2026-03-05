@@ -255,6 +255,11 @@ describe("Backend uncovered routes behavior", () => {
       let patientsFromCalls = 0;
       createAdminClientMock.mockReturnValue({
         from: vi.fn((table: string) => {
+          if (table === "user_roles") {
+            return {
+              upsert: vi.fn().mockResolvedValue({ data: null, error: null }),
+            };
+          }
           if (table !== "patients") throw new Error(`Unexpected table ${table}`);
           patientsFromCalls += 1;
           if (patientsFromCalls === 1) {
@@ -296,6 +301,11 @@ describe("Backend uncovered routes behavior", () => {
       let patientsFromCalls = 0;
       createAdminClientMock.mockReturnValue({
         from: vi.fn((table: string) => {
+          if (table === "user_roles") {
+            return {
+              upsert: vi.fn().mockResolvedValue({ data: null, error: null }),
+            };
+          }
           if (table !== "patients") throw new Error(`Unexpected table ${table}`);
           patientsFromCalls += 1;
           if (patientsFromCalls === 1) {
@@ -668,8 +678,8 @@ describe("Backend uncovered routes behavior", () => {
   });
 
   describe("PATCH /api/settings/profile", () => {
-    it("returns 400 for invalid payload", async () => {
-      createClientMock.mockResolvedValue(authClient("user-1"));
+    it("returns 401 when unauthenticated", async () => {
+      createClientMock.mockResolvedValue(authClient(null));
       const { PATCH } = await import("@/app/api/settings/profile/route");
       const res = await PATCH(
         new Request("http://localhost/api/settings/profile", {
@@ -677,44 +687,11 @@ describe("Backend uncovered routes behavior", () => {
           body: JSON.stringify({}),
         }),
       );
-      expect(res.status).toBe(400);
+      expect(res.status).toBe(401);
     });
 
-    it("returns 200 on happy path", async () => {
-      createClientMock.mockResolvedValue(
-        authClient("user-1", {
-          from: vi.fn((table: string) => {
-            if (table === "therapists") {
-              return {
-                update: vi.fn().mockReturnValue({
-                  eq: vi.fn().mockReturnThis(),
-                  select: vi.fn().mockReturnValue({
-                    single: vi.fn().mockResolvedValue({
-                      data: {
-                        id: "therapist-1",
-                        name: "Dra",
-                        crp: "123",
-                        bio: "bio",
-                        slug: "dra",
-                        session_price: 200,
-                        session_duration: 50,
-                        timezone: "America/Sao_Paulo",
-                        photo_url: null,
-                        updated_at: "2026-03-05T00:00:00.000Z",
-                      },
-                      error: null,
-                    }),
-                  }),
-                }),
-              };
-            }
-            if (table === "audit_logs") {
-              return { insert: vi.fn().mockResolvedValue({ data: null, error: null }) };
-            }
-            throw new Error(`Unexpected table ${table}`);
-          }),
-        }),
-      );
+    it("returns 409 because legacy write endpoint is disabled", async () => {
+      createClientMock.mockResolvedValue(authClient("user-1"));
 
       const { PATCH } = await import("@/app/api/settings/profile/route");
       const res = await PATCH(
@@ -723,24 +700,15 @@ describe("Backend uncovered routes behavior", () => {
           body: JSON.stringify({ name: "Dra Nova" }),
         }),
       );
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(409);
       const json = await res.json();
-      expect(json.success).toBe(true);
+      expect(json.code).toBe("LEGACY_ENDPOINT_WRITE_DISABLED");
     });
   });
 
   describe("PATCH /api/settings/security", () => {
-    it("returns 404 when therapist is not found", async () => {
-      createClientMock.mockResolvedValue(
-        authClient("user-1", {
-          from: vi.fn((table: string) => {
-            if (table === "therapists") {
-              return { select: vi.fn().mockReturnValue(singleRow(null)) };
-            }
-            throw new Error(`Unexpected table ${table}`);
-          }),
-        }),
-      );
+    it("returns 401 when unauthenticated", async () => {
+      createClientMock.mockResolvedValue(authClient(null));
       const { PATCH } = await import("@/app/api/settings/security/route");
       const res = await PATCH(
         new Request("http://localhost/api/settings/security", {
@@ -748,41 +716,11 @@ describe("Backend uncovered routes behavior", () => {
           body: JSON.stringify({ blurPatientData: true }),
         }),
       );
-      expect(res.status).toBe(404);
+      expect(res.status).toBe(401);
     });
 
-    it("returns 200 on happy path", async () => {
-      createClientMock.mockResolvedValue(
-        authClient("user-1", {
-          from: vi.fn((table: string) => {
-            if (table === "therapists") {
-              return {
-                select: vi
-                  .fn()
-                  .mockReturnValueOnce(singleRow({ id: "therapist-1" }))
-                  .mockReturnValueOnce(singleRow({ cancellation_policy_hours: 48 })),
-                update: vi.fn().mockReturnValue({
-                  eq: vi.fn().mockResolvedValue({ data: null, error: null }),
-                }),
-              };
-            }
-            if (table === "therapist_settings") {
-              return {
-                upsert: vi.fn().mockResolvedValue({ data: null, error: null }),
-                select: vi.fn().mockReturnValue(singleRow({
-                  encrypt_records: true,
-                  require_lgpd_consent: true,
-                  blur_patient_data: false,
-                })),
-              };
-            }
-            if (table === "audit_logs") {
-              return { insert: vi.fn().mockResolvedValue({ data: null, error: null }) };
-            }
-            throw new Error(`Unexpected table ${table}`);
-          }),
-        }),
-      );
+    it("returns 409 because legacy write endpoint is disabled", async () => {
+      createClientMock.mockResolvedValue(authClient("user-1"));
 
       const { PATCH } = await import("@/app/api/settings/security/route");
       const res = await PATCH(
@@ -796,9 +734,9 @@ describe("Backend uncovered routes behavior", () => {
           }),
         }),
       );
-      expect(res.status).toBe(200);
+      expect(res.status).toBe(409);
       const json = await res.json();
-      expect(json.success).toBe(true);
+      expect(json.code).toBe("LEGACY_ENDPOINT_WRITE_DISABLED");
     });
   });
 });

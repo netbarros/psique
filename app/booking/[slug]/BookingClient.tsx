@@ -15,6 +15,22 @@ interface BookingClientProps {
   }>;
   bookedTimes: string[];
   slug: string;
+  uiContent: {
+    title: string;
+    subtitle: string;
+    footerNote: string;
+    stepSelectLabel: string;
+    stepFormLabel: string;
+    stepCheckoutLabel: string;
+    noSlotsLabel: string;
+    formTitle: string;
+    submitLabel: string;
+    processingTitle: string;
+    processingSubtitle: string;
+    formValidationError: string;
+    invalidCpfError: string;
+    checkoutError: string;
+  };
 }
 
 interface BookingForm {
@@ -34,6 +50,7 @@ export default function BookingClient({
   availabilitySlots,
   bookedTimes,
   slug,
+  uiContent,
 }: BookingClientProps) {
   const [selectedSlot, setSelectedSlot] = useState<string | null>(null);
   const [step, setStep] = useState<"select" | "form" | "processing">("select");
@@ -113,12 +130,12 @@ export default function BookingClient({
 
   const handleSubmit = useCallback(async () => {
     if (!selectedSlot || !form.name.trim() || !form.email.includes("@")) {
-      setError("Preencha todos os campos corretamente.");
+      setError(uiContent.formValidationError);
       return;
     }
 
     if (form.cpf && !validateCPF(form.cpf)) {
-      setError("CPF inválido. Verifique e tente novamente.");
+      setError(uiContent.invalidCpfError);
       return;
     }
 
@@ -148,10 +165,10 @@ export default function BookingClient({
       const json = (await res.json()) as { data: { checkoutUrl: string } };
       window.location.href = json.data.checkoutUrl;
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Erro ao processar agendamento");
+      setError(e instanceof Error ? e.message : uiContent.checkoutError);
       setStep("form");
     }
-  }, [selectedSlot, form, therapistId, slug]);
+  }, [selectedSlot, form, therapistId, slug, uiContent]);
 
   const selectedDate = selectedSlot
     ? new Date(selectedSlot).toLocaleDateString("pt-BR", {
@@ -176,9 +193,9 @@ export default function BookingClient({
       {/* ── Step indicator ── */}
       <div className="mb-6 flex items-center gap-2">
         {[
-          { n: 1, label: "Horário" },
-          { n: 2, label: "Dados" },
-          { n: 3, label: "Pagamento" },
+          { n: 1, label: uiContent.stepSelectLabel },
+          { n: 2, label: uiContent.stepFormLabel },
+          { n: 3, label: uiContent.stepCheckoutLabel },
         ].map((s, i, arr) => {
           const isActive =
             (s.n === 1 && step === "select") ||
@@ -219,16 +236,14 @@ export default function BookingClient({
       {(step === "select" || step === "form") && (
         <div className="mb-5 rounded-2xl border border-border-subtle bg-surface/40 p-7 backdrop-blur-md">
           <h2 className="mb-5 font-display text-2xl font-light text-text-primary">
-            Escolha o horário
+            {uiContent.title}
           </h2>
           <p className="mb-4 text-[12px] text-text-muted">
-            Selecione o melhor horário para você. O próximo passo leva menos de 1 minuto.
+            {uiContent.subtitle}
           </p>
 
           {daysWithSlots.length === 0 ? (
-            <div className="py-8 text-center text-text-muted">
-              Não há horários disponíveis no momento.
-            </div>
+            <div className="py-8 text-center text-text-muted">{uiContent.noSlotsLabel}</div>
           ) : (
             <div
               className={`flex flex-col gap-5 ${
@@ -277,9 +292,7 @@ export default function BookingClient({
       {/* ── Step 2: Form ── */}
       {step === "form" && selectedSlot && (
         <div className="animate-[fadeUp_.25s_ease-out_both] rounded-2xl border border-border-subtle bg-surface/50 p-7 backdrop-blur-md">
-          <h2 className="mb-1.5 font-display text-2xl font-light text-text-primary">
-            Seus dados
-          </h2>
+          <h2 className="mb-1.5 font-display text-2xl font-light text-text-primary">{uiContent.formTitle}</h2>
           <p className="mb-5 text-[13px] text-text-muted">
             Sessão com{" "}
             <span className="text-info">{therapistName}</span> em{" "}
@@ -377,12 +390,12 @@ export default function BookingClient({
               onClick={handleSubmit}
               className="w-full rounded-xl bg-brand px-8 py-3.5 text-[15px] font-semibold text-bg-base shadow-[0_4px_20px_rgba(82,183,136,0.25)] transition-all duration-300 hover:scale-[1.02] hover:bg-brand-hover hover:shadow-[0_4px_32px_rgba(82,183,136,0.4)] sm:w-auto"
             >
-              Confirmar &amp; Pagar →
+              {uiContent.submitLabel}
             </button>
           </div>
 
           <div className="mt-3 text-center text-[11px] font-light tracking-wide text-text-muted">
-            🔒 Pagamento seguro via Stripe · Dados protegidos por LGPD
+            {uiContent.footerNote}
           </div>
         </div>
       )}
@@ -391,12 +404,8 @@ export default function BookingClient({
       {step === "processing" && (
         <div className="rounded-2xl border border-border-subtle bg-surface/50 p-[60px_28px] text-center backdrop-blur-md">
           <div className="mx-auto mb-5 h-12 w-12 animate-spin rounded-full border-4 border-border-subtle border-t-brand" />
-          <div className="mb-2 font-display text-[22px] font-light text-text-primary">
-            Redirecionando para pagamento...
-          </div>
-          <div className="text-[13px] text-text-muted">
-            Você será redirecionado ao Stripe em instantes.
-          </div>
+          <div className="mb-2 font-display text-[22px] font-light text-text-primary">{uiContent.processingTitle}</div>
+          <div className="text-[13px] text-text-muted">{uiContent.processingSubtitle}</div>
         </div>
       )}
     </div>

@@ -55,6 +55,22 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
+  if (user && pathname.startsWith("/admin")) {
+    const { data: roleRow, error: roleError } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", user.id)
+      .maybeSingle();
+
+    const isMasterAdmin = !roleError && roleRow?.role === "master_admin";
+    if (!isMasterAdmin) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/dashboard";
+      url.searchParams.set("error", "master_admin_required");
+      return NextResponse.redirect(url);
+    }
+  }
+
   return supabaseResponse;
 }
 

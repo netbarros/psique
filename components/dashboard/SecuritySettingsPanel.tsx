@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { AlertTriangle, Download, FileText, SearchCheck, ShieldCheck, Database, ChevronRight, LockKeyhole, Trash2 } from "lucide-react";
+import LegacyWriteDisabledBanner from "@/components/dashboard/LegacyWriteDisabledBanner";
+import { parseLegacyWriteDisabledPayload, type LegacyWriteDisabledPayload } from "@/lib/frontend/legacy-settings";
 
 type AuditEvent = {
   id: string;
@@ -30,6 +32,7 @@ export function SecuritySettingsPanel({
   const [events, setEvents] = useState<AuditEvent[]>(initialEvents);
   const [loadingKey, setLoadingKey] = useState<keyof SecurityState | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [legacyConflict, setLegacyConflict] = useState<LegacyWriteDisabledPayload | null>(null);
 
   const sortedEvents = useMemo(
     () => [...events].sort((a, b) => +new Date(b.createdAt) - +new Date(a.createdAt)),
@@ -39,6 +42,7 @@ export function SecuritySettingsPanel({
   async function patchSettings(partial: Partial<SecurityState>, key: keyof SecurityState) {
     setLoadingKey(key);
     setError(null);
+    setLegacyConflict(null);
 
     try {
       const response = await fetch("/api/settings/security", {
@@ -53,6 +57,11 @@ export function SecuritySettingsPanel({
       };
 
       if (!response.ok || !payload.data) {
+        const conflict = parseLegacyWriteDisabledPayload(payload);
+        if (conflict) {
+          setLegacyConflict(conflict);
+          return;
+        }
         throw new Error(payload.error ?? "Falha ao atualizar segurança");
       }
 
@@ -80,6 +89,7 @@ export function SecuritySettingsPanel({
         <p className="text-text-secondary text-sm leading-relaxed max-w-3xl">
           Gerencie as configurações de segurança da sua clínica. Todos os dados são criptografados em repouso seguindo diretrizes rigorosas da LGPD e protocolos de saúde.
         </p>
+        {legacyConflict ? <div className="mt-4"><LegacyWriteDisabledBanner conflict={legacyConflict} /></div> : null}
       </div>
 
       <div className="px-5 py-6 border-b border-border-subtle">
@@ -92,7 +102,7 @@ export function SecuritySettingsPanel({
             title="Criptografia de Prontuários"
             description="Notas clínicas cifradas no banco (pgcrypto)."
             checked={settings.encryptRecords}
-            disabled={loadingKey === "encryptRecords"}
+            disabled={loadingKey === "encryptRecords" || Boolean(legacyConflict)}
             onToggle={(checked) =>
               void patchSettings({ encryptRecords: checked }, "encryptRecords")
             }
@@ -101,7 +111,7 @@ export function SecuritySettingsPanel({
             title="Consentimento LGPD Automático"
             description="Exigir aceite antes do primeiro agendamento."
             checked={settings.requireLgpdConsent}
-            disabled={loadingKey === "requireLgpdConsent"}
+            disabled={loadingKey === "requireLgpdConsent" || Boolean(legacyConflict)}
             onToggle={(checked) =>
               void patchSettings({ requireLgpdConsent: checked }, "requireLgpdConsent")
             }
@@ -110,7 +120,7 @@ export function SecuritySettingsPanel({
             title="Ocultar Dados no App"
             description="Borrar nomes na tela inicial do dashboard."
             checked={settings.blurPatientData}
-            disabled={loadingKey === "blurPatientData"}
+            disabled={loadingKey === "blurPatientData" || Boolean(legacyConflict)}
             onToggle={(checked) =>
               void patchSettings({ blurPatientData: checked }, "blurPatientData")
             }
@@ -137,6 +147,7 @@ export function SecuritySettingsPanel({
             min={1}
             max={168}
             value={settings.cancellationPolicyHours}
+            disabled={Boolean(legacyConflict)}
             onChange={(event) =>
               setSettings((previous) => ({
                 ...previous,
@@ -144,10 +155,12 @@ export function SecuritySettingsPanel({
               }))
             }
             onBlur={() =>
-              void patchSettings(
-                { cancellationPolicyHours: settings.cancellationPolicyHours },
-                "cancellationPolicyHours"
-              )
+              legacyConflict
+                ? undefined
+                : void patchSettings(
+                    { cancellationPolicyHours: settings.cancellationPolicyHours },
+                    "cancellationPolicyHours"
+                  )
             }
             className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2.5 text-sm text-text-primary outline-none transition-colors focus:border-brand/50"
           />

@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Camera, Globe2, Save, UserRound } from "lucide-react";
 import CopyBookingLinkButton from "@/components/dashboard/CopyBookingLinkButton";
+import LegacyWriteDisabledBanner from "@/components/dashboard/LegacyWriteDisabledBanner";
+import { parseLegacyWriteDisabledPayload, type LegacyWriteDisabledPayload } from "@/lib/frontend/legacy-settings";
 
 type ProfileData = {
   name: string;
@@ -27,12 +28,14 @@ export function ProfileSettingsForm({
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
+  const [legacyConflict, setLegacyConflict] = useState<LegacyWriteDisabledPayload | null>(null);
 
   async function handleSave() {
     if (saving) return;
     setSaving(true);
     setError(null);
     setSuccess(null);
+    setLegacyConflict(null);
 
     try {
       const response = await fetch("/api/settings/profile", {
@@ -65,6 +68,11 @@ export function ProfileSettingsForm({
       };
 
       if (!response.ok || !payload.data) {
+        const conflict = parseLegacyWriteDisabledPayload(payload);
+        if (conflict) {
+          setLegacyConflict(conflict);
+          return;
+        }
         throw new Error(payload.error ?? "Falha ao salvar perfil");
       }
 
@@ -91,9 +99,11 @@ export function ProfileSettingsForm({
     <section className="grid gap-6 lg:grid-cols-[1.7fr_1fr]">
       <article className="rounded-2xl border border-border-subtle bg-surface p-6">
         <h2 className="mb-4 flex items-center gap-2 font-display text-2xl text-gold">
-          <UserRound className="h-5 w-5" />
+          <span className="material-symbols-outlined text-[20px]">person</span>
           Dados profissionais
         </h2>
+
+        {legacyConflict ? <div className="mb-4"><LegacyWriteDisabledBanner conflict={legacyConflict} /></div> : null}
 
         <div className="grid gap-4 sm:grid-cols-2">
           <Field label="Nome" value={form.name} onChange={(value) => setForm((prev) => ({ ...prev, name: value }))} />
@@ -110,7 +120,8 @@ export function ProfileSettingsForm({
             value={form.bio ?? ""}
             onChange={(event) => setForm((prev) => ({ ...prev, bio: event.target.value }))}
             rows={5}
-            className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-brand/50"
+            className="scheme-dark w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-brand/50"
+            data-theme="dark"
           />
         </label>
 
@@ -121,7 +132,7 @@ export function ProfileSettingsForm({
             disabled={saving}
             className="inline-flex items-center gap-2 rounded-xl bg-brand px-4 py-2.5 text-sm font-semibold text-bg-base transition-colors hover:bg-brand-hover disabled:cursor-not-allowed disabled:opacity-60"
           >
-            <Save className="h-4 w-4" />
+            <span className="material-symbols-outlined text-[18px]">save</span>
             {saving ? "Salvando..." : "Salvar perfil"}
           </button>
           <span className="text-xs text-text-muted">
@@ -148,14 +159,14 @@ export function ProfileSettingsForm({
             {initials}
           </div>
           <label className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-border-subtle px-3 py-2 text-xs font-medium text-text-secondary transition-colors hover:bg-bg-elevated hover:text-text-primary">
-            <Camera className="h-4 w-4" />
+            <span className="material-symbols-outlined text-[16px]">photo_camera</span>
             Atualizar URL da foto
           </label>
         </article>
 
         <article className="rounded-2xl border border-border-subtle bg-surface p-6">
           <h2 className="mb-4 flex items-center gap-2 font-display text-2xl text-gold">
-            <Globe2 className="h-5 w-5" />
+            <span className="material-symbols-outlined text-[20px]">language</span>
             Link público
           </h2>
           <p className="mb-3 text-xs text-text-muted">Compartilhe este URL para agendamento direto.</p>
@@ -187,7 +198,8 @@ function Field({
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-brand/50"
+        className="scheme-dark w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-brand/50"
+        data-theme="dark"
       />
     </label>
   );

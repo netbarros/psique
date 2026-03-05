@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { toast } from "@/components/ui/Toast";
+import LegacyWriteDisabledBanner from "@/components/dashboard/LegacyWriteDisabledBanner";
+import { parseLegacyWriteDisabledPayload, type LegacyWriteDisabledPayload } from "@/lib/frontend/legacy-settings";
 
 type PlanSettingsFormProps = {
   initialSessionPrice: number;
@@ -15,10 +17,12 @@ export default function PlanSettingsForm({
   const [sessionPrice, setSessionPrice] = useState(String(initialSessionPrice));
   const [sessionDuration, setSessionDuration] = useState(String(initialSessionDuration));
   const [saving, setSaving] = useState(false);
+  const [legacyConflict, setLegacyConflict] = useState<LegacyWriteDisabledPayload | null>(null);
 
   const savePlan = async () => {
     if (saving) return;
     setSaving(true);
+    setLegacyConflict(null);
     try {
       const response = await fetch("/api/settings/profile", {
         method: "PATCH",
@@ -34,6 +38,12 @@ export default function PlanSettingsForm({
       };
 
       if (!response.ok) {
+        const conflict = parseLegacyWriteDisabledPayload(payload);
+        if (conflict) {
+          setLegacyConflict(conflict);
+          toast.warning("Endpoint legado em modo somente leitura. Use /admin.");
+          return;
+        }
         throw new Error(payload.error ?? "Falha ao salvar plano");
       }
 
@@ -52,6 +62,8 @@ export default function PlanSettingsForm({
         Ajuste preço e duração padrão das sessões para refletir sua oferta atual.
       </p>
 
+      {legacyConflict ? <div className="mb-5"><LegacyWriteDisabledBanner conflict={legacyConflict} /></div> : null}
+
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block">
           <span className="mb-1 block text-xs font-medium uppercase tracking-widest text-text-muted">
@@ -63,6 +75,7 @@ export default function PlanSettingsForm({
             step="1"
             value={sessionPrice}
             onChange={(event) => setSessionPrice(event.target.value)}
+            disabled={Boolean(legacyConflict)}
             className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-brand/50"
           />
         </label>
@@ -78,6 +91,7 @@ export default function PlanSettingsForm({
             step="5"
             value={sessionDuration}
             onChange={(event) => setSessionDuration(event.target.value)}
+            disabled={Boolean(legacyConflict)}
             className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-primary outline-none transition-colors focus:border-brand/50"
           />
         </label>
@@ -87,7 +101,7 @@ export default function PlanSettingsForm({
         <button
           type="button"
           onClick={savePlan}
-          disabled={saving}
+          disabled={saving || Boolean(legacyConflict)}
           className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
             saving
               ? "cursor-not-allowed border border-border-subtle bg-surface text-text-muted"
