@@ -1,3 +1,9 @@
+## Strategy Version
+Lean Enterprise Mode v1
+Date: 2026-03-05
+Owner: Product / Founder
+Status: Active
+
 # PSIQUE — Lean Enterprise Mode (Fase 1: Validação de Mercado)
 
 ## Estado Atual
