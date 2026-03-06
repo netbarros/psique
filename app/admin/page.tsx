@@ -70,7 +70,9 @@ function Metric({ item }: { item: MetricCard }) {
 
 export default async function AdminHomePage() {
   const supabase = await createClient();
-  const last24h = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  const last24hDate = new Date();
+  last24hDate.setHours(last24hDate.getHours() - 24);
+  const last24h = last24hDate.toISOString();
 
   const [
     draftPlansResult,

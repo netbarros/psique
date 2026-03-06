@@ -18,7 +18,23 @@ import {
   mapPricingContent,
 } from "@/lib/frontend/content-mappers";
 
-const pageOptions = ["landing", "pricing", "checkout_secure", "booking", "booking_success"];
+const pageOptions = ["landing", "pricing", "checkout_secure", "booking", "booking_success"] as const;
+
+type NoticeTone = "error" | "success" | "warning";
+type NoticeState = { tone: NoticeTone; message: string } | null;
+
+function toUiErrorMessage(caughtError: unknown, fallback: string) {
+  if (!(caughtError instanceof Error)) return fallback;
+  if (
+    caughtError.name === "ZodError" ||
+    caughtError.message.includes("invalid_format") ||
+    caughtError.message.includes("Invalid ISO datetime") ||
+    caughtError.message.includes("Invalid datetime")
+  ) {
+    return "Resposta da API em formato inesperado. Recarregue a página e tente novamente.";
+  }
+  return caughtError.message;
+}
 
 function buildPreviewSection(
   revision: AdminContentRevision,
@@ -34,9 +50,40 @@ function buildPreviewSection(
   };
 }
 
+function statusBadgeClass(status: "draft" | "published" | "archived") {
+  if (status === "published") return "border-brand/30 bg-brand/10 text-brand";
+  if (status === "archived") return "border-border-subtle bg-bg-base text-text-muted";
+  return "border-gold/30 bg-gold/10 text-gold";
+}
+
+function Notice({ notice }: { notice: NonNullable<NoticeState> }) {
+  const toneClass =
+    notice.tone === "success"
+      ? "border-brand/30 bg-brand/10 text-brand"
+      : notice.tone === "warning"
+        ? "border-gold/30 bg-gold/10 text-gold"
+        : "border-error/30 bg-error/10 text-error";
+
+  return <p className={`rounded-xl border px-3 py-2 text-sm ${toneClass}`}>{notice.message}</p>;
+}
+
+function formatDate(value: string | null | undefined) {
+  if (!value) return "—";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return "—";
+  return parsed.toLocaleString("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+}
+
 export function ContentAdminClient() {
-  const [pageKey, setPageKey] = useState("landing");
+  const [pageKey, setPageKey] = useState<(typeof pageOptions)[number]>("landing");
   const [locale, setLocale] = useState("pt-BR");
+  const [sectionKey, setSectionKey] = useState("main");
   const [statusFilter, setStatusFilter] = useState<"" | "draft" | "published" | "archived">("");
   const [revisions, setRevisions] = useState<AdminContentRevision[]>([]);
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -45,11 +92,10 @@ export function ContentAdminClient() {
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [creating, setCreating] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [notice, setNotice] = useState<NoticeState>(null);
 
   async function load() {
     setLoading(true);
-    setError(null);
     try {
       const data = await getAdminContent({
         page: pageKey,
@@ -57,14 +103,16 @@ export function ContentAdminClient() {
         status: statusFilter || undefined,
       });
       setRevisions(data);
-      if (!selectedId && data.length > 0) {
-        setSelectedId(data[0].id);
-      }
-      if (selectedId && !data.some((item) => item.id === selectedId)) {
-        setSelectedId(data[0]?.id ?? null);
-      }
+      setSelectedId((currentSelectedId) => {
+        if (!currentSelectedId) return data[0]?.id ?? null;
+        if (data.some((item) => item.id === currentSelectedId)) return currentSelectedId;
+        return data[0]?.id ?? null;
+      });
     } catch (caughtError) {
-      setError(caughtError instanceof Error ? caughtError.message : "content_load_failed");
+      setNotice({
+        tone: "error",
+        message: toUiErrorMessage(caughtError, "Falha ao carregar revisões de conteúdo."),
+      });
     } finally {
       setLoading(false);
     }
@@ -91,18 +139,42 @@ export function ContentAdminClient() {
   useEffect(() => {
     if (!selectedRevision) {
       setEditorJson("{}");
+      setSectionKey("main");
       return;
     }
+
     setEditorJson(JSON.stringify(selectedRevision.payload, null, 2));
+    setSectionKey(selectedRevision.sectionKey);
   }, [selectedRevision]);
 
+  const counts = useMemo(() => {
+    const next = {
+      total: revisions.length,
+      draft: 0,
+      published: 0,
+      archived: 0,
+    };
+    for (const revision of revisions) {
+      next[revision.status] += 1;
+    }
+    return next;
+  }, [revisions]);
+
   async function createDraft() {
+    if (!sectionKey.trim()) {
+      setNotice({
+        tone: "warning",
+        message: "Informe um `sectionKey` válido para criar o draft.",
+      });
+      return;
+    }
+
     setCreating(true);
-    setError(null);
+    setNotice(null);
     try {
       const created = await createAdminContentDraft({
         pageKey,
-        sectionKey: "main",
+        sectionKey: sectionKey.trim(),
         locale,
         payload: {
           title: "draft_title",
@@ -114,8 +186,15 @@ export function ContentAdminClient() {
       });
       await load();
       setSelectedId(created.id);
+      setNotice({
+        tone: "success",
+        message: "Draft de conteúdo criado com sucesso.",
+      });
     } catch (caughtError) {
-      setError(caughtError instanceof Error ? caughtError.message : "content_create_failed");
+      setNotice({
+        tone: "error",
+        message: toUiErrorMessage(caughtError, "Falha ao criar draft de conteúdo."),
+      });
     } finally {
       setCreating(false);
     }
@@ -124,12 +203,15 @@ export function ContentAdminClient() {
   async function saveDraft() {
     if (!selectedRevision) return;
     setSaving(true);
-    setError(null);
+    setNotice(null);
     try {
       const candidatePayload = JSON.parse(editorJson) as unknown;
       const payloadResult = contentPayloadSchema.safeParse(candidatePayload);
       if (!payloadResult.success) {
-        setError(payloadResult.error.issues[0]?.message ?? "invalid_content_payload");
+        setNotice({
+          tone: "warning",
+          message: payloadResult.error.issues[0]?.message ?? "Payload inválido para conteúdo.",
+        });
         return;
       }
       const updated = await patchAdminContentDraft(
@@ -139,13 +221,26 @@ export function ContentAdminClient() {
       );
       await load();
       setSelectedId(updated.id);
+      setNotice({
+        tone: "success",
+        message: "Draft salvo com sucesso.",
+      });
     } catch (caughtError) {
       if (caughtError instanceof SyntaxError) {
-        setError("O JSON inserido é inválido. Corrija-o antes de salvar.");
+        setNotice({
+          tone: "warning",
+          message: "JSON inválido. Corrija o editor antes de salvar.",
+        });
       } else if (caughtError instanceof FrontendHttpError && caughtError.status === 409) {
-        setError("Conflito: A versão do painel caducou. Dê Refresh na página para ver os dados recentes de outros Admins.");
+        setNotice({
+          tone: "warning",
+          message: "Conflito `409` (ETag desatualizada). Recarregue e tente novamente.",
+        });
       } else {
-        setError(caughtError instanceof Error ? caughtError.message : "Falha drástica ao Salvar Draft.");
+        setNotice({
+          tone: "error",
+          message: toUiErrorMessage(caughtError, "Falha ao salvar conteúdo."),
+        });
       }
     } finally {
       setSaving(false);
@@ -155,18 +250,31 @@ export function ContentAdminClient() {
   async function publishDraft() {
     if (!selectedRevision) return;
     setPublishing(true);
-    setError(null);
+    setNotice(null);
     try {
       const published = await publishAdminContentDraft(selectedRevision.id, selectedRevision.etag);
       await load();
       setSelectedId(published.id);
+      setNotice({
+        tone: "success",
+        message: "Conteúdo publicado com sucesso.",
+      });
     } catch (caughtError) {
       if (caughtError instanceof FrontendHttpError && caughtError.status === 409) {
-        setError("Conflito de Versão (ETag). Recarregue a página antes de publicar.");
+        setNotice({
+          tone: "warning",
+          message: "Conflito `409` no publish. Atualize a revisão e tente novamente.",
+        });
       } else if (caughtError instanceof FrontendHttpError && caughtError.status === 428) {
-        setError("Cabeçalho If-Match está ausente. O Servidor rejeitou a publicação Insegura.");
+        setNotice({
+          tone: "warning",
+          message: "Servidor retornou `428` (If-Match ausente). Recarregue os dados e tente novamente.",
+        });
       } else {
-        setError(caughtError instanceof Error ? caughtError.message : "Falha ao Publicar Conteúdo.");
+        setNotice({
+          tone: "error",
+          message: toUiErrorMessage(caughtError, "Falha ao publicar conteúdo."),
+        });
       }
     } finally {
       setPublishing(false);
@@ -174,98 +282,174 @@ export function ContentAdminClient() {
   }
 
   return (
-    <section className="grid gap-4 lg:grid-cols-[320px_1fr]">
+    <section className="grid gap-4 xl:grid-cols-[340px_1fr]">
       <aside className="space-y-4 rounded-2xl border border-border-subtle bg-surface p-4">
-        <h2 className="font-display text-3xl">Conteúdo</h2>
+        <div className="flex items-center justify-between">
+          <h3 className="font-display text-3xl">Revisões</h3>
+          <span className="rounded-full border border-border-subtle bg-bg-elevated px-2.5 py-1 text-xs text-text-secondary">
+            {counts.total}
+          </span>
+        </div>
 
-        <select
-          value={pageKey}
-          onChange={(event) => setPageKey(event.target.value)}
-          className="w-full rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-sm"
-        >
-          {pageOptions.map((page) => (
-            <option key={page} value={page}>
-              {page}
-            </option>
-          ))}
-        </select>
+        <label className="block text-sm">
+          <span className="mb-1 block text-xs uppercase tracking-wider text-text-muted">pageKey</span>
+          <select
+            value={pageKey}
+            onChange={(event) => setPageKey(event.target.value as (typeof pageOptions)[number])}
+            className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm"
+          >
+            {pageOptions.map((page) => (
+              <option key={page} value={page}>
+                {page}
+              </option>
+            ))}
+          </select>
+        </label>
 
-        <input
-          value={locale}
-          onChange={(event) => setLocale(event.target.value)}
-          className="w-full rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-sm"
-        />
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-1">
+          <label className="block text-sm">
+            <span className="mb-1 block text-xs uppercase tracking-wider text-text-muted">locale</span>
+            <input
+              value={locale}
+              onChange={(event) => setLocale(event.target.value)}
+              className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm"
+            />
+          </label>
+          <label className="block text-sm">
+            <span className="mb-1 block text-xs uppercase tracking-wider text-text-muted">status</span>
+            <select
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
+              className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 text-sm"
+            >
+              <option value="">Todos</option>
+              <option value="draft">draft</option>
+              <option value="published">published</option>
+              <option value="archived">archived</option>
+            </select>
+          </label>
+        </div>
 
-        <select
-          value={statusFilter}
-          onChange={(event) => setStatusFilter(event.target.value as typeof statusFilter)}
-          className="w-full rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-sm"
-        >
-          <option value="">all_status</option>
-          <option value="draft">draft</option>
-          <option value="published">published</option>
-          <option value="archived">archived</option>
-        </select>
+        <div className="grid grid-cols-3 gap-2 text-xs">
+          <div className="rounded-lg border border-border-subtle bg-bg-elevated px-2 py-2 text-center text-text-secondary">
+            <p className="text-[11px] uppercase tracking-wider text-text-muted">draft</p>
+            <p className="mt-1 text-sm font-semibold text-gold">{counts.draft}</p>
+          </div>
+          <div className="rounded-lg border border-border-subtle bg-bg-elevated px-2 py-2 text-center text-text-secondary">
+            <p className="text-[11px] uppercase tracking-wider text-text-muted">published</p>
+            <p className="mt-1 text-sm font-semibold text-brand">{counts.published}</p>
+          </div>
+          <div className="rounded-lg border border-border-subtle bg-bg-elevated px-2 py-2 text-center text-text-secondary">
+            <p className="text-[11px] uppercase tracking-wider text-text-muted">archived</p>
+            <p className="mt-1 text-sm font-semibold text-text-secondary">{counts.archived}</p>
+          </div>
+        </div>
 
-        <button
-          type="button"
-          onClick={() => void createDraft()}
-          disabled={creating}
-          className="w-full rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-bg-base disabled:opacity-60"
-        >
-          {creating ? "creating..." : "create_draft"}
-        </button>
+        <div className="max-h-[410px] space-y-2 overflow-y-auto pr-1">
+          {loading ? (
+            <p className="rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-muted">
+              Carregando revisões...
+            </p>
+          ) : null}
 
-        <div className="max-h-[440px] space-y-2 overflow-y-auto pr-1">
-          {loading ? <p className="text-sm text-text-muted">loading_content</p> : null}
+          {!loading && revisions.length === 0 ? (
+            <p className="rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 text-sm text-text-muted">
+              Nenhuma revisão encontrada para este filtro.
+            </p>
+          ) : null}
+
           {revisions.map((item) => (
             <button
               key={item.id}
               type="button"
               onClick={() => setSelectedId(item.id)}
-              className={`w-full rounded-lg border px-3 py-2 text-left text-sm ${
+              className={`w-full rounded-xl border px-3 py-2 text-left text-sm ${
                 selectedId === item.id
                   ? "border-brand/40 bg-brand/10 text-text-primary"
-                  : "border-border-subtle bg-bg-elevated text-text-secondary"
+                  : "border-border-subtle bg-bg-elevated text-text-secondary hover:border-brand/30 hover:text-text-primary"
               }`}
             >
-              <p className="font-semibold">{item.sectionKey}</p>
-              <p className="text-xs">v{item.version} · {item.status}</p>
+              <div className="flex items-center justify-between gap-2">
+                <p className="truncate font-semibold">{item.sectionKey}</p>
+                <span className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider ${statusBadgeClass(item.status)}`}>
+                  {item.status}
+                </span>
+              </div>
+              <p className="mt-1 text-xs">v{item.version} · {item.locale}</p>
+              <p className="mt-1 truncate text-[11px] text-text-muted">etag: {item.etag}</p>
             </button>
           ))}
+        </div>
+
+        <div className="space-y-3 rounded-xl border border-border-subtle bg-bg-elevated p-3">
+          <p className="text-xs uppercase tracking-wider text-text-muted">Criar draft</p>
+          <label className="block text-sm">
+            <span className="mb-1 block text-xs uppercase tracking-wider text-text-muted">sectionKey</span>
+            <input
+              value={sectionKey}
+              onChange={(event) => setSectionKey(event.target.value)}
+              className="w-full rounded-lg border border-border-subtle bg-bg-base px-2.5 py-2 text-sm"
+            />
+          </label>
+          <button
+            type="button"
+            onClick={() => void createDraft()}
+            disabled={creating}
+            className="w-full rounded-lg bg-brand px-3 py-2 text-sm font-semibold text-bg-base transition-colors hover:bg-brand-hover disabled:opacity-60"
+          >
+            {creating ? "Criando..." : "Criar draft"}
+          </button>
         </div>
       </aside>
 
       <article className="space-y-4 rounded-2xl border border-border-subtle bg-surface p-4">
+        {notice ? <Notice notice={notice} /> : null}
+
         {!selectedRevision ? (
-          <p className="text-sm text-text-muted">select_content_revision_to_edit</p>
+          <div className="rounded-xl border border-border-subtle bg-bg-elevated p-4">
+            <p className="text-sm text-text-secondary">
+              Selecione uma revisão na lateral para editar ou crie um novo draft para a página atual.
+            </p>
+          </div>
         ) : (
           <>
-            <header>
-              <h3 className="font-display text-3xl">
-                {selectedRevision.pageKey}/{selectedRevision.sectionKey} · v{selectedRevision.version}
-              </h3>
-              <p className="text-sm text-text-secondary">
-                status={selectedRevision.status} · locale={selectedRevision.locale}
-              </p>
+            <header className="rounded-xl border border-border-subtle bg-bg-elevated p-4">
+              <div className="flex flex-wrap items-center gap-2">
+                <h3 className="font-display text-3xl leading-none">
+                  {selectedRevision.pageKey}/{selectedRevision.sectionKey} · v{selectedRevision.version}
+                </h3>
+                <span
+                  className={`rounded-full border px-2 py-0.5 text-[10px] uppercase tracking-wider ${statusBadgeClass(selectedRevision.status)}`}
+                >
+                  {selectedRevision.status}
+                </span>
+              </div>
+              <p className="mt-2 text-sm text-text-secondary">locale={selectedRevision.locale}</p>
+              <p className="mt-1 break-all text-xs text-text-muted">etag: {selectedRevision.etag}</p>
+              <p className="mt-1 text-xs text-text-muted">publicado em: {formatDate(selectedRevision.publishedAt)}</p>
             </header>
 
             <label className="block text-sm">
-              <span className="mb-1 block text-xs uppercase tracking-wider text-text-muted">raw_json_editor</span>
+              <span className="mb-1 block text-xs uppercase tracking-wider text-text-muted">Editor JSON</span>
               <textarea
                 value={editorJson}
                 onChange={(event) => setEditorJson(event.target.value)}
-                rows={20}
-                className="w-full rounded-lg border border-border-subtle bg-bg-elevated px-3 py-2 font-mono text-xs"
+                rows={18}
+                className="w-full rounded-xl border border-border-subtle bg-bg-elevated px-3 py-2 font-mono text-xs"
               />
             </label>
 
-            <section className="rounded-lg border border-border-subtle bg-bg-elevated p-3">
+            <section className="rounded-xl border border-border-subtle bg-bg-elevated p-3">
               <h4 className="font-display text-2xl">Preview</h4>
               {!parsedEditorPayload ? (
-                <p className="text-sm text-error">invalid_json_payload</p>
+                <p className="mt-2 text-sm text-error">JSON inválido para preview.</p>
               ) : (
-                <ContentPreview pageKey={selectedRevision.pageKey} section={buildPreviewSection(selectedRevision, parsedEditorPayload)} />
+                <div className="mt-2 rounded-lg border border-border-subtle bg-bg-base p-3">
+                  <ContentPreview
+                    pageKey={selectedRevision.pageKey}
+                    section={buildPreviewSection(selectedRevision, parsedEditorPayload)}
+                  />
+                </div>
               )}
             </section>
 
@@ -274,32 +458,26 @@ export function ContentAdminClient() {
                 type="button"
                 onClick={() => void saveDraft()}
                 disabled={saving}
-                className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-bg-base disabled:opacity-60"
+                className="rounded-lg bg-brand px-4 py-2 text-sm font-semibold text-bg-base transition-colors hover:bg-brand-hover disabled:opacity-60"
               >
-                {saving ? "saving..." : "save_draft"}
+                {saving ? "Salvando..." : "Salvar draft"}
               </button>
               <button
                 type="button"
                 onClick={() => void publishDraft()}
                 disabled={publishing}
-                className="rounded-lg border border-brand/40 bg-brand/10 px-4 py-2 text-sm font-semibold text-brand disabled:opacity-60"
+                className="rounded-lg border border-brand/40 bg-brand/10 px-4 py-2 text-sm font-semibold text-brand transition-colors hover:border-brand/60 disabled:opacity-60"
               >
-                {publishing ? "publishing..." : "publish"}
+                {publishing ? "Publicando..." : "Publicar"}
               </button>
               <button
                 type="button"
                 onClick={() => void load()}
-                className="rounded-lg border border-border-subtle bg-bg-elevated px-4 py-2 text-sm text-text-secondary"
+                className="rounded-lg border border-border-subtle bg-bg-elevated px-4 py-2 text-sm text-text-secondary transition-colors hover:text-text-primary"
               >
-                reload
+                Recarregar
               </button>
             </div>
-
-            {error ? (
-              <p className="rounded-lg border border-error/30 bg-error/10 px-3 py-2 text-sm text-error">
-                {error}
-              </p>
-            ) : null}
           </>
         )}
       </article>
@@ -375,5 +553,5 @@ function ContentPreview({ pageKey, section }: { pageKey: string; section: Public
     );
   }
 
-  return <p className="text-sm text-text-muted">preview_not_available_for_page</p>;
+  return <p className="text-sm text-text-muted">Preview indisponível para esta página.</p>;
 }

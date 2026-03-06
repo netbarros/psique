@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { flexibleDatetimeSchema } from "@/lib/contracts/datetime";
 
 export const adminPlanStatusSchema = z.enum(["draft", "published", "archived"]);
 
@@ -46,9 +47,9 @@ export const adminPlanRevisionSchema = z.object({
   status: adminPlanStatusSchema,
   etag: z.string(),
   payload: z.record(z.string(), z.unknown()),
-  publishedAt: z.string().datetime().nullable(),
-  createdAt: z.string().datetime(),
-  updatedAt: z.string().datetime(),
+  publishedAt: flexibleDatetimeSchema.nullable(),
+  createdAt: flexibleDatetimeSchema,
+  updatedAt: flexibleDatetimeSchema,
 });
 
 export type AdminPlanStatus = z.infer<typeof adminPlanStatusSchema>;

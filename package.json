@@ -30,6 +30,8 @@
     "supabase:preflight:static": "node scripts/supabase-preflight.mjs --skip-runtime",
     "supabase:preflight:runtime": "node scripts/supabase-preflight.mjs",
     "supabase:preflight:write": "node scripts/supabase-preflight.mjs --write-report",
+    "integrations:bootstrap": "node scripts/bootstrap-platform-integrations.mjs",
+    "integrations:bootstrap:strict": "node scripts/bootstrap-platform-integrations.mjs --strict",
     "backend:audit": "npm exec --yes node scripts/backend-audit-orchestrator.mjs",
     "backend:audit:write": "npm exec --yes node scripts/backend-audit-orchestrator.mjs -- --write-report",
     "verify:backend": "npm run lint && npm run typecheck && npm run contract:non-screen:check && npm run backend:surface:check && npm run backend:audit && npm run test:api && npm run supabase:preflight:static",

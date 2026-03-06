@@ -61,7 +61,11 @@ Contrato backend completo: `docs/backend/BACKEND-API-SURFACE.md`
 8. `POST /api/admin/content/drafts/:draftId/publish` (`If-Match` obrigatório)
 9. `GET /api/admin/integrations`
 10. `PATCH /api/admin/integrations/:provider`
-11. `GET /api/admin/audit/events?limit=<n>`
+11. `POST /api/admin/integrations/telegram/connect`
+12. `POST /api/admin/integrations/stripe/connect`
+13. `POST /api/admin/integrations/asaas/connect`
+14. `POST /api/admin/integrations/runtime/sync`
+15. `GET /api/admin/audit/events?limit=<n>`
 
 ### Legado de escrita (não usar em telas novas)
 1. `PATCH /api/settings/profile` -> `409`

@@ -441,6 +441,46 @@
       "validation": "published_only_page_locale_filter",
       "criticality": "critical",
       "notes": "Conteúdo público publicado por página/locale"
+    },
+    {
+      "id": "NSR-045",
+      "kind": "api",
+      "path": "/api/admin/integrations/telegram/connect",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "telegram_getme_token_validation_and_runtime_match",
+      "criticality": "critical",
+      "notes": "Conexão real do provider Telegram (bot token + validação getMe)"
+    },
+    {
+      "id": "NSR-046",
+      "kind": "api",
+      "path": "/api/admin/integrations/stripe/connect",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "stripe_accounts_retrieve_validation_and_runtime_match",
+      "criticality": "critical",
+      "notes": "Conexão real do provider Stripe (secret key + validação accounts.retrieve)"
+    },
+    {
+      "id": "NSR-047",
+      "kind": "api",
+      "path": "/api/admin/integrations/asaas/connect",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "asaas_myaccount_validation_and_runtime_match",
+      "criticality": "critical",
+      "notes": "Conexão real do provider Asaas (api key + validação /v3/myAccount)"
+    },
+    {
+      "id": "NSR-048",
+      "kind": "api",
+      "path": "/api/admin/integrations/runtime/sync",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "runtime_env_discovery_and_provider_connectivity_validation",
+      "criticality": "critical",
+      "notes": "Sincronização inteligente das integrações a partir de ENV runtime (dry-run e persistência auditável)"
     }
   ]
 }

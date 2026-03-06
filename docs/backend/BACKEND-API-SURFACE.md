@@ -3,7 +3,7 @@
 Este documento cobre a superfície backend completa de APIs não-visuais.
 
 - Fonte canônica: `docs/stitch/NON_SCREEN_ROUTES.json`
-- Total de APIs: `43`
+- Total de APIs: `47`
 - Versão do catálogo: `1.0.0`
 - Gerado em: `2026-03-05T00:00:00-03:00`
 
@@ -23,6 +23,10 @@ Este documento cobre a superfície backend completa de APIs não-visuais.
 | `/api/admin/content/drafts/[draftId]/publish` | `POST` | `authenticated_master_admin` | `critical` | `if_match_required_publish` | Publicação de revisão de conteúdo (draft -> published) |
 | `/api/admin/integrations` | `GET` | `authenticated_master_admin` | `critical` | `list_integrations_without_secrets` | Leitura de integrações globais sem exposição de segredos |
 | `/api/admin/integrations/[provider]` | `PATCH` | `authenticated_master_admin` | `critical` | `zod_provider_config_payload` | Atualização global de integração com trilha de auditoria |
+| `/api/admin/integrations/asaas/connect` | `POST` | `authenticated_master_admin` | `critical` | `asaas_myaccount_validation_and_runtime_match` | Conexão real do provider Asaas (api key + validação /v3/myAccount) |
+| `/api/admin/integrations/runtime/sync` | `POST` | `authenticated_master_admin` | `critical` | `runtime_env_discovery_and_provider_connectivity_validation` | Sincronização inteligente das integrações a partir de ENV runtime (dry-run e persistência auditável) |
+| `/api/admin/integrations/stripe/connect` | `POST` | `authenticated_master_admin` | `critical` | `stripe_accounts_retrieve_validation_and_runtime_match` | Conexão real do provider Stripe (secret key + validação accounts.retrieve) |
+| `/api/admin/integrations/telegram/connect` | `POST` | `authenticated_master_admin` | `critical` | `telegram_getme_token_validation_and_runtime_match` | Conexão real do provider Telegram (bot token + validação getMe) |
 | `/api/admin/plans` | `GET` | `authenticated_master_admin` | `critical` | `query_status_locale` | Lista revisões de planos no domínio master_admin |
 | `/api/admin/plans/drafts` | `POST` | `authenticated_master_admin` | `critical` | `zod_plan_draft_payload` | Criação de draft de plano com versionamento |
 | `/api/admin/plans/drafts/[draftId]` | `PATCH` | `authenticated_master_admin` | `critical` | `zod_patch_if_match_optional` | Atualização de draft de plano com ETag otimista |

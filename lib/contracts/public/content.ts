@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { flexibleDatetimeSchema } from "@/lib/contracts/datetime";
 
 export const publicContentQuerySchema = z.object({
   page: z.string().trim().min(1).max(120),
@@ -11,7 +12,7 @@ export const publicContentItemSchema = z.object({
   version: z.number().int().min(1),
   etag: z.string(),
   payload: z.record(z.string(), z.unknown()),
-  publishedAt: z.string().datetime().nullable(),
+  publishedAt: flexibleDatetimeSchema.nullable(),
 });
 
 export const publicContentResponseSchema = z.object({

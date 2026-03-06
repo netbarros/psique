@@ -53,6 +53,29 @@ const integrationEnvelopeSchema = z.object({
   data: integrationSchema,
 });
 
+const integrationRuntimeSyncEnvelopeSchema = z.object({
+  success: z.literal(true),
+  data: z.object({
+    syncedAt: z.string(),
+    dryRun: z.boolean(),
+    summary: z.object({
+      total: z.number(),
+      active: z.number(),
+      draft: z.number(),
+      invalid: z.number(),
+    }),
+    items: z.array(
+      z.object({
+        provider: z.string(),
+        status: z.enum(["active", "draft", "invalid"]),
+        reason: z.string(),
+        validatedAt: z.string().nullable(),
+      }),
+    ),
+    integrations: z.array(integrationSchema),
+  }),
+});
+
 const auditEventSchema = z.object({
   id: z.string().uuid(),
   actor_user_id: z.string().uuid(),
@@ -198,6 +221,64 @@ export async function patchAdminIntegration(
   });
   if (!response.ok) throw await parseApiError(response);
   return integrationEnvelopeSchema.parse(await response.json()).data;
+}
+
+export async function connectTelegramIntegration(input: {
+  botToken?: string;
+  useRuntime?: boolean;
+  loginDomain?: string | null;
+}) {
+  const response = await fetch("/api/admin/integrations/telegram/connect", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!response.ok) throw await parseApiError(response);
+  return integrationEnvelopeSchema.parse(await response.json()).data;
+}
+
+export async function connectStripeIntegration(input: {
+  secretKey?: string;
+  useRuntime?: boolean;
+  connectClientId?: string | null;
+}) {
+  const response = await fetch("/api/admin/integrations/stripe/connect", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!response.ok) throw await parseApiError(response);
+  return integrationEnvelopeSchema.parse(await response.json()).data;
+}
+
+export async function connectAsaasIntegration(input: {
+  apiKey?: string;
+  useRuntime?: boolean;
+}) {
+  const response = await fetch("/api/admin/integrations/asaas/connect", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(input),
+  });
+  if (!response.ok) throw await parseApiError(response);
+  return integrationEnvelopeSchema.parse(await response.json()).data;
+}
+
+export async function syncAdminIntegrationsRuntime(input: {
+  providers?: string[];
+  dryRun?: boolean;
+} = {}) {
+  const payload: Record<string, unknown> = {};
+  if (input.providers) payload.providers = input.providers;
+  if (typeof input.dryRun === "boolean") payload.dryRun = input.dryRun;
+
+  const response = await fetch("/api/admin/integrations/runtime/sync", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(payload),
+  });
+  if (!response.ok) throw await parseApiError(response);
+  return integrationRuntimeSyncEnvelopeSchema.parse(await response.json()).data;
 }
 
 export async function getAdminAuditEvents(limit = 100) {
