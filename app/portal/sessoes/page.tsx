@@ -42,7 +42,7 @@ export default async function SessoesPage() {
       .single();
     patient = patientAdmin as PatientRecord | null;
   }
-  if (!patient) redirect("/dashboard");
+  if (!patient) redirect("/auth/login?error=patient_profile_missing");
 
   const { data: appointmentsData } = await supabase
     .from("appointments")

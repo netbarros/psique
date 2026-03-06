@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 import Link from "next/link";
 import type React from "react";
+import { normalizeUserRole } from "@/lib/auth/access-routing";
 
 export const metadata: Metadata = {
   title: { default: "Portal do Paciente", template: "%s — Psique" },
@@ -55,9 +56,52 @@ export default async function PatientLayout({
       .single();
 
     patient = patientAdmin as PatientInfo | null;
+
+    if (!patient && user.email) {
+      const { data: patientByEmail } = await admin
+        .from("patients")
+        .select("id, name, email, therapist_id")
+        .eq("email", user.email)
+        .is("user_id", null)
+        .order("created_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (patientByEmail) {
+        await admin
+          .from("patients")
+          .update({
+            user_id: user.id,
+            name:
+              (typeof user.user_metadata?.name === "string" ? user.user_metadata.name : null) ??
+              (typeof user.user_metadata?.full_name === "string" ? user.user_metadata.full_name : null) ??
+              undefined,
+          })
+          .eq("id", patientByEmail.id);
+
+        patient = patientByEmail as PatientInfo;
+      }
+    }
   }
 
-  if (!patient) redirect("/dashboard");
+  if (!patient) {
+    let role = normalizeUserRole(user.user_metadata?.role);
+
+    if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+      const admin = createAdminClient();
+      const { data: roleRow } = await admin
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", user.id)
+        .maybeSingle();
+      const roleFromTable = normalizeUserRole(roleRow?.role);
+      if (roleFromTable) role = roleFromTable;
+    }
+
+    if (role === "therapist") redirect("/dashboard?error=therapist_role_redirect");
+    if (role === "master_admin") redirect("/admin");
+    redirect("/auth/login?error=patient_profile_missing");
+  }
 
   const { data: therapist } = await supabase
     .from("therapists")
@@ -94,7 +138,7 @@ export default async function PatientLayout({
               Diário
             </Link>
             <Link className="rounded-xl px-3 py-2.5 text-sm font-medium text-portal-text-primary hover:bg-portal-bg-subtle" href="/portal/sessoes">
-              Pagamentos
+              Sessões
             </Link>
             <Link className="rounded-xl px-3 py-2.5 text-sm font-medium text-portal-text-primary hover:bg-portal-bg-subtle" href="/portal/chat">
               Assistente IA
@@ -162,7 +206,7 @@ export default async function PatientLayout({
           </Link>
           <Link className="flex flex-col items-center gap-1 text-portal-text-faint hover:text-portal-text-primary" href="/portal/sessoes">
             <span className="material-symbols-outlined text-[20px]">credit_card</span>
-            <span className="text-[10px] font-medium">Pagamentos</span>
+            <span className="text-[10px] font-medium">Sessões</span>
           </Link>
         </div>
       </nav>

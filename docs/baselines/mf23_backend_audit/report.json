@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-03-05T03:12:33.829Z",
+  "generatedAt": "2026-03-06T16:55:40.330Z",
   "summary": {
-    "total": 120,
-    "passed": 120,
+    "total": 290,
+    "passed": 290,
     "failed": 0,
     "criticalFailed": 0
   },
@@ -33,7 +33,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -69,7 +69,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_rate_limit",
@@ -111,7 +111,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_rate_limit",
@@ -153,7 +153,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         }
       ]
     },
@@ -183,7 +183,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -219,7 +219,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -255,7 +255,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_query_handling",
@@ -291,7 +291,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -327,7 +327,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -363,7 +363,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -399,7 +399,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         }
       ]
     },
@@ -495,7 +495,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_zod",
@@ -537,7 +537,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_rate_limit",
@@ -579,7 +579,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_query_handling",
@@ -615,7 +615,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         }
       ]
     },
@@ -652,7 +652,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_zod",
@@ -695,7 +695,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_zod",
@@ -731,7 +731,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "validation_query_handling",
@@ -767,7 +767,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -783,8 +783,8 @@
       "methods": [
         "PATCH"
       ],
-      "authModel": "authenticated",
-      "validation": "zod_profile_payload",
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
       "criticality": "major",
       "checks": [
         {
@@ -803,13 +803,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
-        },
-        {
-          "id": "validation_zod",
-          "passed": true,
-          "severity": "major",
-          "detail": "Zod validation detected"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         }
       ]
     },
@@ -819,8 +813,8 @@
       "methods": [
         "PATCH"
       ],
-      "authModel": "authenticated",
-      "validation": "zod_security_payload",
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
       "criticality": "major",
       "checks": [
         {
@@ -839,13 +833,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
-        },
-        {
-          "id": "validation_zod",
-          "passed": true,
-          "severity": "major",
-          "detail": "Zod validation detected"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         }
       ]
     },
@@ -882,7 +870,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -960,7 +948,7 @@
           "id": "auth_model_enforced",
           "passed": true,
           "severity": "critical",
-          "detail": "Authenticated route checks Supabase user session"
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
         },
         {
           "id": "observability_logger",
@@ -1035,6 +1023,1568 @@
           "detail": "Shared secret validation detected"
         }
       ]
+    },
+    {
+      "id": "NSR-030",
+      "path": "/api/settings/integrations",
+      "methods": [
+        "PATCH"
+      ],
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\settings\\integrations\\route.ts)"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-031",
+      "path": "/api/settings/integrations/stripe/connect",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_legacy_readonly",
+      "validation": "legacy_write_conflict_409",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\settings\\integrations\\stripe\\connect\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-032",
+      "path": "/api/admin/plans",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "query_status_locale",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\plans\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_query_handling",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Query parsing guard detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-033",
+      "path": "/api/admin/plans/drafts",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_plan_draft_payload",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\plans\\drafts\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-034",
+      "path": "/api/admin/plans/drafts/[draftId]",
+      "methods": [
+        "PATCH"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_patch_if_match_optional",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\plans\\drafts\\[draftId]\\route.ts)"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-035",
+      "path": "/api/admin/plans/drafts/[draftId]/publish",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "if_match_required_publish",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\plans\\drafts\\[draftId]\\publish\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-036",
+      "path": "/api/admin/content",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "query_page_locale_status",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\content\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_query_handling",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Query parsing guard detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-037",
+      "path": "/api/admin/content/drafts",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_content_draft_payload",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\content\\drafts\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-038",
+      "path": "/api/admin/content/drafts/[draftId]",
+      "methods": [
+        "PATCH"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_patch_if_match_optional",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\content\\drafts\\[draftId]\\route.ts)"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-039",
+      "path": "/api/admin/content/drafts/[draftId]/publish",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "if_match_required_publish",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\content\\drafts\\[draftId]\\publish\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-040",
+      "path": "/api/admin/integrations",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "list_integrations_without_secrets",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\integrations\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-041",
+      "path": "/api/admin/integrations/[provider]",
+      "methods": [
+        "PATCH"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_provider_config_payload",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\integrations\\[provider]\\route.ts)"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-042",
+      "path": "/api/admin/audit/events",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "query_limit",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\audit\\events\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_query_handling",
+          "passed": true,
+          "severity": "major",
+          "detail": "Query parsing guard detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-043",
+      "path": "/api/public/plans",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "public_readonly",
+      "validation": "published_only_locale_filter",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\public\\plans\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-044",
+      "path": "/api/public/content",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "public_readonly",
+      "validation": "published_only_page_locale_filter",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\public\\content\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-045",
+      "path": "/api/admin/integrations/telegram/connect",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "telegram_getme_token_validation_and_runtime_match",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\integrations\\telegram\\connect\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-046",
+      "path": "/api/admin/integrations/stripe/connect",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "stripe_accounts_retrieve_validation_and_runtime_match",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\integrations\\stripe\\connect\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-047",
+      "path": "/api/admin/integrations/asaas/connect",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "asaas_myaccount_validation_and_runtime_match",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\integrations\\asaas\\connect\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-048",
+      "path": "/api/admin/integrations/runtime/sync",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "runtime_env_discovery_and_provider_connectivity_validation",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\integrations\\runtime\\sync\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-049",
+      "path": "/api/admin/growth/rules",
+      "methods": [
+        "GET",
+        "PATCH"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_growth_rule_patch_and_active_rule_resolution",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\growth\\rules\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-050",
+      "path": "/api/admin/wallet/pricebook-actions",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "read_only_pricebook_listing",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\wallet\\pricebook-actions\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-051",
+      "path": "/api/admin/wallet/pricebook-actions/[actionKey]",
+      "methods": [
+        "PATCH"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_pricebook_patch",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\wallet\\pricebook-actions\\[actionKey]\\route.ts)"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-052",
+      "path": "/api/admin/wallet/credit-packages",
+      "methods": [
+        "GET",
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_credit_package_create",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\wallet\\credit-packages\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-053",
+      "path": "/api/admin/wallet/credit-packages/[id]",
+      "methods": [
+        "PATCH"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_credit_package_patch",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\wallet\\credit-packages\\[id]\\route.ts)"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-054",
+      "path": "/api/admin/moderation/posts/[postId]/approve",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "post_exists_and_moderation_transition",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\moderation\\posts\\[postId]\\approve\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-055",
+      "path": "/api/admin/moderation/posts/[postId]/reject",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_master_admin",
+      "validation": "post_exists_reason_required_and_moderation_transition",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\admin\\moderation\\posts\\[postId]\\reject\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-056",
+      "path": "/api/therapist/public-profile",
+      "methods": [
+        "PATCH"
+      ],
+      "authModel": "authenticated_therapist",
+      "validation": "zod_public_profile_payload_and_slug_rules",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\public-profile\\route.ts)"
+        },
+        {
+          "id": "method_PATCH_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "PATCH export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_zod",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Zod validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-057",
+      "path": "/api/therapist/wallet",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_therapist",
+      "validation": "wallet_autocreate_and_balance_projection",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\wallet\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-058",
+      "path": "/api/therapist/wallet/ledger",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_therapist",
+      "validation": "query_filters_and_wallet_scope",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\wallet\\ledger\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "validation_query_handling",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Query parsing guard detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-059",
+      "path": "/api/therapist/referrals/summary",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_therapist",
+      "validation": "referral_summary_projection",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\referrals\\summary\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-060",
+      "path": "/api/therapist/referrals/generate-code",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_therapist",
+      "validation": "idempotent_code_generation",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\referrals\\generate-code\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-061",
+      "path": "/api/therapist/referrals/invites",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_therapist",
+      "validation": "status_filter_and_scope",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\referrals\\invites\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-062",
+      "path": "/api/therapist/growth/rules",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_therapist",
+      "validation": "active_rules_read_only_projection",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\growth\\rules\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-063",
+      "path": "/api/therapist/patients/[id]/timeline",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "authenticated_therapist_owner",
+      "validation": "patient_ownership_and_unified_timeline",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\patients\\[id]\\timeline\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-064",
+      "path": "/api/therapist/posts/[postId]/submit-review",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_therapist_owner",
+      "validation": "post_ownership_and_state_transition",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\therapist\\posts\\[postId]\\submit-review\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        }
+      ]
+    },
+    {
+      "id": "NSR-065",
+      "path": "/api/public/therapists",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "public_readonly",
+      "validation": "directory_filters_and_opt_in_visibility",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\public\\therapists\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-066",
+      "path": "/api/public/therapists/[slug]",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "public_readonly",
+      "validation": "slug_resolution_and_profile_visibility",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\public\\therapists\\[slug]\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-067",
+      "path": "/api/public/therapists/[slug]/posts",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "public_readonly",
+      "validation": "published_posts_only",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\public\\therapists\\[slug]\\posts\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        }
+      ]
+    },
+    {
+      "id": "NSR-068",
+      "path": "/api/public/therapists/[slug]/posts/[postSlug]",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "public_readonly",
+      "validation": "published_post_by_slug",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\public\\therapists\\[slug]\\posts\\[postSlug]\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        }
+      ]
+    },
+    {
+      "id": "NSR-069",
+      "path": "/api/public/community",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "public_readonly",
+      "validation": "community_provider_public_config",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\public\\community\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        }
+      ]
+    },
+    {
+      "id": "NSR-070",
+      "path": "/api/patient/checkins/respond",
+      "methods": [
+        "POST"
+      ],
+      "authModel": "authenticated_patient",
+      "validation": "consent_preferences_and_appointment_dedup",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\patient\\checkins\\respond\\route.ts)"
+        },
+        {
+          "id": "method_POST_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "POST export found"
+        },
+        {
+          "id": "auth_model_enforced",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Authenticated route checks Supabase user session (direct or wrapped helper)"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-071",
+      "path": "/api/cron/wallet/expiration-warnings",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "secret_header",
+      "validation": "authorization_bearer_secret",
+      "criticality": "major",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\cron\\wallet\\expiration-warnings\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_secret_header",
+          "passed": true,
+          "severity": "major",
+          "detail": "Secret header validation detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-072",
+      "path": "/api/cron/wallet/expire-bonuses",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "secret_header",
+      "validation": "authorization_bearer_secret",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\cron\\wallet\\expire-bonuses\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_secret_header",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Secret header validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
+    },
+    {
+      "id": "NSR-073",
+      "path": "/api/cron/referrals/qualification-evaluator",
+      "methods": [
+        "GET"
+      ],
+      "authModel": "secret_header",
+      "validation": "authorization_bearer_secret",
+      "criticality": "critical",
+      "checks": [
+        {
+          "id": "route_file_exists",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Route file present (app\\api\\cron\\referrals\\qualification-evaluator\\route.ts)"
+        },
+        {
+          "id": "method_GET_exported",
+          "passed": true,
+          "severity": "critical",
+          "detail": "GET export found"
+        },
+        {
+          "id": "auth_secret_header",
+          "passed": true,
+          "severity": "critical",
+          "detail": "Secret header validation detected"
+        },
+        {
+          "id": "observability_logger",
+          "passed": true,
+          "severity": "major",
+          "detail": "Structured logger usage detected"
+        }
+      ]
     }
   ],
   "globalChecks": [
@@ -1053,14 +2603,14 @@
     {
       "id": "supabase_preflight_report_exists",
       "passed": true,
-      "severity": "critical",
+      "severity": "major",
       "detail": "Supabase preflight report present"
     },
     {
-      "id": "supabase_preflight_critical_clean",
+      "id": "supabase_preflight_snapshot_status",
       "passed": true,
-      "severity": "critical",
-      "detail": "Supabase preflight has zero critical failures"
+      "severity": "major",
+      "detail": "Supabase preflight snapshot has zero critical failures"
     },
     {
       "id": "supabase_hardening_migration_exists",

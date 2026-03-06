@@ -2,6 +2,7 @@ import { createClient as createServerClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import BookingClient from "./BookingClient";
 import { getContentSection, getPublicContent } from "@/lib/frontend/public-catalog-client";
 import { mapBookingContent } from "@/lib/frontend/content-mappers";
@@ -117,12 +118,12 @@ export default async function BookingPage({ params }: Props) {
             Psique
           </span>
         </div>
-        <a
+        <Link
           href="/auth/login"
           className="text-[13px] text-text-muted no-underline hover:text-text-primary transition-colors font-medium tracking-wide"
         >
           Já tem conta? Entrar
-        </a>
+        </Link>
       </header>
 
       {/* Content */}

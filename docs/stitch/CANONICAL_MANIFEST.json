@@ -590,6 +590,95 @@
         "screenshot",
         "visual-snapshot"
       ]
+    },
+    {
+      "id": "S29",
+      "source_type": "derived",
+      "title": "Public Therapists Directory",
+      "theme": "dark_core",
+      "route": "/terapeutas",
+      "source_file": "app/terapeutas/page.tsx",
+      "derives_from": [
+        "S02",
+        "S11"
+      ],
+      "status": "mapped",
+      "routePattern": "/terapeutas",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S30",
+      "source_type": "derived",
+      "title": "Therapist Public Profile",
+      "theme": "dark_core",
+      "route": [
+        "/terapeuta/[slug]",
+        "/[slug]"
+      ],
+      "source_file": "app/terapeuta/[slug]/page.tsx | app/[slug]/page.tsx",
+      "derives_from": [
+        "S02",
+        "S11"
+      ],
+      "status": "mapped",
+      "routePattern": "/terapeuta/[slug]",
+      "aliases": [
+        "/[slug]"
+      ],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S31",
+      "source_type": "derived",
+      "title": "Therapist Public Content Hub",
+      "theme": "dark_core",
+      "route": "/terapeuta/[slug]/posts/[postSlug]",
+      "source_file": "app/terapeuta/[slug]/posts/[postSlug]/page.tsx",
+      "derives_from": [
+        "S05",
+        "S12"
+      ],
+      "status": "mapped",
+      "routePattern": "/terapeuta/[slug]/posts/[postSlug]",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
+    },
+    {
+      "id": "S32",
+      "source_type": "derived",
+      "title": "Growth Wallet & Referral Dashboard",
+      "theme": "dark_core",
+      "route": "/dashboard/crescimento",
+      "source_file": "app/dashboard/crescimento/page.tsx",
+      "derives_from": [
+        "S01",
+        "S05"
+      ],
+      "status": "mapped",
+      "routePattern": "/dashboard/crescimento",
+      "aliases": [],
+      "coverageLevel": "L1",
+      "evidenceRequired": [
+        "route-contract",
+        "trace",
+        "screenshot"
+      ]
     }
   ],
   "rules": {

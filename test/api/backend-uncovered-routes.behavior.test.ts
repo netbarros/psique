@@ -4,6 +4,10 @@ const createClientMock = vi.fn();
 const createAdminClientMock = vi.fn();
 const limitMock = vi.fn();
 const renderToBufferMock = vi.fn();
+const ensureCreditWalletMock = vi.fn();
+const getPricebookActionMock = vi.fn();
+const consumeCreditsForActionMock = vi.fn();
+const getTherapistIdByUserIdMock = vi.fn();
 
 vi.mock("@/lib/supabase/server", () => ({
   createClient: createClientMock,
@@ -24,6 +28,23 @@ vi.mock("@/lib/logger", () => ({
     info: vi.fn(),
     warn: vi.fn(),
     error: vi.fn(),
+  },
+}));
+
+vi.mock("@/lib/growth/wallet", () => ({
+  ensureCreditWallet: ensureCreditWalletMock,
+  getPricebookAction: getPricebookActionMock,
+  consumeCreditsForAction: consumeCreditsForActionMock,
+  getTherapistIdByUserId: getTherapistIdByUserIdMock,
+  WalletError: class WalletError extends Error {
+    code: string;
+    status: number;
+
+    constructor(message: string, code: string, status = 400) {
+      super(message);
+      this.code = code;
+      this.status = status;
+    }
   },
 }));
 
@@ -66,6 +87,41 @@ describe("Backend uncovered routes behavior", () => {
     createAdminClientMock.mockReset();
     limitMock.mockReset();
     renderToBufferMock.mockReset();
+    ensureCreditWalletMock.mockReset();
+    getPricebookActionMock.mockReset();
+    consumeCreditsForActionMock.mockReset();
+    getTherapistIdByUserIdMock.mockReset();
+
+    ensureCreditWalletMock.mockResolvedValue({
+      wallet_id: "wallet-1",
+      therapist_id: "therapist-1",
+      balance_total_credits: 999,
+      balance_paid_credits: 999,
+      balance_bonus_credits: 0,
+      status: "active",
+    });
+    getPricebookActionMock.mockResolvedValue({
+      action_key: "transcription.minute",
+      unit_type: "minute",
+      unit_cost_credits: 1,
+      active: true,
+      effective_from: "2026-01-01T00:00:00.000Z",
+      effective_to: null,
+    });
+    consumeCreditsForActionMock.mockResolvedValue({
+      id: "usage-1",
+      therapist_id: "therapist-1",
+      wallet_id: "wallet-1",
+      action_key: "transcription.minute",
+      units: 1,
+      billed_credits: 1,
+      ledger_entry_id: "ledger-1",
+      correlation_id: "corr-1",
+      status: "billed",
+      metadata: {},
+      created_at: "2026-01-01T00:00:00.000Z",
+    });
+    getTherapistIdByUserIdMock.mockResolvedValue("therapist-1");
   });
 
   describe("POST /api/ai/transcribe", () => {

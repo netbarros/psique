@@ -86,7 +86,7 @@ export default async function PatientHomePage() {
     patient = patientAdmin as PatientInfo | null;
   }
 
-  if (!patient) redirect("/dashboard");
+  if (!patient) redirect("/auth/login?error=patient_profile_missing");
 
   const [{ data: therapist }, { data: upcoming }, { data: latestSession }, { data: latestJournal }] = await Promise.all([
     supabase

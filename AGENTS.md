@@ -1,4 +1,5 @@
 # AGENTS.md — PSIQUE Stitch-First Governance v3.0 (Canônico)
+
 # Multi-AI Operating Contract: Codex · Claude · Gemini · GPT-4o · Qualquer IA
 
 > **ESTE ARQUIVO É LEI.** Leia em totalidade antes de tocar em qualquer arquivo do projeto.
@@ -19,6 +20,9 @@ Antes de qualquer implementação, qualquer IA **deve** ler nesta ordem:
 6. docs/stitch/LAYOUT_PATTERNS.md         ← padrões de layout
 7. docs/stitch/IMPLEMENTATION_BACKLOG.md  ← fila priorizada
 8. docs/implementation_plan.md            ← plano de fases
+9. docs/handoffs\BACKEND-CONTRACT-FRONTEND-AGENT.md: Backend Architecture (Codex)
+10. Checklist operacional de PR: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`
+11. Contrato backend completo: `docs/backend/BACKEND-API-SURFACE.md`
 ```
 
 **Atalho proibido:** não pular etapas. Cada arquivo existe por uma razão.
@@ -63,13 +67,13 @@ Prioridade 9  →  Código existente (app/, components/) — somente se compatí
 
 ### 1.3 Propriedade dos Domínios
 
-| Domínio                | Telas                          | Tema Visual       |
-|------------------------|--------------------------------|-------------------|
-| Dashboard Terapeuta    | S01, S03-S07, S09, S19-S22     | dark_core         |
-| Onboarding / Auth      | S08, S15-S18                   | dark_core + light |
-| Portal Paciente        | S10, S23-S25                   | light_patient     |
-| Público (Landing/Book) | S02, S11-S14, S26              | dark_core         |
-| Sistema (Error/Load)   | S27, S28                       | dark_core         |
+| Domínio                | Telas                      | Tema Visual       |
+| ---------------------- | -------------------------- | ----------------- |
+| Dashboard Terapeuta    | S01, S03-S07, S09, S19-S22 | dark_core         |
+| Onboarding / Auth      | S08, S15-S18               | dark_core + light |
+| Portal Paciente        | S10, S23-S25               | light_patient     |
+| Público (Landing/Book) | S02, S11-S14, S26          | dark_core         |
+| Sistema (Error/Load)   | S27, S28                   | dark_core         |
 
 ---
 
@@ -77,78 +81,79 @@ Prioridade 9  →  Código existente (app/, components/) — somente se compatí
 
 ### 2A. Telas Stitch Canônicas (S01-S14)
 
-| ID  | Rota                           | Título                        | Tema           | Arquivo Stitch   |
-|-----|--------------------------------|-------------------------------|----------------|-----------------|
-| S01 | /dashboard                     | Therapist Dashboard           | dark_core      | stitch/S01/     |
-| S02 | /booking/[slug]                | Public Booking Page           | dark_core      | stitch/S02/     |
-| S03 | /dashboard/consulta/[roomId]   | Clinical Session Video        | dark_theater   | stitch/S03/     |
-| S04 | /dashboard/pacientes/[id]      | Patient Clinical Profile      | dark_core      | stitch/S04/     |
-| S05 | /dashboard/ia                  | AI Clinical Assistant         | dark_core      | stitch/S05/     |
-| S06 | /dashboard/financeiro          | Financial Intelligence        | dark_core      | stitch/S06/     |
-| S07 | /dashboard/telegram            | Telegram Hub                  | dark_core      | stitch/S07/     |
-| S08 | /dashboard/onboarding          | Therapist Onboarding Wizard   | light_onboard  | stitch/S08/     |
-| S09 | /dashboard/configuracoes       | Segurança & LGPD              | dark_core      | stitch/S09/     |
-| S10 | /portal + /portal/apoio        | Patient Reflection Portal     | light_patient  | stitch/S10/     |
-| S11 | / (hero)                       | Landing — Hero AIDA           | dark_core      | stitch/S11/     |
-| S12 | / (features)                   | Landing — Features & Value    | dark_core      | stitch/S12/     |
-| S13 | /pricing                       | Pricing Plans                 | dark_core      | stitch/S13/     |
-| S14 | /checkout/secure               | Secure Checkout               | dark_core      | stitch/S14/     |
+| ID  | Rota                         | Título                      | Tema          | Arquivo Stitch |
+| --- | ---------------------------- | --------------------------- | ------------- | -------------- |
+| S01 | /dashboard                   | Therapist Dashboard         | dark_core     | stitch/S01/    |
+| S02 | /booking/[slug]              | Public Booking Page         | dark_core     | stitch/S02/    |
+| S03 | /dashboard/consulta/[roomId] | Clinical Session Video      | dark_theater  | stitch/S03/    |
+| S04 | /dashboard/pacientes/[id]    | Patient Clinical Profile    | dark_core     | stitch/S04/    |
+| S05 | /dashboard/ia                | AI Clinical Assistant       | dark_core     | stitch/S05/    |
+| S06 | /dashboard/financeiro        | Financial Intelligence      | dark_core     | stitch/S06/    |
+| S07 | /dashboard/telegram          | Telegram Hub                | dark_core     | stitch/S07/    |
+| S08 | /dashboard/onboarding        | Therapist Onboarding Wizard | light_onboard | stitch/S08/    |
+| S09 | /dashboard/configuracoes     | Segurança & LGPD            | dark_core     | stitch/S09/    |
+| S10 | /portal + /portal/apoio      | Patient Reflection Portal   | light_patient | stitch/S10/    |
+| S11 | / (hero)                     | Landing — Hero AIDA         | dark_core     | stitch/S11/    |
+| S12 | / (features)                 | Landing — Features & Value  | dark_core     | stitch/S12/    |
+| S13 | /pricing                     | Pricing Plans               | dark_core     | stitch/S13/    |
+| S14 | /checkout/secure             | Secure Checkout             | dark_core     | stitch/S14/    |
 
 ### 2B. Telas Derivadas — psique-final.jsx (S15-S28)
 
 > Sem referência Stitch direta. Seguem Design System Canônico + tela-irmã indicada.
 
-| ID  | Rota                                   | Título                      | Tema          | Deriva de    |
-|-----|----------------------------------------|-----------------------------|---------------|--------------|
-| S15 | /auth/login                            | Login — Dual Role           | dark_core     | Design Sys.  |
-| S16 | /auth/register                         | Register — Terapeuta        | light_onboard | S08          |
-| S17 | /auth/register/patient                 | Register — Paciente         | light_patient | S10          |
-| S18 | /auth/forgot-password                  | Forgot Password             | dark_core     | Design Sys.  |
-| S19 | /dashboard/agenda                      | Agenda Semanal              | dark_core     | S01 + S04    |
-| S20 | /dashboard/pacientes                   | Lista de Pacientes          | dark_core     | S04          |
-| S21 | /dashboard/configuracoes/perfil        | Settings — Perfil           | dark_core     | S09          |
-| S22 | /dashboard/configuracoes/integracoes   | Settings — Integrações      | dark_core     | S09          |
-| S23 | /portal/agendar                        | Patient Self-Booking        | light_patient | S02 + S10    |
-| S24 | /portal/sessoes                        | Patient Sessions History    | light_patient | S10          |
-| S25 | /portal/chat                           | Patient AI Chat             | light_patient | S05 + S10    |
-| S26 | /booking/[slug]/sucesso                | Booking Confirmation        | dark_core     | S14          |
-| S27 | (loading global)                       | Loading State               | dark_core     | Design Sys.  |
-| S28 | (not-found / global-error)             | 404 / 500 Error             | dark_core     | Design Sys.  |
+| ID  | Rota                                 | Título                   | Tema          | Deriva de   |
+| --- | ------------------------------------ | ------------------------ | ------------- | ----------- |
+| S15 | /auth/login                          | Login — Dual Role        | dark_core     | Design Sys. |
+| S16 | /auth/register                       | Register — Terapeuta     | light_onboard | S08         |
+| S17 | /auth/register/patient               | Register — Paciente      | light_patient | S10         |
+| S18 | /auth/forgot-password                | Forgot Password          | dark_core     | Design Sys. |
+| S19 | /dashboard/agenda                    | Agenda Semanal           | dark_core     | S01 + S04   |
+| S20 | /dashboard/pacientes                 | Lista de Pacientes       | dark_core     | S04         |
+| S21 | /dashboard/configuracoes/perfil      | Settings — Perfil        | dark_core     | S09         |
+| S22 | /dashboard/configuracoes/integracoes | Settings — Integrações   | dark_core     | S09         |
+| S23 | /portal/agendar                      | Patient Self-Booking     | light_patient | S02 + S10   |
+| S24 | /portal/sessoes                      | Patient Sessions History | light_patient | S10         |
+| S25 | /portal/chat                         | Patient AI Chat          | light_patient | S05 + S10   |
+| S26 | /booking/[slug]/sucesso              | Booking Confirmation     | dark_core     | S14         |
+| S27 | (loading global)                     | Loading State            | dark_core     | Design Sys. |
+| S28 | (not-found / global-error)           | 404 / 500 Error          | dark_core     | Design Sys. |
 
 ---
 
 ## SEÇÃO 3 — TEMAS VISUAIS (CONTRATOS EXATOS)
 
 ### 3.1 TEMA: dark_core
+
 **Aplicar em:** S01-S07, S09, S11-S15, S18-S22, S26-S28
 
 ```css
 :root {
   /* Backgrounds */
-  --bg:      #080F0B;   /* fundo base — o mais escuro */
-  --bg2:     #0C1510;   /* headers, nav, seções alternadas */
-  --card:    #121A14;   /* cards, inputs, painéis */
-  --border:  #1C2E20;   /* bordas, divisores */
+  --bg: #080f0b; /* fundo base — o mais escuro */
+  --bg2: #0c1510; /* headers, nav, seções alternadas */
+  --card: #121a14; /* cards, inputs, painéis */
+  --border: #1c2e20; /* bordas, divisores */
 
   /* Ação Principal */
-  --mint:    #52B788;   /* cor primária — botões, ativo, glow */
-  --mintl:   #74C9A0;   /* mint hover/light */
+  --mint: #52b788; /* cor primária — botões, ativo, glow */
+  --mintl: #74c9a0; /* mint hover/light */
 
   /* Acento Premium */
-  --gold:    #C4A35A;   /* IA, premium, seções de destaque */
+  --gold: #c4a35a; /* IA, premium, seções de destaque */
 
   /* Texto */
-  --ivory:   #EDE7D9;   /* texto principal */
-  --ivoryD:  #C8BFA8;   /* texto secundário */
-  --ivoryDD: #8A8070;   /* texto terciário / muted */
+  --ivory: #ede7d9; /* texto principal */
+  --ivoryD: #c8bfa8; /* texto secundário */
+  --ivoryDD: #8a8070; /* texto terciário / muted */
 
   /* Semânticas */
-  --red:     #B85450;   /* erro, perigo, cancelar */
-  --blue:    #4A8FA8;   /* informação, links, status */
+  --red: #b85450; /* erro, perigo, cancelar */
+  --blue: #4a8fa8; /* informação, links, status */
 
   /* Tipografia */
-  --ff: 'Cormorant Garamond', serif;
-  --fs: 'Instrument Sans', sans-serif;
+  --ff: "Cormorant Garamond", serif;
+  --fs: "Instrument Sans", sans-serif;
 }
 body {
   background-color: var(--bg);
@@ -156,12 +161,19 @@ body {
   font-family: var(--fs);
   -webkit-font-smoothing: antialiased;
 }
-h1, h2, h3, h4, h5, h6, .serif {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.serif {
   font-family: var(--ff);
 }
 ```
 
 ### 3.2 TEMA: dark_theater
+
 **Aplicar em:** S03 (video call) exclusivamente
 
 ```
@@ -178,43 +190,51 @@ Herda dark_core com as seguintes DIFERENÇAS:
 ```
 
 ### 3.3 TEMA: light_onboard
+
 **Aplicar em:** S08 (onboarding wizard), S16 (register terapeuta)
 
 ```css
-body { background: #FCFCFC; color: #1A1A1A; }
+body {
+  background: #fcfcfc;
+  color: #1a1a1a;
+}
 /* Variáveis internas deste tema */
---input-bg:      #FFFFFF;
---input-border:  #E5E7EB;   /* gray-200 */
---input-focus:   #52B788;   /* mint universal */
---label-color:   #374151;   /* gray-700 */
---text-sub:      #6B7280;   /* gray-500 */
---card-bg:       #FFFFFF;
---card-border:   #F9FAFB;   /* gray-50 */
---card-shadow:   0 10px 40px -10px rgba(82, 183, 136, 0.15);
---btn-primary:   #080F0B;   /* mesmo --bg do dark */
---btn-text:      #EDE7D9;   /* ivory */
---progress-bg:   #F3F4F6;
---progress-fill: #52B788;
---chip-active-bg:    rgba(82, 183, 136, 0.10);
---chip-active-border: #52B788;
---chip-active-text:  #52B788;
+--input-bg: #ffffff;
+--input-border: #e5e7eb; /* gray-200 */
+--input-focus: #52b788; /* mint universal */
+--label-color: #374151; /* gray-700 */
+--text-sub: #6b7280; /* gray-500 */
+--card-bg: #ffffff;
+--card-border: #f9fafb; /* gray-50 */
+--card-shadow: 0 10px 40px -10px rgba(82, 183, 136, 0.15);
+--btn-primary: #080f0b; /* mesmo --bg do dark */
+--btn-text: #ede7d9; /* ivory */
+--progress-bg: #f3f4f6;
+--progress-fill: #52b788;
+--chip-active-bg: rgba(82, 183, 136, 0.1);
+--chip-active-border: #52b788;
+--chip-active-text: #52b788;
 ```
 
 ### 3.4 TEMA: light_patient
+
 **Aplicar em:** S10 (portal apoio), S17 (register patient), S23-S25 (portal pages)
 
 ```css
-body { background: #F8F9FA; color: #2D3748; }
---card:          #FFFFFF;
---border:        #E2E8F0;
---primary:       #4A8FA8;   /* = --blue do dark_core */
---primary-hover: #3B7489;
---text-main:     #2D3748;
---text-muted:    #718096;
---accent-bg:     #EBF4F7;   /* bg de chips do primary */
---shadow-card:   0 4px 20px rgba(74, 143, 168, 0.05);
---glass-bg:      rgba(255, 255, 255, 0.90);
---glass-blur:    backdrop-filter: blur(10px);
+body {
+  background: #f8f9fa;
+  color: #2d3748;
+}
+--card: #ffffff;
+--border: #e2e8f0;
+--primary: #4a8fa8; /* = --blue do dark_core */
+--primary-hover: #3b7489;
+--text-main: #2d3748;
+--text-muted: #718096;
+--accent-bg: #ebf4f7; /* bg de chips do primary */
+--shadow-card: 0 4px 20px rgba(74, 143, 168, 0.05);
+--glass-bg: rgba(255, 255, 255, 0.9);
+--glass-blur: backdrop-filter: blur(10px);
 ```
 
 ---
@@ -225,18 +245,24 @@ body { background: #F8F9FA; color: #2D3748; }
 
 ```html
 <!-- Obrigatório no <head> de TODA tela -->
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Instrument+Sans:wght@400;500;600;700&display=swap"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+  rel="stylesheet"
+/>
 ```
 
 **Mapeamento de uso:**
-| Elemento                  | Fonte                        |
+| Elemento | Fonte |
 |---------------------------|------------------------------|
-| h1-h6, headings           | Cormorant Garamond           |
-| Números KPI grandes       | Cormorant Garamond           |
-| Citações / insights IA    | Cormorant Garamond + italic  |
-| Body, labels, botões, UI  | Instrument Sans              |
-| Links técnicos, IDs       | font-mono (só p/ dados raw)  |
+| h1-h6, headings | Cormorant Garamond |
+| Números KPI grandes | Cormorant Garamond |
+| Citações / insights IA | Cormorant Garamond + italic |
+| Body, labels, botões, UI | Instrument Sans |
+| Links técnicos, IDs | font-mono (só p/ dados raw) |
 
 **❌ COMPLETAMENTE PROIBIDO:** Inter · Roboto · Arial · Outfit · Space Grotesk · system-ui · DM Sans · Plus Jakarta Sans
 
@@ -275,22 +301,24 @@ rounded-full  → avatares, dots, badges pill, botões circulares
 box-shadow: 0 0 15px rgba(82, 183, 136, 0.15);
 
 /* Mint glow large */
-box-shadow: 0 0 30px rgba(82, 183, 136, 0.10);
+box-shadow: 0 0 30px rgba(82, 183, 136, 0.1);
 
 /* CTA button shadow */
 box-shadow: 0 4px 20px rgba(82, 183, 136, 0.25);
 
 /* Button shadow inline */
-box-shadow: 0 4px 10px rgba(82, 183, 136, 0.20);
+box-shadow: 0 4px 10px rgba(82, 183, 136, 0.2);
 
 /* Gold glow */
-box-shadow: 0 0 20px rgba(196, 163, 90, 0.10);
+box-shadow: 0 0 20px rgba(196, 163, 90, 0.1);
 
 /* Red danger glow */
 box-shadow: 0 0 20px rgba(184, 84, 80, 0.25);
 
 /* Card elevation */
-box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.50), 0 0 20px -5px rgba(82, 183, 136, 0.05);
+box-shadow:
+  0 10px 40px -10px rgba(0, 0, 0, 0.5),
+  0 0 20px -5px rgba(82, 183, 136, 0.05);
 
 /* Onboard card */
 box-shadow: 0 10px 40px -10px rgba(82, 183, 136, 0.15);
@@ -380,8 +408,10 @@ fadeIn:  from { opacity:0 } to { opacity:1 }
 ### 5.1 Sticky Header (dark_core)
 
 ```tsx
-<header className="sticky top-0 z-50 bg-[var(--bg2)]/80 backdrop-blur-md
-  border-b border-[var(--border)] px-4 py-4 flex items-center justify-between">
+<header
+  className="sticky top-0 z-50 bg-[var(--bg2)]/80 backdrop-blur-md
+  border-b border-[var(--border)] px-4 py-4 flex items-center justify-between"
+>
   {/* Logo + back button OU menu + bell + avatar */}
 </header>
 ```
@@ -524,8 +554,10 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 ### 5.7 KPI Card
 
 ```tsx
-<div className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4
-  flex flex-col justify-between relative overflow-hidden">
+<div
+  className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4
+  flex flex-col justify-between relative overflow-hidden"
+>
   {/* Header */}
   <div className="flex items-center justify-between mb-2">
     <span className="text-xs font-medium text-[var(--ivoryDD)] uppercase tracking-wider">
@@ -540,8 +572,10 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
     R$ 12.4k
   </span>
   {/* Delta */}
-  <span className="text-[10px] text-[var(--mint)] bg-[var(--mint)]/10
-    px-1.5 py-0.5 rounded flex items-center gap-0.5 w-fit mt-1">
+  <span
+    className="text-[10px] text-[var(--mint)] bg-[var(--mint)]/10
+    px-1.5 py-0.5 rounded flex items-center gap-0.5 w-fit mt-1"
+  >
     <span className="material-symbols-outlined text-[10px]">arrow_upward</span>
     8%
   </span>
@@ -588,11 +622,15 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 
 ```tsx
 <label className="relative inline-flex items-center cursor-pointer">
-  <input type="checkbox" className="sr-only peer" defaultChecked/>
-  <div className="w-11 h-6 bg-[var(--border)] peer-checked:bg-[var(--mint)]
-    rounded-full transition-colors duration-300 relative">
-    <div className="absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full
-      transition-transform duration-300 peer-checked:translate-x-5"/>
+  <input type="checkbox" className="sr-only peer" defaultChecked />
+  <div
+    className="w-11 h-6 bg-[var(--border)] peer-checked:bg-[var(--mint)]
+    rounded-full transition-colors duration-300 relative"
+  >
+    <div
+      className="absolute top-[2px] left-[2px] w-5 h-5 bg-white rounded-full
+      transition-transform duration-300 peer-checked:translate-x-5"
+    />
   </div>
 </label>
 ```
@@ -600,12 +638,16 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 ### 5.10 Sticky Footer CTA (mobile)
 
 ```tsx
-<div className="sticky bottom-0 w-full bg-[var(--bg2)]/90 backdrop-blur-md
-  border-t border-[var(--border)] p-4 z-20">
-  <button className="w-full bg-[var(--mint)] hover:bg-[var(--mintl)]
+<div
+  className="sticky bottom-0 w-full bg-[var(--bg2)]/90 backdrop-blur-md
+  border-t border-[var(--border)] p-4 z-20"
+>
+  <button
+    className="w-full bg-[var(--mint)] hover:bg-[var(--mintl)]
     text-[var(--bg)] font-semibold py-4 rounded-xl
     shadow-[0_4px_20px_rgba(82,183,136,0.25)]
-    transition-all active:scale-[0.98] flex items-center justify-center gap-2">
+    transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+  >
     Ação Principal
     <span className="material-symbols-outlined text-[18px]">arrow_forward</span>
   </button>
@@ -619,16 +661,22 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
   <div className="max-w-[90%] space-y-3">
     {/* Sender label */}
     <div className="flex items-center gap-2 mb-1">
-      <div className="w-6 h-6 rounded-full bg-[var(--mint)]/20
-        border border-[var(--mint)]/40 flex items-center justify-center">
-        <span className="material-symbols-outlined text-[14px] text-[var(--mint)]">smart_toy</span>
+      <div
+        className="w-6 h-6 rounded-full bg-[var(--mint)]/20
+        border border-[var(--mint)]/40 flex items-center justify-center"
+      >
+        <span className="material-symbols-outlined text-[14px] text-[var(--mint)]">
+          smart_toy
+        </span>
       </div>
       <span className="text-xs font-medium text-[var(--mintl)]">PSIQUE AI</span>
     </div>
     {/* Message bubble */}
-    <div className="bg-transparent border border-[var(--mint)]/30 rounded-2xl rounded-tl-sm
-      px-5 py-4 relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-1 h-full bg-[var(--mint)]/50"/>
+    <div
+      className="bg-transparent border border-[var(--mint)]/30 rounded-2xl rounded-tl-sm
+      px-5 py-4 relative overflow-hidden"
+    >
+      <div className="absolute top-0 left-0 w-1 h-full bg-[var(--mint)]/50" />
       <p className="text-sm text-[var(--ivoryD)] leading-relaxed">{content}</p>
       {/* Footer */}
       <div className="mt-4 pt-4 border-t border-[var(--border)] flex items-center justify-between">
@@ -638,10 +686,14 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
         </span>
         <div className="flex gap-2">
           <button className="text-[var(--ivoryDD)] hover:text-[var(--ivory)] transition-colors">
-            <span className="material-symbols-outlined text-[18px]">content_copy</span>
+            <span className="material-symbols-outlined text-[18px]">
+              content_copy
+            </span>
           </button>
           <button className="text-[var(--ivoryDD)] hover:text-[var(--mint)] transition-colors">
-            <span className="material-symbols-outlined text-[18px]">thumb_up</span>
+            <span className="material-symbols-outlined text-[18px]">
+              thumb_up
+            </span>
           </button>
         </div>
       </div>
@@ -654,10 +706,14 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 
 ```tsx
 <div className="flex justify-end">
-  <div className="max-w-[85%] bg-[var(--card)] border border-[var(--border)]
-    rounded-2xl rounded-tr-sm px-5 py-4 shadow-sm">
+  <div
+    className="max-w-[85%] bg-[var(--card)] border border-[var(--border)]
+    rounded-2xl rounded-tr-sm px-5 py-4 shadow-sm"
+  >
     <p className="text-sm text-[var(--ivory)] leading-relaxed">{content}</p>
-    <span className="text-[10px] text-[var(--ivoryDD)] mt-2 block text-right">{time}</span>
+    <span className="text-[10px] text-[var(--ivoryDD)] mt-2 block text-right">
+      {time}
+    </span>
   </div>
 </div>
 ```
@@ -666,11 +722,15 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 
 ```tsx
 <div className="p-4 bg-[var(--bg)] border-t border-[var(--border)]">
-  <div className="relative flex items-end gap-3 bg-[var(--card)]
+  <div
+    className="relative flex items-end gap-3 bg-[var(--card)]
     border border-[var(--border)] rounded-2xl p-2
-    focus-within:border-[var(--mint)]/60 transition-colors shadow-lg">
-    <button className="p-2.5 text-[var(--ivoryDD)] hover:text-[var(--ivory)]
-      transition-colors shrink-0">
+    focus-within:border-[var(--mint)]/60 transition-colors shadow-lg"
+  >
+    <button
+      className="p-2.5 text-[var(--ivoryDD)] hover:text-[var(--ivory)]
+      transition-colors shrink-0"
+    >
       <span className="material-symbols-outlined text-[22px]">attach_file</span>
     </button>
     <textarea
@@ -680,10 +740,14 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
       placeholder="Pergunte sobre um paciente, solicite análise ou resuma notas..."
       rows={1}
     />
-    <button className="p-2.5 bg-[var(--mint)] text-[var(--bg)] rounded-xl
+    <button
+      className="p-2.5 bg-[var(--mint)] text-[var(--bg)] rounded-xl
       hover:bg-[var(--mintl)] transition-colors shrink-0
-      shadow-[0_4px_12px_rgba(82,183,136,0.30)]">
-      <span className="material-symbols-outlined text-[20px]">arrow_upward</span>
+      shadow-[0_4px_12px_rgba(82,183,136,0.30)]"
+    >
+      <span className="material-symbols-outlined text-[20px]">
+        arrow_upward
+      </span>
     </button>
   </div>
   <div className="text-center mt-3">
@@ -710,76 +774,110 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 ### 5.15 Calendar Date Chip (S02/S23)
 
 ```tsx
-{/* SELECIONADO */}
-<button className="snap-center flex-shrink-0 w-16 h-20 rounded-2xl
+{
+  /* SELECIONADO */
+}
+<button
+  className="snap-center flex-shrink-0 w-16 h-20 rounded-2xl
   bg-[var(--mint)] text-[var(--bg)] flex flex-col items-center justify-center
-  shadow-[0_0_15px_rgba(82,183,136,0.30)]">
+  shadow-[0_0_15px_rgba(82,183,136,0.30)]"
+>
   <span className="text-xs font-medium uppercase mb-1">Ter</span>
   <span className="text-2xl font-semibold">17</span>
-</button>
+</button>;
 
-{/* DISPONÍVEL */}
-<button className="snap-center flex-shrink-0 w-16 h-20 rounded-2xl
+{
+  /* DISPONÍVEL */
+}
+<button
+  className="snap-center flex-shrink-0 w-16 h-20 rounded-2xl
   bg-[var(--card)] border border-[var(--border)]
-  text-[var(--ivoryD)] flex flex-col items-center justify-center">
-  <span className="text-xs font-medium uppercase mb-1 text-[var(--ivoryDD)]">Qua</span>
+  text-[var(--ivoryD)] flex flex-col items-center justify-center"
+>
+  <span className="text-xs font-medium uppercase mb-1 text-[var(--ivoryDD)]">
+    Qua
+  </span>
   <span className="text-2xl font-semibold">18</span>
-</button>
+</button>;
 
-{/* INDISPONÍVEL */}
-<div className="snap-center flex-shrink-0 w-16 h-20 rounded-2xl
+{
+  /* INDISPONÍVEL */
+}
+<div
+  className="snap-center flex-shrink-0 w-16 h-20 rounded-2xl
   bg-[var(--bg)] border border-[var(--border)]/50
-  text-[var(--border)] flex flex-col items-center justify-center opacity-50">
+  text-[var(--border)] flex flex-col items-center justify-center opacity-50"
+>
   <span className="text-xs font-medium uppercase mb-1">Sex</span>
   <span className="text-2xl font-semibold">20</span>
-</div>
+</div>;
 ```
 
 ### 5.16 Time Slot Button (S02/S23)
 
 ```tsx
-{/* DISPONÍVEL */}
-<button className="py-3 rounded-xl bg-[var(--card)] border border-[var(--border)]
+{
+  /* DISPONÍVEL */
+}
+<button
+  className="py-3 rounded-xl bg-[var(--card)] border border-[var(--border)]
   text-[var(--ivory)] font-medium text-sm
-  hover:border-[var(--mint)] hover:text-[var(--mint)]">
+  hover:border-[var(--mint)] hover:text-[var(--mint)]"
+>
   09:00
-</button>
+</button>;
 
-{/* SELECIONADO */}
-<button className="py-3 rounded-xl bg-[var(--mint)] border border-[var(--mint)]
+{
+  /* SELECIONADO */
+}
+<button
+  className="py-3 rounded-xl bg-[var(--mint)] border border-[var(--mint)]
   text-[var(--bg)] font-medium text-sm
-  shadow-[0_0_10px_rgba(82,183,136,0.20)]">
+  shadow-[0_0_10px_rgba(82,183,136,0.20)]"
+>
   14:00
-</button>
+</button>;
 
-{/* INDISPONÍVEL */}
-<button className="py-3 rounded-xl bg-[var(--bg)] border border-[var(--border)]/50
+{
+  /* INDISPONÍVEL */
+}
+<button
+  className="py-3 rounded-xl bg-[var(--bg)] border border-[var(--border)]/50
   text-[var(--border)] font-medium text-sm
-  cursor-not-allowed line-through decoration-[var(--border)]">
+  cursor-not-allowed line-through decoration-[var(--border)]"
+>
   18:00
-</button>
+</button>;
 ```
 
 ### 5.17 Bottom Navigation (mobile)
 
 ```tsx
-{/* dark_core nav */}
-<nav className="fixed bottom-0 w-full bg-[var(--bg2)]/95 backdrop-blur-md
+{
+  /* dark_core nav */
+}
+<nav
+  className="fixed bottom-0 w-full bg-[var(--bg2)]/95 backdrop-blur-md
   border-t border-[var(--border)] pb-safe pt-2 px-6
-  flex justify-between items-center z-50">
-  <NavItem icon="home" label="Início" href="/dashboard" active/>
-  <NavItem icon="calendar_month" label="Agenda" href="/dashboard/agenda"/>
-  <NavItem icon="group" label="Pacientes" href="/dashboard/pacientes"/>
-  <NavItem icon="smart_toy" label="IA" href="/dashboard/ia"/>
-  <NavItem icon="settings" label="Config" href="/dashboard/configuracoes"/>
-</nav>
+  flex justify-between items-center z-50"
+>
+  <NavItem icon="home" label="Início" href="/dashboard" active />
+  <NavItem icon="calendar_month" label="Agenda" href="/dashboard/agenda" />
+  <NavItem icon="group" label="Pacientes" href="/dashboard/pacientes" />
+  <NavItem icon="smart_toy" label="IA" href="/dashboard/ia" />
+  <NavItem icon="settings" label="Config" href="/dashboard/configuracoes" />
+</nav>;
 
-{/* light_patient nav */}
-<nav className="fixed bottom-0 w-full bg-white/90 backdrop-blur-md
+{
+  /* light_patient nav */
+}
+<nav
+  className="fixed bottom-0 w-full bg-white/90 backdrop-blur-md
   border-t border-[var(--border)] pb-safe pt-2 px-6
-  flex justify-between items-center z-50 pb-4">
+  flex justify-between items-center z-50 pb-4"
+>
   {/* ativo: text-[var(--primary)] | inativo: text-[var(--text-muted)] */}
-</nav>
+</nav>;
 ```
 
 ### 5.18 Profile Header (S02 — Booking)
@@ -787,12 +885,16 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 ```tsx
 <header className="relative pt-12 pb-8 px-6 flex flex-col items-center text-center">
   {/* gradient decorativo */}
-  <div className="absolute top-0 left-0 w-full h-[250px]
-    bg-gradient-to-b from-[var(--border)]/30 to-transparent pointer-events-none"/>
+  <div
+    className="absolute top-0 left-0 w-full h-[250px]
+    bg-gradient-to-b from-[var(--border)]/30 to-transparent pointer-events-none"
+  />
   {/* avatar com borda gold */}
-  <div className="w-24 h-24 rounded-full overflow-hidden
-    border-2 border-[var(--gold)]/30 mb-6 relative z-10">
-    <img className="w-full h-full object-cover" src={photo} alt={name}/>
+  <div
+    className="w-24 h-24 rounded-full overflow-hidden
+    border-2 border-[var(--gold)]/30 mb-6 relative z-10"
+  >
+    <img className="w-full h-full object-cover" src={photo} alt={name} />
   </div>
   <h1 className="font-[family-name:var(--ff)] text-3xl font-semibold text-[var(--ivory)] mb-2">
     Dra. {name}
@@ -812,9 +914,9 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 ```tsx
 <div className="flex items-center justify-center gap-6 py-4">
   {[
-    { icon: 'shield_lock', label: 'LGPD' },
-    { icon: 'lock', label: 'Criptografado' },
-    { icon: 'verified', label: 'Pagamento Seguro' },
+    { icon: "shield_lock", label: "LGPD" },
+    { icon: "lock", label: "Criptografado" },
+    { icon: "verified", label: "Pagamento Seguro" },
   ].map(({ icon, label }) => (
     <div key={label} className="flex flex-col items-center gap-1">
       <span className="material-symbols-outlined text-[var(--ivoryDD)] text-[20px]">
@@ -852,12 +954,19 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 
 ```tsx
 <label className="cursor-pointer">
-  <input type="checkbox" className="peer sr-only" value="psicanalise" defaultChecked/>
-  <div className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-600
+  <input
+    type="checkbox"
+    className="peer sr-only"
+    value="psicanalise"
+    defaultChecked
+  />
+  <div
+    className="rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-600
     transition-all
     peer-checked:border-[var(--mint)] peer-checked:bg-[var(--mint)]/10
     peer-checked:text-[var(--mint)]
-    hover:border-gray-300">
+    hover:border-gray-300"
+  >
     Psicanálise
   </div>
 </label>
@@ -884,23 +993,41 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 
 ```tsx
 <label className="block relative cursor-pointer">
-  <input type="radio" name="payment" value="card" className="peer sr-only" defaultChecked/>
-  <div className="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl p-4
+  <input
+    type="radio"
+    name="payment"
+    value="card"
+    className="peer sr-only"
+    defaultChecked
+  />
+  <div
+    className="w-full bg-[var(--card)] border border-[var(--border)] rounded-xl p-4
     flex items-center justify-between transition-all
     peer-checked:border-[var(--mint)] peer-checked:bg-[var(--mint)]/5
-    hover:border-[var(--mintl)]/50">
+    hover:border-[var(--mintl)]/50"
+  >
     <div className="flex items-center gap-4">
-      <div className="w-5 h-5 rounded-full border-2 border-[var(--ivoryDD)]
-        peer-checked:border-[var(--mint)] flex items-center justify-center relative">
-        <div className="w-2.5 h-2.5 rounded-full bg-[var(--mint)] opacity-0
-          peer-checked:opacity-100 transition-opacity"/>
+      <div
+        className="w-5 h-5 rounded-full border-2 border-[var(--ivoryDD)]
+        peer-checked:border-[var(--mint)] flex items-center justify-center relative"
+      >
+        <div
+          className="w-2.5 h-2.5 rounded-full bg-[var(--mint)] opacity-0
+          peer-checked:opacity-100 transition-opacity"
+        />
       </div>
       <div>
-        <span className="text-[var(--ivory)] font-medium">Cartão de Crédito</span>
-        <span className="text-[var(--ivoryDD)] text-xs block">Powered by Stripe</span>
+        <span className="text-[var(--ivory)] font-medium">
+          Cartão de Crédito
+        </span>
+        <span className="text-[var(--ivoryDD)] text-xs block">
+          Powered by Stripe
+        </span>
       </div>
     </div>
-    <span className="material-symbols-outlined text-[24px] opacity-60">credit_card</span>
+    <span className="material-symbols-outlined text-[24px] opacity-60">
+      credit_card
+    </span>
   </div>
 </label>
 ```
@@ -908,19 +1035,23 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
 ### 5.24 Patient Card (S20 — Lista)
 
 ```tsx
-<div className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4
-  hover:-translate-y-0.5 hover:border-[var(--mint)]/20 transition-all cursor-pointer">
+<div
+  className="bg-[var(--card)] border border-[var(--border)] rounded-2xl p-4
+  hover:-translate-y-0.5 hover:border-[var(--mint)]/20 transition-all cursor-pointer"
+>
   <div className="flex items-start gap-3 mb-3">
     {/* avatar */}
     <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-      <img className="w-full h-full object-cover" src={photo} alt={name}/>
+      <img className="w-full h-full object-cover" src={photo} alt={name} />
     </div>
     <div className="flex-1 min-w-0">
       <div className="flex justify-between items-start">
         <p className="font-medium text-[var(--ivory)] text-sm">{name}</p>
-        <StatusBadge status={status}/>
+        <StatusBadge status={status} />
       </div>
-      <p className="text-xs text-[var(--ivoryDD)] mt-0.5">{age} anos • {profession}</p>
+      <p className="text-xs text-[var(--ivoryDD)] mt-0.5">
+        {age} anos • {profession}
+      </p>
     </div>
   </div>
   {/* mood bar */}
@@ -932,7 +1063,9 @@ className="bg-[var(--bg2)] border border-[var(--mint)]/50 rounded-2xl
   </div>
   {/* tags */}
   <div className="flex flex-wrap gap-1.5 mt-2">
-    {tags.map(tag => <NeutralBadge key={tag}>{tag}</NeutralBadge>)}
+    {tags.map((tag) => (
+      <NeutralBadge key={tag}>{tag}</NeutralBadge>
+    ))}
   </div>
 </div>
 ```
@@ -1469,17 +1602,17 @@ P6) Evidência:
 
 ### 9.2 Matriz de Correlatos (Prática → Artefato → Gate)
 
-| Prática | Correlatos obrigatórios | Gate principal |
-|---|---|---|
-| Fonte canônica + espelho | `docs/stitch/*`, `files/*`, `scripts/sync-stitch-mirror.mjs` | `npm run docs:sync:check` |
-| Manifesto v4 + schema | `docs/stitch/CANONICAL_MANIFEST.json`, `docs/stitch/schema/canonical-manifest.schema.json`, `scripts/check-canonical-manifest.mjs` | `npm run contract:manifest:check` |
-| Catálogo de rotas não-visuais | `docs/stitch/NON_SCREEN_ROUTES.json`, `scripts/check-non-screen-routes.mjs` | `npm run contract:non-screen:check` |
-| Catálogo E2E derivado | `scripts/generate-screen-catalog.mjs`, `e2e/contracts/screen-catalog.generated.ts` | `npm run contract:manifest:check` |
-| Canonicalização `/portal/*` | `app/portal/*`, `app/agendar/route.ts`, `app/apoio/route.ts`, `app/chat/route.ts`, `app/sessoes/route.ts`, `proxy.ts` | `npm run test:e2e` |
-| Hardening visual por tokens | `app/globals.css`, `scripts/check-no-hardcoded-colors.mjs` | `npm run lint:colors` |
-| Cobertura unit/api | `vitest*.config.ts`, `test/unit/*`, `test/api/*` | `npm run test:unit` + `npm run test:api` |
-| Fluxo e visual E2E | `playwright.config.ts`, `e2e/*`, snapshots | `npm run test:e2e` + `npm run test:visual` |
-| Bloqueio de regressão em CI | `.github/workflows/*.yml` | checks obrigatórios no PR |
+| Prática                       | Correlatos obrigatórios                                                                                                            | Gate principal                             |
+| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| Fonte canônica + espelho      | `docs/stitch/*`, `files/*`, `scripts/sync-stitch-mirror.mjs`                                                                       | `npm run docs:sync:check`                  |
+| Manifesto v4 + schema         | `docs/stitch/CANONICAL_MANIFEST.json`, `docs/stitch/schema/canonical-manifest.schema.json`, `scripts/check-canonical-manifest.mjs` | `npm run contract:manifest:check`          |
+| Catálogo de rotas não-visuais | `docs/stitch/NON_SCREEN_ROUTES.json`, `scripts/check-non-screen-routes.mjs`                                                        | `npm run contract:non-screen:check`        |
+| Catálogo E2E derivado         | `scripts/generate-screen-catalog.mjs`, `e2e/contracts/screen-catalog.generated.ts`                                                 | `npm run contract:manifest:check`          |
+| Canonicalização `/portal/*`   | `app/portal/*`, `app/agendar/route.ts`, `app/apoio/route.ts`, `app/chat/route.ts`, `app/sessoes/route.ts`, `proxy.ts`              | `npm run test:e2e`                         |
+| Hardening visual por tokens   | `app/globals.css`, `scripts/check-no-hardcoded-colors.mjs`                                                                         | `npm run lint:colors`                      |
+| Cobertura unit/api            | `vitest*.config.ts`, `test/unit/*`, `test/api/*`                                                                                   | `npm run test:unit` + `npm run test:api`   |
+| Fluxo e visual E2E            | `playwright.config.ts`, `e2e/*`, snapshots                                                                                         | `npm run test:e2e` + `npm run test:visual` |
+| Bloqueio de regressão em CI   | `.github/workflows/*.yml`                                                                                                          | checks obrigatórios no PR                  |
 
 ---
 
@@ -1582,6 +1715,6 @@ This repository uses Stitch-first governance. `stitch/**` (S01-S14) is the visua
 
 ---
 
-*AGENTS.md v3.1 · PSIQUE · Software Lotus · Fase 22 · Sistema 6 Compliant*
-*Cobertura: S01-S28 (14 Stitch canônicas + 14 derivadas psique-final.jsx)*
-*Temas: dark_core · dark_theater · light_onboard · light_patient*
+_AGENTS.md v3.1 · PSIQUE · Software Lotus · Fase 22 · Sistema 6 Compliant_
+_Cobertura: S01-S28 (14 Stitch canônicas + 14 derivadas psique-final.jsx)_
+_Temas: dark_core · dark_theater · light_onboard · light_patient_

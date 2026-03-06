@@ -106,14 +106,29 @@ async function main() {
     }
   }
 
-  if (ids.size !== 28) {
-    errors.push(`expected 28 screens, found ${ids.size}`);
+  const idNumbers = [...ids]
+    .map((id) => Number(id.slice(1)))
+    .filter((n) => Number.isInteger(n))
+    .sort((a, b) => a - b);
+  const maxId = idNumbers.length > 0 ? idNumbers[idNumbers.length - 1] : 0;
+
+  if (ids.size < 28) {
+    errors.push(`expected at least 28 screens, found ${ids.size}`);
   }
 
   for (let i = 1; i <= 28; i += 1) {
     const id = `S${String(i).padStart(2, "0")}`;
     if (!ids.has(id)) {
       errors.push(`missing screen ${id}`);
+    }
+  }
+
+  if (maxId > 28) {
+    for (let i = 1; i <= maxId; i += 1) {
+      const id = `S${String(i).padStart(2, "0")}`;
+      if (!ids.has(id)) {
+        errors.push(`missing screen ${id} (gap before max id S${String(maxId).padStart(2, "0")})`);
+      }
     }
   }
 

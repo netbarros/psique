@@ -2,11 +2,33 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { normalizeUserRole, resolvePostLoginDestination } from "@/lib/auth/access-routing";
 
 type Role = "therapist" | "patient";
+
+const DEMO_PROFILES = [
+  {
+    label: "Master Admin",
+    role: "therapist" as Role,
+    email: "e2e.master_admin@psique.local",
+    password: "E2E_Psique_123!",
+  },
+  {
+    label: "Terapeuta",
+    role: "therapist" as Role,
+    email: "e2e.therapist@psique.local",
+    password: "E2E_Psique_123!",
+  },
+  {
+    label: "Paciente",
+    role: "patient" as Role,
+    email: "e2e.patient@psique.local",
+    password: "E2E_Psique_123!",
+  },
+] as const;
 
 export default function LoginPage() {
   const [role, setRole] = useState<Role>("therapist");
@@ -18,7 +40,28 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const supabase = createClient();
+  const nextPath = searchParams.get("next");
+
+  useEffect(() => {
+    const authError = searchParams.get("error");
+    const redirectedPath = searchParams.get("next");
+
+    if (authError === "master_admin_required") {
+      setInfo("Seu usuário não tem permissão de Master Admin. Faça login com um usuário autorizado.");
+      return;
+    }
+
+    if (authError === "patient_profile_missing") {
+      setError("Seu perfil de paciente ainda não está vinculado. Entre em contato com seu terapeuta ou suporte.");
+      return;
+    }
+
+    if (redirectedPath) {
+      setInfo(`Faça login para continuar em ${redirectedPath}`);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("psique_remembered_email");
@@ -58,12 +101,23 @@ export default function LoginPage() {
         localStorage.removeItem("psique_remembered_email");
       }
 
-      const signedRole = signInData.user?.user_metadata?.role;
-      if (signedRole === "master_admin") {
-        router.push("/admin");
-      } else {
-        router.push(role === "patient" ? "/portal" : "/dashboard");
+      const resolveResponse = await fetch("/api/auth/resolve-home", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ next: nextPath }),
+      });
+
+      if (resolveResponse.ok) {
+        const payload = (await resolveResponse.json()) as {
+          data?: { destination?: string };
+        };
+        const destination = payload.data?.destination;
+        router.push(destination ?? (role === "patient" ? "/portal" : "/dashboard"));
+        return;
       }
+
+      const signedRole = normalizeUserRole(signInData.user?.user_metadata?.role) ?? "therapist";
+      router.push(resolvePostLoginDestination(signedRole, nextPath));
     } catch (e: unknown) {
       const msg = e instanceof Error ? e.message : "Erro desconhecido";
       setError(translateAuthError(msg));
@@ -73,9 +127,14 @@ export default function LoginPage() {
   };
 
   const signInWithGoogle = async () => {
+    const callbackBase = `${window.location.origin}/auth/callback`;
+    const redirectTo = nextPath
+      ? `${callbackBase}?next=${encodeURIComponent(nextPath)}`
+      : callbackBase;
+
     await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo },
     });
   };
 
@@ -89,9 +148,14 @@ export default function LoginPage() {
     }
 
     setLoading(true);
+    const callbackBase = `${window.location.origin}/auth/callback`;
+    const emailRedirectTo = nextPath
+      ? `${callbackBase}?next=${encodeURIComponent(nextPath)}`
+      : callbackBase;
+
     const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      options: { emailRedirectTo },
     });
 
     setLoading(false);
@@ -111,6 +175,7 @@ export default function LoginPage() {
   }
 
   const registerHref = role === "patient" ? "/auth/register/patient" : "/auth/register";
+  const showDemoProfiles = process.env.NODE_ENV !== "production";
 
   return (
     <main className="min-h-screen bg-bg-base px-4 py-8 sm:px-6 lg:flex lg:items-center lg:justify-center">
@@ -297,6 +362,32 @@ export default function LoginPage() {
         >
           Link por email
         </button>
+
+        {showDemoProfiles ? (
+          <div className="mt-4 rounded-2xl border border-border-subtle bg-bg-elevated/60 p-3">
+            <p className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-text-muted">
+              Acesso rápido (dev/e2e)
+            </p>
+            <div className="grid grid-cols-3 gap-2">
+              {DEMO_PROFILES.map((profile) => (
+                <button
+                  key={profile.label}
+                  type="button"
+                  onClick={() => {
+                    setRole(profile.role);
+                    setEmail(profile.email);
+                    setPassword(profile.password);
+                    setInfo(`Perfil ${profile.label} carregado. Clique em "Entrar e continuar".`);
+                    setError("");
+                  }}
+                  className="rounded-xl border border-border-strong bg-surface px-2 py-2 text-[11px] font-medium text-text-secondary transition-colors hover:border-brand/40 hover:text-text-primary"
+                >
+                  {profile.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : null}
 
         <p className="mt-5 text-center text-sm text-text-muted">
           Ainda não tem conta?{" "}

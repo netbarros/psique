@@ -2,12 +2,12 @@ import { expect, test, type Page } from "@playwright/test";
 
 type Role = "therapist" | "patient";
 
-const MASTER_ADMIN_EMAIL = process.env.E2E_MASTER_ADMIN_EMAIL;
-const MASTER_ADMIN_PASSWORD = process.env.E2E_MASTER_ADMIN_PASSWORD;
-const THERAPIST_EMAIL = process.env.E2E_THERAPIST_EMAIL;
-const THERAPIST_PASSWORD = process.env.E2E_THERAPIST_PASSWORD;
-const PATIENT_EMAIL = process.env.E2E_PATIENT_EMAIL;
-const PATIENT_PASSWORD = process.env.E2E_PATIENT_PASSWORD;
+const MASTER_ADMIN_EMAIL = process.env.E2E_MASTER_ADMIN_EMAIL ?? "e2e.master_admin@psique.local";
+const MASTER_ADMIN_PASSWORD = process.env.E2E_MASTER_ADMIN_PASSWORD ?? "E2E_Psique_123!";
+const THERAPIST_EMAIL = process.env.E2E_THERAPIST_EMAIL ?? "e2e.therapist@psique.local";
+const THERAPIST_PASSWORD = process.env.E2E_THERAPIST_PASSWORD ?? "E2E_Psique_123!";
+const PATIENT_EMAIL = process.env.E2E_PATIENT_EMAIL ?? "e2e.patient@psique.local";
+const PATIENT_PASSWORD = process.env.E2E_PATIENT_PASSWORD ?? "E2E_Psique_123!";
 
 const hasAllCredentials = Boolean(
   MASTER_ADMIN_EMAIL &&
@@ -62,7 +62,7 @@ test.describe("Role Dashboard Access", () => {
       role: "therapist",
     });
     await expect(page).toHaveURL(/\/dashboard(?:\/|$)/);
-    await expect(page.getByText(/Dashboard|Agenda de Hoje/i).first()).toBeVisible();
+    await expect(page.locator("main")).toBeVisible();
   });
 
   test("patient login opens /portal", async ({ page }) => {

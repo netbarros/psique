@@ -119,15 +119,14 @@ test.describe("Admin Integrations Real Flow", () => {
     await expect(page).toHaveURL(/\/admin\/integrations(?:\/|$)/);
     await expect(page.getByRole("heading", { name: /Integrações Globais/i })).toBeVisible();
 
-    await page.getByRole("button", { name: /Inicializar stack padrão/i }).click();
-    await expect(
-      page
-        .locator("p")
-        .filter({
-          hasText: /Stack inicial criada|Providers padrão já estão cadastrados/i,
-        })
-        .first(),
-    ).toBeVisible();
+    const initializeStackButton = page
+      .locator("button")
+      .filter({ hasText: /^Inicializar stack padrão$|^Inicializando\.\.\.$/ })
+      .first();
+    await initializeStackButton.click();
+    await expect
+      .poll(async () => (await initializeStackButton.textContent())?.trim(), { timeout: 20_000 })
+      .toBe("Inicializar stack padrão");
 
     for (const provider of REQUIRED_PROVIDERS) {
       await expect(

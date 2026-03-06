@@ -23,11 +23,46 @@ function attachClientIssueCollectors(page: Page) {
 }
 
 async function expectNoHorizontalOverflow(page: Page) {
-  const hasOverflow = await page.evaluate(() => {
-    const doc = document.documentElement;
-    return doc.scrollWidth > doc.clientWidth + 1;
+  await page.evaluate(async () => {
+    if ("fonts" in document) {
+      await (document as Document & { fonts?: { ready: Promise<unknown> } }).fonts?.ready;
+    }
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
   });
-  expect(hasOverflow).toBe(false);
+
+  const overflowInfo = await page.evaluate(() => {
+    const doc = document.documentElement;
+    const hasOverflow = doc.scrollWidth > doc.clientWidth + 1;
+    if (!hasOverflow) {
+      return {
+        hasOverflow,
+        scrollWidth: doc.scrollWidth,
+        clientWidth: doc.clientWidth,
+        offender: null as null | string,
+      };
+    }
+
+    let offender: string | null = null;
+    for (const element of Array.from(document.querySelectorAll<HTMLElement>("*"))) {
+      const rect = element.getBoundingClientRect();
+      if (rect.right > doc.clientWidth + 1) {
+        const name = [element.tagName.toLowerCase(), element.id ? `#${element.id}` : "", element.className ? `.${element.className.toString().trim().split(/\s+/).join(".")}` : ""].join("");
+        offender = `${name} right=${Math.round(rect.right)}`;
+        break;
+      }
+    }
+
+    return {
+      hasOverflow,
+      scrollWidth: doc.scrollWidth,
+      clientWidth: doc.clientWidth,
+      offender,
+    };
+  });
+  expect(
+    overflowInfo.hasOverflow,
+    `Horizontal overflow detected: scrollWidth=${overflowInfo.scrollWidth}, clientWidth=${overflowInfo.clientWidth}, offender=${overflowInfo.offender ?? "unknown"}`,
+  ).toBe(false);
 }
 
 const capturable = SCREEN_CONTRACTS.filter((screen) => screen.capture.capturable);

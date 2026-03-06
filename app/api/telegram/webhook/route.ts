@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { createHash } from "node:crypto";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendMessage, inlineKeyboard, answerCallbackQuery } from "@/lib/telegram";
@@ -7,6 +8,8 @@ import { chatWithContext } from "@/lib/openrouter";
 import { createCheckoutSession, stripe } from "@/lib/stripe";
 import { logger } from "@/lib/logger";
 import { parseJsonBody } from "@/lib/api/request-validation";
+import { CREDIT_ACTION_KEYS } from "@/lib/growth/constants";
+import { consumeCreditsForAction, WalletError } from "@/lib/growth/wallet";
 
 interface TelegramUser {
   id: number;
@@ -153,12 +156,12 @@ export async function POST(req: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
-type PatientRef = { id: string; name: string } | null;
+type PatientRef = { id: string; name: string; therapist_id: string } | null;
 
 async function findOrCreatePatient(from: TelegramUser, admin: AdminClient): Promise<PatientRef> {
   const { data: existing } = await admin
     .from("patients")
-    .select("id, name")
+    .select("id, name, therapist_id")
     .eq("telegram_chat_id", from.id)
     .single();
 
@@ -181,7 +184,7 @@ async function handleMessage(msg: TelegramMessage, admin: AdminClient) {
   if (text.startsWith("/ajuda")) return handleAjuda(chatId);
   if (text.startsWith("/falar")) {
     const query = text.replace("/falar", "").trim();
-    return handleFalar(chatId, query);
+    return handleFalar(chatId, query, patient, admin);
   }
 
   // Free text → IA intent detection
@@ -427,7 +430,7 @@ async function handlePagar(chatId: number, patient: PatientRef, admin: AdminClie
   });
 }
 
-async function handleFalar(chatId: number, query: string) {
+async function handleFalar(chatId: number, query: string, patient: PatientRef, admin: AdminClient) {
   if (!query) {
     await sendMessage({ chatId, text: "💬 O que você gostaria de perguntar? Ex: /falar Como gerenciar ansiedade entre sessões?" });
     return;
@@ -441,8 +444,36 @@ async function handleFalar(chatId: number, query: string) {
       model: "anthropic/claude-3-haiku",
     });
 
+    if (patient?.therapist_id) {
+      const correlationId = `telegram.ai_reply:${chatId}:${createHash("sha1")
+        .update(query)
+        .digest("hex")
+        .slice(0, 12)}`;
+      await consumeCreditsForAction({
+        admin,
+        therapistId: patient.therapist_id,
+        actionKey: CREDIT_ACTION_KEYS.telegramAiReply,
+        units: 1,
+        correlationId,
+        sourceType: "telegram.ai_reply",
+        sourceId: String(chatId),
+        metadata: {
+          channel: "telegram",
+          patientId: patient.id,
+        },
+      });
+    }
+
     await sendMessage({ chatId, text: reply });
-  } catch {
+  } catch (error) {
+    if (error instanceof WalletError && error.code === "INSUFFICIENT_CREDITS") {
+      await sendMessage({
+        chatId,
+        text: "No momento o assistente está indisponível por limite de créditos da clínica.",
+      });
+      return;
+    }
+
     await sendMessage({ chatId, text: "Desculpe, não consegui processar sua mensagem no momento." });
   }
 }
@@ -461,7 +492,7 @@ async function handleFreeMessage(chatId: number, patient: PatientRef, text: stri
   }
 
   // Generic IA response
-  return handleFalar(chatId, text);
+  return handleFalar(chatId, text, patient, admin);
 }
 
 async function handleAjuda(chatId: number) {

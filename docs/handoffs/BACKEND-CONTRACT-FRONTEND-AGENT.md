@@ -1,29 +1,35 @@
 # Backend Contract — Frontend/Layout Agent (CLAUDE Partner)
 
-Data: 2026-03-05  
+Data: 2026-03-06  
 Owner: Backend Architecture (Codex)  
-Status: Active / Enterprise Synced (master_admin aplicado no remoto)
+Status: Active / Enterprise Synced (master_admin + growth/wallet ativos)
 
 Checklist operacional de PR: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`  
 Contrato backend completo: `docs/backend/BACKEND-API-SURFACE.md`
 
 ## 0) Resumo desta atualização (o que foi feito no backend)
 
-1. Migrações aplicadas no Supabase remoto até:
-   - `20260305000007_master_admin_domain.sql`
-   - `20260305000008_master_admin_backfill.sql`
-2. Domínio `master_admin` está ativo com:
-   - `user_roles`
-   - `master_admin_profiles`
-   - `plan_documents`, `plan_revisions`
-   - `content_documents`, `content_revisions`
-   - `platform_integrations`
-   - `admin_audit_events`
-3. Backfill inicial publicado:
-   - Planos: `solo`, `pro` (`pt-BR`)
-   - Conteúdo: `landing`, `pricing`, `checkout_secure`, `booking`, `booking_success` (section `main`, locale `pt-BR`)
-4. Validação runtime completa: `supabase:preflight:runtime` 14/14 PASS.
-5. Verificação backend completa: `verify:backend:runtime` PASS.
+1. Superfície backend enterprise estabilizada em `73` APIs (fonte: `docs/stitch/NON_SCREEN_ROUTES.json`).
+2. Auditoria backend atual:
+   - `npm run backend:audit:write` → `checks=293 passed=293 failed=0 criticalFailed=0`.
+3. Sessão de hardening (2026-03-06):
+   - warning `no-page-custom-font` resolvido via `next/font/google`;
+   - warning `no-img-element` resolvido via `next/image`;
+   - `observability_logger` adicionado nas rotas NSR-049/050/051/052/053/057/058/070/072/073.
+4. Verificação integrada:
+   - `npm run verify` → PASS (lint, typecheck, contratos, build, unit, api, backend audit).
+5. E2E/visual atual:
+   - `npm run test:e2e` → PASS (`237 passed`, `9 skipped`, `0 failed`).
+   - Clusters saneados na sessão 2026-03-06:
+     - seletor de autenticação ambíguo (`getByLabel('Senha')`) em fluxo autenticado;
+     - contrato de booking público (heading/step indicator) com asserts resilientes;
+     - timeout de inicialização no admin integrations real flow;
+     - overflow S16 mobile eliminado (fix global para ícones `material-symbols-outlined`).
+     - baseline de snapshots visuais (`landing`, `pricing`, `login`) em 390/768/1440.
+6. Orquestração de login e acesso revisada para evitar loops e redirecionamentos confusos:
+   - endpoint novo `POST /api/auth/resolve-home`;
+   - `next` preservado apenas se seguro e permitido por role;
+   - bootstrap de perfil `therapist/patient` no primeiro acesso autenticado.
 
 ## 1) Boundary of responsibilities
 
@@ -43,12 +49,23 @@ Contrato backend completo: `docs/backend/BACKEND-API-SURFACE.md`
    - `master_admin` -> `/admin`
    - `therapist` -> `/dashboard`
    - `patient` -> `/portal`
+5. Pós-login obrigatório:
+   - frontend deve resolver destino via `POST /api/auth/resolve-home` (não hardcodear redirect final no client).
+   - respeitar mensagens de erro de rota (`master_admin_required`, `patient_profile_missing`) sem loop.
 
 ## 3) Endpoints que o frontend deve consumir
 
 ### Público (somente publicado)
 1. `GET /api/public/plans?locale=pt-BR`
 2. `GET /api/public/content?page=<pageKey>&locale=pt-BR`
+3. `GET /api/public/therapists`
+4. `GET /api/public/therapists/[slug]`
+5. `GET /api/public/therapists/[slug]/posts`
+6. `GET /api/public/therapists/[slug]/posts/[postSlug]`
+7. `GET /api/public/community`
+
+### Auth orchestration (obrigatório no frontend)
+1. `POST /api/auth/resolve-home`
 
 ### Admin (somente master_admin)
 1. `GET /api/admin/plans?status=draft|published|archived&locale=pt-BR`
@@ -66,6 +83,34 @@ Contrato backend completo: `docs/backend/BACKEND-API-SURFACE.md`
 13. `POST /api/admin/integrations/asaas/connect`
 14. `POST /api/admin/integrations/runtime/sync`
 15. `GET /api/admin/audit/events?limit=<n>`
+16. `GET /api/admin/growth/rules`
+17. `PATCH /api/admin/growth/rules`
+18. `GET /api/admin/wallet/pricebook-actions`
+19. `PATCH /api/admin/wallet/pricebook-actions/[actionKey]`
+20. `GET /api/admin/wallet/credit-packages`
+21. `POST /api/admin/wallet/credit-packages`
+22. `PATCH /api/admin/wallet/credit-packages/[id]`
+23. `POST /api/admin/moderation/posts/[postId]/approve`
+24. `POST /api/admin/moderation/posts/[postId]/reject`
+
+### Therapist (somente terapeuta autenticado)
+1. `PATCH /api/therapist/public-profile`
+2. `GET /api/therapist/growth/rules`
+3. `GET /api/therapist/wallet`
+4. `GET /api/therapist/wallet/ledger`
+5. `GET /api/therapist/referrals/summary`
+6. `POST /api/therapist/referrals/generate-code`
+7. `GET /api/therapist/referrals/invites`
+8. `GET /api/therapist/patients/[id]/timeline`
+9. `POST /api/therapist/posts/[postId]/submit-review`
+
+### Patient
+1. `POST /api/patient/checkins/respond`
+
+### Cron operacional (secret header)
+1. `GET /api/cron/wallet/expiration-warnings`
+2. `GET /api/cron/wallet/expire-bonuses`
+3. `GET /api/cron/referrals/qualification-evaluator`
 
 ### Legado de escrita (não usar em telas novas)
 1. `PATCH /api/settings/profile` -> `409`
@@ -154,7 +199,9 @@ Contrato backend completo: `docs/backend/BACKEND-API-SURFACE.md`
 2. `npm run typecheck`
 3. `npm run backend:audit`
 4. `npm run contract:non-screen:check`
-5. Se houve alteração documental: `npm run docs:sync:check`
+5. `npm run verify`
+6. `npm run test:e2e` (com anexos dos fails se não estiver verde)
+7. Se houve alteração documental em `docs/stitch/*`: `npm run docs:sync:check`
 
 ## 11) Política de breaking change
 
@@ -183,7 +230,7 @@ Incorpore esta frente no task/plan atual em execução (não abrir trilha parale
 3) Critérios de aceite no PR atual:
 - sem hardcode de catálogo público;
 - estados `loading/empty/error/conflict` implementados;
-- validações obrigatórias executadas: `test:api`, `typecheck`, `backend:audit`, `contract:non-screen:check`.
+- validações obrigatórias executadas: `test:api`, `typecheck`, `backend:audit`, `contract:non-screen:check`, `verify`.
 
 4) Fonte de verdade:
 - `docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md`

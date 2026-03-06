@@ -1,4 +1,4 @@
-# SCREEN_REGISTRY (S01-S28)
+# SCREEN_REGISTRY (S01-S32)
 
 ## Convenções
 - `source_type`
@@ -40,8 +40,12 @@
 | S26 | derived | Booking Confirmation | dark_core | `/booking/[slug]/sucesso` | Design System | S14 | mapped |
 | S27 | derived | Global Loading | dark_core | `app/loading.tsx` (component) | Design System | — | mapped |
 | S28 | derived | Not Found / Global Error | dark_core | `app/not-found.tsx`, `app/global-error.tsx` | Design System | — | mapped |
+| S29 | derived | Public Therapists Directory | dark_core | `/terapeutas` | Design System | S02, S11 | mapped |
+| S30 | derived | Therapist Public Profile | dark_core | `/terapeuta/[slug]`, `/[slug]` | Design System | S02, S11 | mapped |
+| S31 | derived | Therapist Public Content Hub | dark_core | `/terapeuta/[slug]/posts/[postSlug]` | Design System | S05, S12 | mapped |
+| S32 | derived | Growth Wallet & Referral Dashboard | dark_core | `/dashboard/crescimento` | Design System | S01, S05 | mapped |
 
 ## Verificação rápida
-1. 28/28 telas mapeadas.
-2. 14 `stitch` + 14 `derived`.
+1. 32/32 telas mapeadas.
+2. 14 `stitch` + 18 `derived`.
 3. Sem tema `light_variant`/`hybrid` legado.

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { getContentSection, getPublicContent } from "@/lib/frontend/public-catalog-client";
 import { mapLandingContent } from "@/lib/frontend/content-mappers";
@@ -33,9 +34,9 @@ export default async function LandingPage() {
       <main className="grow flex flex-col relative pt-24 pb-12 px-5">
         <div className="inline-flex items-center self-center gap-2 bg-surface border border-border-subtle rounded-full px-4 py-2 mx-auto mb-8 relative z-10 shadow-lg shadow-black/50">
           <div className="flex -space-x-2">
-            <img alt="Analyst" className="w-6 h-6 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxdi4b7it8cx0IbFDif2DFLkWmlOjSqoPP6tsG2Ss8uJ01JNL3EXe2lzxkBs_gpYD_rfGKborHE6vW2b8C0ClsgqpUrrSgQV2WuTItD2z-UEUCG3ycjOf61HYjYukR8WWVvebCsl_-wtzdG58CdVN5XNIEhdO2AzddGMBlwdPW6SZCsv2lUOFKCHks2HGGZ3V3myAD1O2Wr-gdoi6TMiXdCFpz72CT7xJJdrouwJl6RyEldh7hYf1FTspBzEnEFLbwilUgaNXxUrhb" />
-            <img alt="Analyst" className="w-6 h-6 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRU5gjRmGWQHpzeR8KYZK0JN5zt4sZctVeX4OHi4nEGS2tmw2OF24vMcXCE7XiZDcJy1d3w8fP3RTh9sNe61wSzNztYZRU6EX_ZS54uAMXUyG5inyKURiJIhGQC3VIH1t2HvCfdk2glGK2Wlnukq8l9I2v49uFDWHFUuo1roLzo6p_6-cEoTYzO8iZDp-nhmkZuYEh44lwQ17bBIPvgO8KscMqr54QYE1UBsEeop_MCRlbXC1Tf8SmfTbgN4cZVhaT8u88YpnuYy5b" />
-            <img alt="Analyst" className="w-6 h-6 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcaG2-0QjDwNeOlSip6JmuSi4N17KWt1pAk8TcdAViQYKM7jhq6FphT1YTWY3axGzDj5eqWWBooW6pMvCYrzNInQvQ7wgncQZURogSkxTChYJb3Lei76ADppBjVCSC4NnE0tUaDjVVRaQUJLaP83H2UGPLG2XtsuTL2F13A3z2agAc6k1d01GDDpzoCJFFWu6rATBI2aC_pu5Ji1viZvb8IsPJhbG8e-SXFMaWiM1EW_iMTLPLXt-K7sk6x1sj4SKetIX3JSsilBWe" />
+            <Image alt="Analyst" className="w-6 h-6 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxdi4b7it8cx0IbFDif2DFLkWmlOjSqoPP6tsG2Ss8uJ01JNL3EXe2lzxkBs_gpYD_rfGKborHE6vW2b8C0ClsgqpUrrSgQV2WuTItD2z-UEUCG3ycjOf61HYjYukR8WWVvebCsl_-wtzdG58CdVN5XNIEhdO2AzddGMBlwdPW6SZCsv2lUOFKCHks2HGGZ3V3myAD1O2Wr-gdoi6TMiXdCFpz72CT7xJJdrouwJl6RyEldh7hYf1FTspBzEnEFLbwilUgaNXxUrhb" width={24} height={24} />
+            <Image alt="Analyst" className="w-6 h-6 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRU5gjRmGWQHpzeR8KYZK0JN5zt4sZctVeX4OHi4nEGS2tmw2OF24vMcXCE7XiZDcJy1d3w8fP3RTh9sNe61wSzNztYZRU6EX_ZS54uAMXUyG5inyKURiJIhGQC3VIH1t2HvCfdk2glGK2Wlnukq8l9I2v49uFDWHFUuo1roLzo6p_6-cEoTYzO8iZDp-nhmkZuYEh44lwQ17bBIPvgO8KscMqr54QYE1UBsEeop_MCRlbXC1Tf8SmfTbgN4cZVhaT8u88YpnuYy5b" width={24} height={24} />
+            <Image alt="Analyst" className="w-6 h-6 rounded-full border border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcaG2-0QjDwNeOlSip6JmuSi4N17KWt1pAk8TcdAViQYKM7jhq6FphT1YTWY3axGzDj5eqWWBooW6pMvCYrzNInQvQ7wgncQZURogSkxTChYJb3Lei76ADppBjVCSC4NnE0tUaDjVVRaQUJLaP83H2UGPLG2XtsuTL2F13A3z2agAc6k1d01GDDpzoCJFFWu6rATBI2aC_pu5Ji1viZvb8IsPJhbG8e-SXFMaWiM1EW_iMTLPLXt-K7sk6x1sj4SKetIX3JSsilBWe" width={24} height={24} />
           </div>
           <span className="text-xs font-medium text-text-secondary tracking-wide">Confiado por +500 Psicanalistas</span>
         </div>
@@ -81,8 +82,8 @@ export default async function LandingPage() {
                 </p>
               </div>
               
-              <div className="rounded-xl border p-4 shadow-sm flex items-start gap-3 mt-auto transform rotate-1 hover:rotate-0 transition-transform duration-500" style={{ backgroundColor: "rgba(36, 129, 204, 0.1)", borderColor: "rgba(36, 129, 204, 0.3)" }}>
-                <div className="rounded-full w-8 h-8 flex items-center justify-center shrink-0" style={{ backgroundColor: "#2481cc" }}>
+              <div className="mt-auto flex items-start gap-3 rounded-xl border border-info/30 bg-info/10 p-4 shadow-sm transition-transform duration-500 rotate-1 hover:rotate-0">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-info">
                   <span className="material-symbols-outlined text-white text-sm">send</span>
                 </div>
                 <div>
@@ -138,7 +139,7 @@ export default async function LandingPage() {
             <p className="text-text-secondary text-sm leading-relaxed mb-5">
               {pickString(mapped.blocks[1]?.description, "Modelos avançados analisam suas anotações brutas e geram resumos clínicos com confidencialidade.")}
             </p>
-            <div className="bg-linear-to-b from-[#16221a] to-bg-elevated rounded-xl p-4 border border-border-subtle shadow-inner">
+            <div className="bg-linear-to-b from-bg-base to-bg-elevated rounded-xl p-4 border border-border-subtle shadow-inner">
               <div className="flex items-center gap-2 mb-3 border-b border-border-subtle pb-2">
                 <div className="w-2 h-2 rounded-full bg-brand animate-pulse"></div>
                 <span className="text-xs text-text-muted font-mono">Resumo Gerado • Sessão #12</span>
@@ -156,9 +157,9 @@ export default async function LandingPage() {
 
         {mapped.blocks[2] && (
           <div className="glass-card rounded-2xl p-6 relative overflow-hidden shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-[#2AABEE]/10 blur-2xl rounded-full -ml-10 -mb-10"></div>
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-info/10 blur-2xl rounded-full -ml-10 -mb-10"></div>
             <div className="w-12 h-12 rounded-full border border-border-subtle bg-bg-elevated flex items-center justify-center mb-5">
-              <span className="material-symbols-outlined text-[#2AABEE]">send</span>
+              <span className="material-symbols-outlined text-info">send</span>
             </div>
             <h3 className="text-2xl font-display mb-2 text-text-primary">
               {pickString(mapped.blocks[2]?.title, "Telegram Bot Nativo")}

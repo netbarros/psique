@@ -1,5 +1,6 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { createHash } from "node:crypto";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { generateSessionSummary } from "@/lib/openrouter";
@@ -9,6 +10,13 @@ import { createClient } from "@/lib/supabase/server";
 import { parseJsonBody } from "@/lib/api/request-validation";
 import { classifyAIError } from "@/lib/api/ai-error";
 import { resolveOpenRouterRuntimeConfig } from "@/lib/api/openrouter-runtime";
+import { CREDIT_ACTION_KEYS } from "@/lib/growth/constants";
+import {
+  consumeCreditsForAction,
+  ensureCreditWallet,
+  getPricebookAction,
+  WalletError,
+} from "@/lib/growth/wallet";
 
 const postSchema = z.object({
   sessionId: z.string().uuid(),
@@ -93,6 +101,19 @@ export async function POST(req: NextRequest) {
       therapistApiKeyCandidate: session.therapist?.openrouter_key_hash,
     });
 
+    const therapistId = String(session.therapist_id);
+    const wallet = await ensureCreditWallet(admin, therapistId);
+    const actionPrice = await getPricebookAction(admin, CREDIT_ACTION_KEYS.aiSummary);
+    if (wallet.balance_total_credits < actionPrice.unit_cost_credits) {
+      return NextResponse.json(
+        {
+          error: "Saldo de créditos insuficiente para gerar resumo.",
+          code: "INSUFFICIENT_CREDITS",
+        },
+        { status: 402 },
+      );
+    }
+
     // 7. Generate AI summary
     const result = await generateSessionSummary({
       notes,
@@ -101,6 +122,25 @@ export async function POST(req: NextRequest) {
       previousSummaries: history?.map((h) => h.ai_summary!).filter(Boolean),
       model: runtime.model,
       apiKey: runtime.apiKey,
+    });
+
+    const correlationId = `ai.summary:${sessionId}:${createHash("sha1")
+      .update(notes)
+      .digest("hex")
+      .slice(0, 12)}`;
+
+    const usage = await consumeCreditsForAction({
+      admin,
+      therapistId,
+      actionKey: CREDIT_ACTION_KEYS.aiSummary,
+      units: 1,
+      correlationId,
+      sourceType: "ai.summary",
+      sourceId: sessionId,
+      metadata: {
+        model: runtime.modelUsed,
+        keySource: runtime.keySource,
+      },
     });
 
     // 8. Save result to database
@@ -124,6 +164,8 @@ export async function POST(req: NextRequest) {
       model: runtime.modelUsed,
       modelSource: runtime.modelSource,
       keySource: runtime.keySource,
+      billedCredits: usage.billed_credits,
+      usageEventId: usage.id,
     });
 
     return NextResponse.json({
@@ -139,6 +181,10 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
+    if (error instanceof WalletError) {
+      return NextResponse.json({ error: error.message, code: error.code }, { status: error.status });
+    }
+
     const classified = classifyAIError(error);
     logger.error("[AI/Summarize] Error", {
       route,

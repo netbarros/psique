@@ -481,6 +481,266 @@
       "validation": "runtime_env_discovery_and_provider_connectivity_validation",
       "criticality": "critical",
       "notes": "Sincronização inteligente das integrações a partir de ENV runtime (dry-run e persistência auditável)"
+    },
+    {
+      "id": "NSR-049",
+      "kind": "api",
+      "path": "/api/admin/growth/rules",
+      "methods": ["GET", "PATCH"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_growth_rule_patch_and_active_rule_resolution",
+      "criticality": "critical",
+      "notes": "Leitura e atualização de regras de growth/referral"
+    },
+    {
+      "id": "NSR-050",
+      "kind": "api",
+      "path": "/api/admin/wallet/pricebook-actions",
+      "methods": ["GET"],
+      "authModel": "authenticated_master_admin",
+      "validation": "read_only_pricebook_listing",
+      "criticality": "critical",
+      "notes": "Catálogo de ações tarifáveis por crédito"
+    },
+    {
+      "id": "NSR-051",
+      "kind": "api",
+      "path": "/api/admin/wallet/pricebook-actions/[actionKey]",
+      "methods": ["PATCH"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_pricebook_patch",
+      "criticality": "critical",
+      "notes": "Atualização de preço unitário por ação"
+    },
+    {
+      "id": "NSR-052",
+      "kind": "api",
+      "path": "/api/admin/wallet/credit-packages",
+      "methods": ["GET", "POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_credit_package_create",
+      "criticality": "critical",
+      "notes": "Leitura e criação de pacotes de crédito"
+    },
+    {
+      "id": "NSR-053",
+      "kind": "api",
+      "path": "/api/admin/wallet/credit-packages/[id]",
+      "methods": ["PATCH"],
+      "authModel": "authenticated_master_admin",
+      "validation": "zod_credit_package_patch",
+      "criticality": "critical",
+      "notes": "Atualização de pacote de crédito existente"
+    },
+    {
+      "id": "NSR-054",
+      "kind": "api",
+      "path": "/api/admin/moderation/posts/[postId]/approve",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "post_exists_and_moderation_transition",
+      "criticality": "major",
+      "notes": "Aprovação de conteúdo público terapêutico"
+    },
+    {
+      "id": "NSR-055",
+      "kind": "api",
+      "path": "/api/admin/moderation/posts/[postId]/reject",
+      "methods": ["POST"],
+      "authModel": "authenticated_master_admin",
+      "validation": "post_exists_reason_required_and_moderation_transition",
+      "criticality": "major",
+      "notes": "Reprovação de conteúdo público terapêutico"
+    },
+    {
+      "id": "NSR-056",
+      "kind": "api",
+      "path": "/api/therapist/public-profile",
+      "methods": ["PATCH"],
+      "authModel": "authenticated_therapist",
+      "validation": "zod_public_profile_payload_and_slug_rules",
+      "criticality": "critical",
+      "notes": "Atualização de perfil público com registro de slug"
+    },
+    {
+      "id": "NSR-057",
+      "kind": "api",
+      "path": "/api/therapist/wallet",
+      "methods": ["GET"],
+      "authModel": "authenticated_therapist",
+      "validation": "wallet_autocreate_and_balance_projection",
+      "criticality": "critical",
+      "notes": "Resumo da carteira de créditos"
+    },
+    {
+      "id": "NSR-058",
+      "kind": "api",
+      "path": "/api/therapist/wallet/ledger",
+      "methods": ["GET"],
+      "authModel": "authenticated_therapist",
+      "validation": "query_filters_and_wallet_scope",
+      "criticality": "critical",
+      "notes": "Extrato do ledger de créditos"
+    },
+    {
+      "id": "NSR-059",
+      "kind": "api",
+      "path": "/api/therapist/referrals/summary",
+      "methods": ["GET"],
+      "authModel": "authenticated_therapist",
+      "validation": "referral_summary_projection",
+      "criticality": "major",
+      "notes": "Resumo operacional do programa de indicação"
+    },
+    {
+      "id": "NSR-060",
+      "kind": "api",
+      "path": "/api/therapist/referrals/generate-code",
+      "methods": ["POST"],
+      "authModel": "authenticated_therapist",
+      "validation": "idempotent_code_generation",
+      "criticality": "major",
+      "notes": "Geração/recuperação de código de indicação"
+    },
+    {
+      "id": "NSR-061",
+      "kind": "api",
+      "path": "/api/therapist/referrals/invites",
+      "methods": ["GET"],
+      "authModel": "authenticated_therapist",
+      "validation": "status_filter_and_scope",
+      "criticality": "major",
+      "notes": "Lista de convites e estados de indicação"
+    },
+    {
+      "id": "NSR-062",
+      "kind": "api",
+      "path": "/api/therapist/growth/rules",
+      "methods": ["GET"],
+      "authModel": "authenticated_therapist",
+      "validation": "active_rules_read_only_projection",
+      "criticality": "major",
+      "notes": "Leitura read-only de regras ativas de growth"
+    },
+    {
+      "id": "NSR-063",
+      "kind": "api",
+      "path": "/api/therapist/patients/[id]/timeline",
+      "methods": ["GET"],
+      "authModel": "authenticated_therapist_owner",
+      "validation": "patient_ownership_and_unified_timeline",
+      "criticality": "major",
+      "notes": "Timeline consolidada de sessões, humor e check-ins"
+    },
+    {
+      "id": "NSR-064",
+      "kind": "api",
+      "path": "/api/therapist/posts/[postId]/submit-review",
+      "methods": ["POST"],
+      "authModel": "authenticated_therapist_owner",
+      "validation": "post_ownership_and_state_transition",
+      "criticality": "major",
+      "notes": "Submissão de conteúdo para moderação"
+    },
+    {
+      "id": "NSR-065",
+      "kind": "api",
+      "path": "/api/public/therapists",
+      "methods": ["GET"],
+      "authModel": "public_readonly",
+      "validation": "directory_filters_and_opt_in_visibility",
+      "criticality": "critical",
+      "notes": "Diretório público de terapeutas opt-in"
+    },
+    {
+      "id": "NSR-066",
+      "kind": "api",
+      "path": "/api/public/therapists/[slug]",
+      "methods": ["GET"],
+      "authModel": "public_readonly",
+      "validation": "slug_resolution_and_profile_visibility",
+      "criticality": "critical",
+      "notes": "Perfil público de terapeuta por slug"
+    },
+    {
+      "id": "NSR-067",
+      "kind": "api",
+      "path": "/api/public/therapists/[slug]/posts",
+      "methods": ["GET"],
+      "authModel": "public_readonly",
+      "validation": "published_posts_only",
+      "criticality": "major",
+      "notes": "Listagem pública de posts publicados por terapeuta"
+    },
+    {
+      "id": "NSR-068",
+      "kind": "api",
+      "path": "/api/public/therapists/[slug]/posts/[postSlug]",
+      "methods": ["GET"],
+      "authModel": "public_readonly",
+      "validation": "published_post_by_slug",
+      "criticality": "major",
+      "notes": "Detalhe público de post terapêutico"
+    },
+    {
+      "id": "NSR-069",
+      "kind": "api",
+      "path": "/api/public/community",
+      "methods": ["GET"],
+      "authModel": "public_readonly",
+      "validation": "community_provider_public_config",
+      "criticality": "major",
+      "notes": "Superfície pública de comunidade (Telegram-first)"
+    },
+    {
+      "id": "NSR-070",
+      "kind": "api",
+      "path": "/api/patient/checkins/respond",
+      "methods": ["POST"],
+      "authModel": "authenticated_patient",
+      "validation": "consent_preferences_and_appointment_dedup",
+      "criticality": "critical",
+      "notes": "Resposta de check-in longitudinal pós-sessão"
+    },
+    {
+      "id": "NSR-071",
+      "kind": "api",
+      "path": "/api/cron/wallet/expiration-warnings",
+      "methods": ["GET"],
+      "authModel": "secret_header",
+      "validation": "authorization_bearer_secret",
+      "criticality": "major",
+      "notes": "Job diário de avisos D-14/D-7/D-1 para bônus"
+    },
+    {
+      "id": "NSR-072",
+      "kind": "api",
+      "path": "/api/cron/wallet/expire-bonuses",
+      "methods": ["GET"],
+      "authModel": "secret_header",
+      "validation": "authorization_bearer_secret",
+      "criticality": "critical",
+      "notes": "Job diário de expiração de bônus e baixa no ledger"
+    },
+    {
+      "id": "NSR-073",
+      "kind": "api",
+      "path": "/api/cron/referrals/qualification-evaluator",
+      "methods": ["GET"],
+      "authModel": "secret_header",
+      "validation": "authorization_bearer_secret",
+      "criticality": "critical",
+      "notes": "Job diário de qualificação de convites com janela de segurança"
+    },
+    {
+      "id": "NSR-074",
+      "kind": "api",
+      "path": "/api/auth/resolve-home",
+      "methods": ["POST"],
+      "authModel": "authenticated",
+      "validation": "role_resolution_and_safe_next_redirect",
+      "criticality": "major",
+      "notes": "Resolução de home pós-login com role real e redirect seguro"
     }
   ]
 }

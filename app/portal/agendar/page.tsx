@@ -63,7 +63,7 @@ export default async function AgendarPage() {
       .single();
     patient = patientAdmin as PatientRecord | null;
   }
-  if (!patient) redirect("/dashboard");
+  if (!patient) redirect("/auth/login?error=patient_profile_missing");
 
   const { data: therapistData } = await supabase
     .from("therapists")

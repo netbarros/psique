@@ -1,11 +1,20 @@
 import { NextResponse } from "next/server";
+import { createHash } from "node:crypto";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { generatePatientInsights } from "@/lib/openrouter";
 import { getAIRatelimiter } from "@/lib/ratelimit";
 import { logger } from "@/lib/logger";
 import { classifyAIError } from "@/lib/api/ai-error";
 import { resolveOpenRouterRuntimeConfig } from "@/lib/api/openrouter-runtime";
+import { CREDIT_ACTION_KEYS } from "@/lib/growth/constants";
+import {
+  consumeCreditsForAction,
+  ensureCreditWallet,
+  getPricebookAction,
+  WalletError,
+} from "@/lib/growth/wallet";
 
 const postSchema = z.object({
   patientLimit: z.number().int().min(1).max(50).optional(),
@@ -14,6 +23,7 @@ const postSchema = z.object({
 export async function POST(req: Request) {
   const route = "/api/ai/insights";
   const supabase = await createClient();
+  const admin = createAdminClient();
   const {
     data: { user },
     error: authError,
@@ -112,6 +122,18 @@ export async function POST(req: Request) {
       therapistApiKeyCandidate: therapist.openrouter_key_hash,
     });
 
+    const wallet = await ensureCreditWallet(admin, therapist.id);
+    const actionPrice = await getPricebookAction(admin, CREDIT_ACTION_KEYS.aiDeepAnalysis);
+    if (wallet.balance_total_credits < actionPrice.unit_cost_credits) {
+      return NextResponse.json(
+        {
+          error: "Saldo de créditos insuficiente para análise avançada.",
+          code: "INSUFFICIENT_CREDITS",
+        },
+        { status: 402 },
+      );
+    }
+
     if (patientsData.length === 0) {
       return NextResponse.json({
         success: true,
@@ -135,6 +157,26 @@ export async function POST(req: Request) {
       apiKey: runtime.apiKey,
     });
 
+    const correlationId = `ai.deep_analysis:${therapist.id}:${createHash("sha1")
+      .update(JSON.stringify({ patientLimit, patients: patientsData.map((patient) => patient.name) }))
+      .digest("hex")
+      .slice(0, 12)}`;
+
+    const usage = await consumeCreditsForAction({
+      admin,
+      therapistId: therapist.id,
+      actionKey: CREDIT_ACTION_KEYS.aiDeepAnalysis,
+      units: 1,
+      correlationId,
+      sourceType: "ai.deep_analysis",
+      sourceId: therapist.id,
+      metadata: {
+        patientLimit,
+        patientCount: patientsData.length,
+        model: runtime.modelUsed,
+      },
+    });
+
     logger.info("[AI/Insights] Generated insights", {
       route,
       therapistId: therapist.id,
@@ -143,6 +185,8 @@ export async function POST(req: Request) {
       model: runtime.modelUsed,
       modelSource: runtime.modelSource,
       keySource: runtime.keySource,
+      billedCredits: usage.billed_credits,
+      usageEventId: usage.id,
     });
 
     return NextResponse.json({
@@ -158,6 +202,10 @@ export async function POST(req: Request) {
       },
     });
   } catch (error) {
+    if (error instanceof WalletError) {
+      return NextResponse.json({ error: error.message, code: error.code }, { status: error.status });
+    }
+
     const classified = classifyAIError(error);
     logger.error("[AI/Insights] Error", {
       route,

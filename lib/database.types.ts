@@ -28,6 +28,23 @@ export type UserRole = "master_admin" | "therapist" | "patient";
 export type AdminRevisionStatus = "draft" | "published" | "archived";
 export type MasterAdminProfileStatus = "active" | "inactive";
 export type PlatformIntegrationStatus = "active" | "inactive" | "invalid" | "draft";
+export type CreditWalletStatus = "active" | "blocked" | "closed";
+export type CreditLedgerEntryKind = "credit" | "debit" | "expire" | "reverse" | "hold" | "release";
+export type CreditLedgerBucket = "paid" | "bonus";
+export type CreditLedgerStatus = "pending" | "posted" | "reversed" | "failed";
+export type UsageEventStatus = "billed" | "skipped" | "reversed" | "failed";
+export type PublicSlugStatus = "active" | "inactive" | "redirect" | "reserved";
+export type ReferralInviteStatus =
+  | "pending"
+  | "qualified"
+  | "rewarded"
+  | "rejected"
+  | "under_review"
+  | "expired";
+export type PublicPostStatus = "draft" | "pending_review" | "published" | "rejected" | "archived";
+export type CheckinChannel = "telegram" | "email" | "whatsapp" | "none";
+export type SessionCheckinMoodLabel = "good" | "neutral" | "difficult";
+export type SessionCheckinStatus = "queued" | "sent" | "responded" | "skipped" | "failed";
 
 export type TherapistRow = {
   id: string;
@@ -342,6 +359,206 @@ export type AdminAuditEventRow = {
   created_at: string;
 };
 
+export type CreditWalletRow = {
+  wallet_id: string;
+  therapist_id: string;
+  balance_total_credits: number;
+  balance_paid_credits: number;
+  balance_bonus_credits: number;
+  status: CreditWalletStatus;
+  created_at: string;
+  updated_at: string;
+};
+
+export type CreditLedgerRow = {
+  id: string;
+  wallet_id: string;
+  entry_kind: CreditLedgerEntryKind;
+  bucket: CreditLedgerBucket;
+  amount_credits: number;
+  source_type: string;
+  source_id: string | null;
+  idempotency_key: string;
+  expires_at: string | null;
+  available_at: string;
+  status: CreditLedgerStatus;
+  metadata: Record<string, unknown>;
+  created_at: string;
+};
+
+export type CreditPackageRow = {
+  id: string;
+  code: string;
+  name: string;
+  credits_amount: number;
+  price_brl_cents: number;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PricebookActionRow = {
+  action_key: string;
+  unit_type: string;
+  unit_cost_credits: number;
+  active: boolean;
+  effective_from: string;
+  effective_to: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type UsageEventRow = {
+  id: string;
+  therapist_id: string;
+  wallet_id: string;
+  action_key: string;
+  units: number;
+  billed_credits: number;
+  ledger_entry_id: string | null;
+  correlation_id: string;
+  status: UsageEventStatus;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+};
+
+export type GrowthProgramRuleRow = {
+  id: string;
+  rule_name: string;
+  inviter_bonus_credits: number;
+  invitee_bonus_credits: number;
+  qualification_min_amount_brl: number;
+  qualification_wait_days: number;
+  max_rewards_per_month: number;
+  max_rewards_per_therapist: number;
+  bonus_expiration_days: number;
+  anti_abuse_enabled: boolean;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PublicSlugRow = {
+  id: string;
+  slug: string;
+  target_type: string;
+  target_id: string | null;
+  canonical_path: string;
+  status: PublicSlugStatus;
+  is_reserved: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PatientCommunicationPreferenceRow = {
+  patient_id: string;
+  checkin_opt_in: boolean;
+  preferred_channel: CheckinChannel;
+  quiet_hours_start: string | null;
+  quiet_hours_end: string | null;
+  timezone: string;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TherapistFounderMembershipRow = {
+  therapist_id: string;
+  tier: string;
+  benefits_json: Record<string, unknown>;
+  active: boolean;
+  starts_at: string;
+  ends_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TherapistReferralCodeRow = {
+  id: string;
+  therapist_id: string;
+  code: string;
+  active: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TherapistReferralInviteRow = {
+  id: string;
+  inviter_therapist_id: string;
+  invited_therapist_id: string | null;
+  referral_code: string;
+  invited_email: string | null;
+  invited_phone: string | null;
+  invited_telegram_username: string | null;
+  invited_device_fingerprint: string | null;
+  status: ReferralInviteStatus;
+  qualification_paid_amount_brl: number | null;
+  qualification_ready_at: string | null;
+  qualification_evaluated_at: string | null;
+  reward_ledger_entry_inviter_id: string | null;
+  reward_ledger_entry_invitee_id: string | null;
+  reward_issued_at: string | null;
+  rejection_reason: string | null;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TherapistPublicProfileRow = {
+  therapist_id: string;
+  display_name: string | null;
+  profile_photo_url: string | null;
+  short_bio: string | null;
+  long_bio: string | null;
+  specialties: string[];
+  therapeutic_approaches: string[];
+  city: string | null;
+  state: string | null;
+  modality_online: boolean;
+  modality_presential: boolean;
+  availability_summary: string | null;
+  trust_indicators: string[];
+  opt_in_directory: boolean;
+  checklist_completed: boolean;
+  profile_published: boolean;
+  created_at: string;
+  updated_at: string;
+};
+
+export type TherapistPublicPostRow = {
+  id: string;
+  therapist_id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  content_markdown: string;
+  content_sanitized: string;
+  status: PublicPostStatus;
+  moderation_flags: string[];
+  moderation_notes: string | null;
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  published_at: string | null;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PatientSessionCheckinRow = {
+  id: string;
+  appointment_id: string;
+  patient_id: string;
+  therapist_id: string;
+  mood_label: SessionCheckinMoodLabel;
+  channel: "telegram" | "email" | "whatsapp" | "portal";
+  response_note: string | null;
+  sent_at: string | null;
+  responded_at: string | null;
+  status: SessionCheckinStatus;
+  metadata: Record<string, unknown>;
+  created_at: string;
+  updated_at: string;
+};
+
 type Relationship = {
   foreignKeyName: string;
   columns: string[];
@@ -613,6 +830,177 @@ export type Database = {
       >;
       platform_integrations: TableDef<PlatformIntegrationRow>;
       admin_audit_events: TableDef<AdminAuditEventRow>;
+      credit_wallets: TableDef<
+        CreditWalletRow,
+        [
+          {
+            foreignKeyName: "credit_wallets_therapist_id_fkey";
+            columns: ["therapist_id"];
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      credit_ledger: TableDef<
+        CreditLedgerRow,
+        [
+          {
+            foreignKeyName: "credit_ledger_wallet_id_fkey";
+            columns: ["wallet_id"];
+            referencedRelation: "credit_wallets";
+            referencedColumns: ["wallet_id"];
+          },
+        ]
+      >;
+      credit_packages: TableDef<CreditPackageRow>;
+      pricebook_actions: TableDef<PricebookActionRow>;
+      usage_events: TableDef<
+        UsageEventRow,
+        [
+          {
+            foreignKeyName: "usage_events_therapist_id_fkey";
+            columns: ["therapist_id"];
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "usage_events_wallet_id_fkey";
+            columns: ["wallet_id"];
+            referencedRelation: "credit_wallets";
+            referencedColumns: ["wallet_id"];
+          },
+          {
+            foreignKeyName: "usage_events_action_key_fkey";
+            columns: ["action_key"];
+            referencedRelation: "pricebook_actions";
+            referencedColumns: ["action_key"];
+          },
+          {
+            foreignKeyName: "usage_events_ledger_entry_id_fkey";
+            columns: ["ledger_entry_id"];
+            referencedRelation: "credit_ledger";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      growth_program_rules: TableDef<GrowthProgramRuleRow>;
+      public_slugs: TableDef<PublicSlugRow>;
+      patient_communication_preferences: TableDef<
+        PatientCommunicationPreferenceRow,
+        [
+          {
+            foreignKeyName: "patient_communication_preferences_patient_id_fkey";
+            columns: ["patient_id"];
+            isOneToOne: true;
+            referencedRelation: "patients";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      therapist_founder_memberships: TableDef<
+        TherapistFounderMembershipRow,
+        [
+          {
+            foreignKeyName: "therapist_founder_memberships_therapist_id_fkey";
+            columns: ["therapist_id"];
+            isOneToOne: true;
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      therapist_referral_codes: TableDef<
+        TherapistReferralCodeRow,
+        [
+          {
+            foreignKeyName: "therapist_referral_codes_therapist_id_fkey";
+            columns: ["therapist_id"];
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      therapist_referral_invites: TableDef<
+        TherapistReferralInviteRow,
+        [
+          {
+            foreignKeyName: "therapist_referral_invites_inviter_therapist_id_fkey";
+            columns: ["inviter_therapist_id"];
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "therapist_referral_invites_invited_therapist_id_fkey";
+            columns: ["invited_therapist_id"];
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "therapist_referral_invites_referral_code_fkey";
+            columns: ["referral_code"];
+            referencedRelation: "therapist_referral_codes";
+            referencedColumns: ["code"];
+          },
+          {
+            foreignKeyName: "therapist_referral_invites_reward_ledger_entry_inviter_id_fkey";
+            columns: ["reward_ledger_entry_inviter_id"];
+            referencedRelation: "credit_ledger";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "therapist_referral_invites_reward_ledger_entry_invitee_id_fkey";
+            columns: ["reward_ledger_entry_invitee_id"];
+            referencedRelation: "credit_ledger";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      therapist_public_profiles: TableDef<
+        TherapistPublicProfileRow,
+        [
+          {
+            foreignKeyName: "therapist_public_profiles_therapist_id_fkey";
+            columns: ["therapist_id"];
+            isOneToOne: true;
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      therapist_public_posts: TableDef<
+        TherapistPublicPostRow,
+        [
+          {
+            foreignKeyName: "therapist_public_posts_therapist_id_fkey";
+            columns: ["therapist_id"];
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
+      patient_session_checkins: TableDef<
+        PatientSessionCheckinRow,
+        [
+          {
+            foreignKeyName: "patient_session_checkins_appointment_id_fkey";
+            columns: ["appointment_id"];
+            referencedRelation: "appointments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "patient_session_checkins_patient_id_fkey";
+            columns: ["patient_id"];
+            referencedRelation: "patients";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "patient_session_checkins_therapist_id_fkey";
+            columns: ["therapist_id"];
+            referencedRelation: "therapists";
+            referencedColumns: ["id"];
+          },
+        ]
+      >;
     };
     Views: {
       [_ in never]: never;

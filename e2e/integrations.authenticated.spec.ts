@@ -19,7 +19,7 @@ async function loginAsTherapist(page: Page, auth: AuthContext) {
   await page.goto("/auth/login");
   await expect(page.getByRole("heading", { name: /Acessar conta/i })).toBeVisible();
   await page.getByLabel("Email").fill(auth.email);
-  await page.getByLabel("Senha").fill(auth.password);
+  await page.getByRole("textbox", { name: /^Senha$/ }).fill(auth.password);
   await page.locator("button[aria-label='Entrar']").click();
   await expect(page).toHaveURL(/\/dashboard/);
 }
@@ -57,7 +57,7 @@ test.describe("Authenticated Integrations Flow", () => {
     await expect(page.getByRole("heading", { name: "OpenRouter AI" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Telegram Bot" })).toBeVisible();
     await expect(page.getByRole("heading", { name: "Stripe Connect" })).toBeVisible();
-    await expect(page.getByRole("button", { name: /Conectar Stripe Express/i })).toBeVisible();
+    await expect(page.locator('a[href="#integracao-stripe"]')).toBeVisible();
 
     await page.locator('a[href="#integracao-openrouter"]').click();
     await expect(page).toHaveURL(/#integracao-openrouter$/);
@@ -68,65 +68,23 @@ test.describe("Authenticated Integrations Flow", () => {
     await expect(page.locator("#integracao-stripe")).toBeVisible();
   });
 
-  test("master autenticado salva integrações via API com sucesso", async ({ page }) => {
+  test("master autenticado visualiza integrações em modo somente leitura", async ({ page }) => {
     test.skip(!authContext, provisionError ?? "Provisionamento não disponível");
     await loginAsTherapist(page, authContext!);
     await page.goto("/dashboard/configuracoes/integracoes");
 
-    let patchPayload: Record<string, unknown> | null = null;
-    await page.route("**/api/settings/integrations", async (route, request) => {
-      patchPayload = request.postDataJSON() as Record<string, unknown>;
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({
-          success: true,
-          data: {
-            aiModel: "anthropic/claude-3.5-sonnet",
-            openRouterConnected: true,
-            telegramConnected: false,
-            stripeConnected: false,
-            stripeAccountId: null,
-          },
-        }),
-      });
-    });
-
-    await page
-      .getByPlaceholder("Opcional (usa a chave padrão da plataforma Psique)")
-      .fill("sk-or-v1-e2e-master-key");
-    await page.getByRole("button", { name: /Salvar Integrações/i }).click();
-
-    await expect(
-      page.getByText("Integrações validadas e atualizadas com sucesso!"),
-    ).toBeVisible();
-    expect(patchPayload).not.toBeNull();
-    expect((patchPayload as unknown as Record<string, unknown>)?.openRouterKey).toBe("sk-or-v1-e2e-master-key");
+    await expect(page.getByText(/Escrita em integrações neste painel foi desativada por contrato/i)).toBeVisible();
+    await expect(page.getByPlaceholder("Gerenciado pelo master_admin")).toHaveCount(3);
+    await expect(page.getByRole("button", { name: /Salvar Integrações/i })).toHaveCount(0);
   });
 
-  test("master autenticado inicia Stripe Connect e recebe redirect para onboarding", async ({
-    page,
-  }) => {
+  test("master autenticado vê detalhes de conexão com campos bloqueados", async ({ page }) => {
     test.skip(!authContext, provisionError ?? "Provisionamento não disponível");
     await loginAsTherapist(page, authContext!);
     await page.goto("/dashboard/configuracoes/integracoes");
 
-    await page.route("**/api/settings/integrations/stripe/connect", async (route) => {
-      await route.fulfill({
-        status: 200,
-        contentType: "application/json",
-        body: JSON.stringify({
-          success: true,
-          data: {
-            mode: "onboarding",
-            accountId: "acct_1E2EFlowMaster",
-            url: "/dashboard/configuracoes/integracoes?stripe=success&e2e=1",
-          },
-        }),
-      });
-    });
-
-    await page.getByRole("button", { name: /Conectar Stripe Express/i }).click();
-    await expect(page).toHaveURL(/\/dashboard\/configuracoes\/integracoes\?stripe=success&e2e=1/);
+    await expect(page.locator("#integracao-openrouter input[disabled]")).toBeVisible();
+    await expect(page.locator("#integracao-telegram input[disabled]")).toBeVisible();
+    await expect(page.locator("#integracao-stripe input[disabled]")).toBeVisible();
   });
 });

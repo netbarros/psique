@@ -4,57 +4,51 @@
 
 ---
 
-## 🔄 Atualização de Continuidade — Fase 22 v3.2 (2026-03-05)
+## 🔄 Atualização de Continuidade — Fase 22 v3.3 (2026-03-06)
 
 ### Status consolidado
-- Reconciliação enterprise E2E concluída (MF-00..MF-11).
-- `AGENTS.md` atualizado para **v3.2** com melhores práticas operacionais + matriz de correlatos.
-- `CLAUDE.md` definido como agente parceiro oficial, delegado às regras canônicas de `AGENTS.md`.
-- `docs/stitch/*` confirmado como fonte canônica; `files/*` como espelho automático sem edição manual.
-- Rotas canônicas de paciente em `/portal/*`; rotas curtas legadas com redirect permanente `308`.
-- Runtime Next 16 consolidado com `proxy.ts` (sem `middleware.ts`).
-- Auditoria backend enterprise adicionada com orquestrador dedicado e report em baseline.
+- Reconciliação enterprise MF-00..MF-11 permanece concluída.
+- `docs/stitch/*` segue fonte canônica; `files/*` segue espelho automático sem edição manual.
+- Runtime Next 16 consolidado com `proxy.ts`.
+- Superfície backend auditada em `73` APIs sem falhas críticas de contrato.
+- Sessão 2026-03-06 saneou warnings de lint, gaps de observabilidade backend e falhas E2E/visual.
 
-### Gates atuais (G1..G12)
-1. `npm run lint` → **PASS**
+### Gates atuais (evidência fresca da sessão)
+1. `npm run lint` → **PASS** (0 warnings)
 2. `npm run typecheck` → **PASS**
-3. `npm run contract:manifest:check` → **PASS** (`28 screens`)
-4. `npm run contract:non-screen:check` → **PASS** (`28 api paths`)
+3. `npm run contract:manifest:check` → **PASS** (`32 screens`)
+4. `npm run contract:non-screen:check` → **PASS** (`73 api paths`)
 5. `npm run docs:sync:check` → **PASS** (`0 drift`)
-6. `npm run lint:colors` → **PASS** (`allowlist aplicada`)
-7. `npm run build` → **PASS**
-8. `npm run test:unit` → **PASS**
-9. `npm run test:api` → **PASS**
-10. `npm run test:e2e` → **PASS** (`204 passed`)
-11. `npm run test:visual` → **PASS** (`9 passed`)
-12. `npm run backend:audit` → **PASS**
+6. `npm run lint:colors` → **PASS** (`12 allowlisted occurrences`)
+7. `npm run backend:audit:write` → **PASS** (`293/293`, `criticalFailed=0`)
+8. `npm run verify` → **PASS** (build + unit + api + contratos)
+9. `npm run test:e2e` → **PASS** (`237 passed`, `9 skipped`, `0 failed`)
 
-### Gates de coordenação backend↔layout
-- `npm run docs:watch:snapshot` → **PASS** (baseline de docs atualizado)
-- `npm run docs:watch:check` → **PASS** (`0 changes`)
-- `npm run supabase:preflight:write` → **PASS** (`4/4 checks`)
+### Reconciliações concluídas (E2E/visual)
+1. `admin-integrations.real.spec.ts`: espera de inicialização robusta para o botão `Inicializar stack padrão`.
+2. `booking.spec.ts`: asserts alinhados ao contrato atual de copy/step indicator.
+3. `integrations.authenticated.spec.ts`: seletor de senha ambíguo removido e fluxo read-only validado.
+4. `screen-contract.spec.ts`: overflow S16 mobile estabilizado com hardening global de ícones (`material-symbols-outlined`).
+5. `visual-regression.spec.ts`: snapshots atualizados para `landing`, `pricing`, `auth-login` em 390/768/1440.
+
+### Skips atuais (esperados)
+1. `admin-integrations.real.spec.ts` conectores reais Telegram/Stripe/Asaas (dependem de secrets reais de provider; 3 casos x 3 viewports = 9 skips).
 
 ### Correlatos obrigatórios (resumo)
 - Governança de espelho: `scripts/sync-stitch-mirror.mjs` + `npm run docs:sync:*`
-- Monitor de coordenação com agente parceiro: `scripts/track-docs-updates.mjs` + `npm run docs:watch:*`
 - Contrato canônico: `docs/stitch/CANONICAL_MANIFEST.json` + schema em `docs/stitch/schema/`
 - Catálogo não-visual: `docs/stitch/NON_SCREEN_ROUTES.json`
 - Catálogo E2E gerado: `e2e/contracts/screen-catalog.generated.ts`
 - Contrato backend↔frontend: `docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md`
-- Checklist de PR para agente de layout: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`
-- Preflight de dados Supabase (antes de enforce de unicidade): `scripts/supabase-preflight.mjs`
-- CI bloqueante: `.github/workflows/{backend-audit,lint,typecheck,build,unit,api,e2e,visual,docs-sync-check}.yml`
+- Checklist de PR para layout/backend: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`
 - Orquestrador de auditoria backend: `scripts/backend-audit-orchestrator.mjs`
 - Baseline de auditoria backend: `docs/baselines/mf23_backend_audit/report.json`
 
 ### Artefatos-chave da Fase 22
-- Plano atualizado: `docs/implementation_plan.md` (Fase 22).
-- Baseline reconciliação: `docs/baselines/mf21_reconcile/*`.
-- Handoff final: `docs/handoffs/HANDOFF-FASE22-RECONCILIACAO-E2E.md`.
-- Contrato backend↔frontend (agente parceiro): `docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md`.
-- Checklist operacional de integração: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`.
-- Playbook saneamento pré-migração Supabase: `supabase/playbooks/20260305_preflight_dedupe_playbook.sql`.
-- README raiz atualizado com governança operacional.
+- Plano atualizado: `docs/implementation_plan.md` (Fase 22)
+- Handoff consolidado: `docs/handoffs/HANDOFF-FASE22-RECONCILIACAO-E2E.md`
+- Contrato backend↔frontend: `docs/handoffs/BACKEND-CONTRACT-FRONTEND-AGENT.md`
+- Checklist operacional de integração: `docs/handoffs/PR-CHECKLIST-LAYOUT-AGENT.md`
 
 ---
 

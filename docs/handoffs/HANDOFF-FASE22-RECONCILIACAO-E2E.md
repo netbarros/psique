@@ -1,7 +1,8 @@
 # HANDOFF Fase 22 — Reconciliação E2E Enterprise
 
-- Data: 2026-03-05
-- Status: ✅ Concluída (MF-00..MF-11)
+- Data base: 2026-03-05
+- Última atualização operacional: 2026-03-06
+- Status: ✅ MF-00..MF-11 concluídas | ✅ suíte E2E global reconciliada
 
 ## Objetivo
 Executar reconciliação enterprise 100% com fonte canônica em `docs/stitch/*`, espelho automático sem drift, canonicalização de rotas de paciente em `/portal/*`, cobertura de testes em múltiplas camadas e CI/CD bloqueante.
@@ -78,33 +79,41 @@ Executar reconciliação enterprise 100% com fonte canônica em `docs/stitch/*`,
   - `app/api/patient/chat/messages/route.ts`
   - `app/api/sessions/[id]/close/route.ts`
 
-## Evidências de validação (frescas)
+## Evidências de validação (sessão 2026-03-06)
 
 ### Execução de qualidade estática/contrato/build
 - `npm run verify` ✅ PASS
-  - `lint` ✅
+  - `lint` ✅ (0 warnings)
   - `typecheck` ✅
-  - `contract:manifest:check` ✅ `ok (28 screens)`
-  - `contract:non-screen:check` ✅ `ok (28 api paths)`
+  - `contract:manifest:check` ✅ `ok (32 screens)`
+  - `contract:non-screen:check` ✅ `ok (73 api paths)`
   - `docs:sync:check` ✅ `check completed with 0 drift item(s)`
-  - `lint:colors` ✅ `ok (141 allowlisted occurrences)`
+  - `lint:colors` ✅ `ok (12 allowlisted occurrences)`
+  - `backend:audit` ✅ `checks=293 passed=293 failed=0 criticalFailed=0`
   - `build` ✅ (Next 16.1.6 build completo)
-  - `test:unit` ✅ `7 passed`
-  - `test:api` ✅ `10 passed`
-  - `docs:watch:snapshot` ✅ (state atualizado)
-  - `docs:watch:check` ✅ (`0 changes`)
-  - `supabase:preflight:write` ✅ (`4/4 checks`, relatório em `docs/baselines/mf22_supabase/preflight-report.json`)
-  - `backend:audit:write` ✅ (`120/120 checks`, relatório em `docs/baselines/mf23_backend_audit/report.json`)
+  - `test:unit` ✅ `3 files, 16 tests passed`
+  - `test:api` ✅ `23 files, 191 tests passed`
+- `npm run backend:audit:write` ✅
+  - relatório atualizado em `docs/baselines/mf23_backend_audit/report.json` com `293/293`.
 
-### Execução de testes E2E/visual
-- `npm run test:e2e` ✅ `204 passed (46.9s)`
-- `npm run test:visual` ✅ `9 passed (11.9s)`
+### Execução E2E/visual (estado atual)
+- `npm run test:e2e` ✅ PASS
+  - `237 passed`
+  - `9 skipped`
+  - `0 failed`
+- Reconciliações aplicadas na sessão:
+  - `integrations.authenticated.spec.ts`: seletor de senha não ambíguo + asserts alinhados ao modo read-only de integrações.
+  - `admin-integrations.real.spec.ts`: espera robusta para fim de inicialização da stack antes dos asserts de providers.
+  - `booking.spec.ts`: asserts alinhados ao heading/step contract atual (`Agendamento público` / `Horário`).
+  - `screen-contract.spec.ts`: hardening do cenário S16 mobile com fix global em `.material-symbols-outlined` (sem overflow horizontal).
+  - `auth-redirects.authenticated.spec.ts`: assert estabilizado para alvo visível no tablet (`main`) sem falso negativo de elemento hidden.
+  - `visual-regression.spec.ts`: snapshots atualizados (`landing`, `pricing`, `auth-login`) em `desktop/tablet/mobile`.
+  - `auth/resolve-home`: matriz `next + role` validada em `desktop/tablet/mobile` para evitar redirecionamento confuso e loops pós-login.
 
 ### Resultado comprovado
-1. 0 drift `docs/stitch/*` vs `files/*` no check de espelho.
-2. Redirect `308` para `/agendar|/apoio|/chat|/sessoes` validado em suíte dedicada.
-3. 0 falha em unit/api/e2e/visual.
-4. Gates configurados em CI bloqueante por workflow.
+1. Backend sem gaps de observabilidade no auditor (`NSR-049..053,057,058,070,072,073` saneados).
+2. `verify` verde com contrato e build íntegros.
+3. E2E/visual reconciliado no estado atual, sem falhas abertas na suíte global.
 
 ## Coordenação Multiagente (Backend x Layout)
 - Parceiro oficial de execução: `CLAUDE.md` (delegado para `AGENTS.md`).
@@ -128,8 +137,8 @@ Executar reconciliação enterprise 100% com fonte canônica em `docs/stitch/*`,
   - playbook manual: `supabase/playbooks/20260305_preflight_dedupe_playbook.sql`
 
 ## Checksums de referência (canônicos)
-- `docs/stitch/CANONICAL_MANIFEST.json`: `96d3710b175b7d4c6979cb079eb5fb02acb0361c1e02998b2b5977cdd2594340`
-- `docs/stitch/NON_SCREEN_ROUTES.json`: `9c0c1317a95c5900cd2dfb188550122291f3d3a3107c08daa2105cae0371f1b5`
+- `docs/stitch/CANONICAL_MANIFEST.json`: `4d2358d0036dfcee446ff6e9f4a14e75f89b2ab0c0fec565321de12c97053eba`
+- `docs/stitch/NON_SCREEN_ROUTES.json`: `c9ca9eee501ebd872bdc7b2ef33e3d43c82eb224681b0267142626381a949295`
 - `docs/stitch/schema/canonical-manifest.schema.json`: `00c6161f6b0619bb422142f745be80a11c5ee046154be193cfa40008b432e372`
 - `docs/stitch/README.md`: `345872e467dd725ecc6667baba02844bc7cae1590ee6bfc571b19f37d6693a7d`
 - `files/README.md` (espelho): `345872e467dd725ecc6667baba02844bc7cae1590ee6bfc571b19f37d6693a7d`

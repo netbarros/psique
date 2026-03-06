@@ -62,8 +62,8 @@
   --color-portal-danger-soft: #f87171;
 
   /* Fonts */
-  --font-sans: 'Instrument Sans', sans-serif;
-  --font-display: 'Cormorant Garamond', serif;
+  --font-sans: var(--font-instrument-sans), sans-serif;
+  --font-display: var(--font-cormorant-garamond), serif;
 
   /* Keyframes for UI animations */
   --animate-fade-in: fadeIn 0.4s ease-out forwards;
@@ -242,6 +242,19 @@ h5,
 h6,
 .serif {
   font-family: var(--font-display);
+}
+
+/* Prevent ligature text fallback from causing horizontal overflow before icon font loads. */
+.material-symbols-outlined {
+  display: inline-flex;
+  width: 1em;
+  min-width: 1em;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
 /* ── Scrollbar ──────────────────────────────────────────── */

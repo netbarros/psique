@@ -2,9 +2,12 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createRoom, createMeetingToken } from "@/lib/daily";
 import { logger } from "@/lib/logger";
 import { parseJsonBody } from "@/lib/api/request-validation";
+import { CREDIT_ACTION_KEYS } from "@/lib/growth/constants";
+import { consumeCreditsForAction, WalletError } from "@/lib/growth/wallet";
 
 const postSchema = z.object({
   appointmentId: z.string().uuid(),
@@ -35,10 +38,9 @@ export async function POST(req: NextRequest) {
   const { appointmentId } = parsed.data;
 
   try {
-    // Verify ownership
     const { data: appointment, error } = await supabase
       .from("appointments")
-      .select("id, scheduled_at, duration_minutes, therapist:therapists(name, user_id)")
+      .select("id, therapist_id, scheduled_at, duration_minutes, therapist:therapists(name, user_id)")
       .eq("id", appointmentId)
       .single();
 
@@ -51,13 +53,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Forbidden" }, { status: 403 });
     }
 
-    // Create Daily room
     const room = await createRoom({
       sessionId: appointmentId,
       expiresInMinutes: appointment.duration_minutes + 30,
     });
 
-    // Create therapist owner token
     const therapistToken = await createMeetingToken({
       roomName: room.name,
       isOwner: true,
@@ -65,7 +65,6 @@ export async function POST(req: NextRequest) {
       expiresInMinutes: appointment.duration_minutes + 30,
     });
 
-    // Update appointment with room info
     await supabase
       .from("appointments")
       .update({
@@ -73,6 +72,32 @@ export async function POST(req: NextRequest) {
         video_room_url: room.url,
       })
       .eq("id", appointmentId);
+
+    const extraMinutes = Math.max((appointment.duration_minutes ?? 50) - 50, 0);
+    if (extraMinutes > 0) {
+      const admin = createAdminClient();
+      const usage = await consumeCreditsForAction({
+        admin,
+        therapistId: appointment.therapist_id,
+        actionKey: CREDIT_ACTION_KEYS.videoExtraMinutes,
+        units: extraMinutes,
+        correlationId: `video.extra_minutes:${appointmentId}:${extraMinutes}`,
+        sourceType: "video.extra_minutes",
+        sourceId: appointmentId,
+        metadata: {
+          roomId: room.id,
+          durationMinutes: appointment.duration_minutes,
+          extraMinutes,
+        },
+      });
+
+      logger.info("[Video] Extra minutes billed", {
+        appointmentId,
+        extraMinutes,
+        billedCredits: usage.billed_credits,
+        usageEventId: usage.id,
+      });
+    }
 
     logger.info("[Video] Room created", { appointmentId, roomId: room.id });
 
@@ -86,6 +111,10 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
+    if (error instanceof WalletError) {
+      return NextResponse.json({ error: error.message, code: error.code }, { status: error.status });
+    }
+
     logger.error("[Video] Failed to create room", {
       route,
       requestId: parsed.requestId,

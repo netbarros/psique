@@ -38,7 +38,9 @@ test.describe("Booking — Public page", () => {
     }
 
     await expect(page.locator("h1")).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Escolha o horário/i })).toBeVisible();
+    await expect(
+      page.getByRole("heading", { name: /Agendamento público|Escolha o horário/i }),
+    ).toBeVisible();
     await expect(page.getByText(/R\$/).first()).toBeVisible();
   });
 });
@@ -56,8 +58,6 @@ test.describe("Booking — Form validation", () => {
       return;
     }
 
-    // Step 1 indicator should be highlighted
-    await expect(page.getByRole("heading", { name: /Escolha o horário/i })).toBeVisible();
     await expect(page.getByText("Horário", { exact: true }).first()).toBeVisible();
   });
 });
